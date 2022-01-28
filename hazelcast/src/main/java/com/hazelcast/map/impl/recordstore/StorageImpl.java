@@ -157,7 +157,7 @@ public class StorageImpl<R extends Record> implements Storage<Data, R> {
 
     @Override
     public MapEntriesWithCursor fetchEntries(IterationPointer[] pointers, int size) {
-        List<Map.Entry<Data, R>> entries = new ArrayList<>(size);
+        List<Map.Entry<Data, R>> entries = new CustomArrayList<>(size + 20);
         IterationPointer[] newPointers = records.fetchEntries(pointers, size, entries);
         List<Map.Entry<Data, Data>> entriesData = new ArrayList<>(entries.size());
         for (Map.Entry<Data, R> entry : entries) {

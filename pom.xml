@@ -1331,6 +1331,9 @@
                 <module>extensions</module>
                 <module>distribution</module>
             </modules>
+            <properties>
+                <checkstyle.skip>true</checkstyle.skip>
+            </properties>
         </profile>
         <profile>
             <id>quick</id>
