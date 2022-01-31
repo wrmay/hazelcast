@@ -89,7 +89,8 @@ public class InitExecutionOperation extends AsyncJobOperation {
         LoggingUtil.logFine(logger, "Initializing execution plan for %s from %s", jobIdAndExecutionId(jobId(), executionId),
                 caller);
 
-        ExecutionPlan plan = deserializePlan(serializedPlan);
+        ExecutionPlan cachedPlan = InitExecutionOperationTLCache.get(serializedPlan);
+        ExecutionPlan plan = cachedPlan == null ? deserializePlan(serializedPlan) : cachedPlan;
         if (isLightJob) {
             return service.getJobExecutionService().runLightJob(jobId(), executionId, caller,
                     coordinatorMemberListVersion, participants, plan);

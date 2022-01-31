@@ -156,6 +156,13 @@ public class ExecutionPlan implements IdentifiedDataSerializable {
         this.subject = subject;
     }
 
+    public ExecutionPlan clone() {
+        ExecutionPlan clone = new ExecutionPlan(partitionAssignment, jobConfig, lastSnapshotId, memberIndex, memberCount,
+                isLightJob, subject);
+        clone.vertices = new ArrayList<>(vertices);
+        return clone;
+    }
+
     /**
      * A method called on the members as part of the InitExecutionOperation.
      * Creates tasklets, inboxes/outboxes and connects these to make them ready

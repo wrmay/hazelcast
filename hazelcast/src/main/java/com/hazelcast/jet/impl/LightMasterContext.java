@@ -28,6 +28,7 @@ import com.hazelcast.jet.core.Vertex;
 import com.hazelcast.jet.impl.exception.JobTerminateRequestedException;
 import com.hazelcast.jet.impl.execution.init.ExecutionPlan;
 import com.hazelcast.jet.impl.operation.InitExecutionOperation;
+import com.hazelcast.jet.impl.operation.InitExecutionOperationTLCache;
 import com.hazelcast.jet.impl.operation.TerminateExecutionOperation;
 import com.hazelcast.jet.impl.util.Util;
 import com.hazelcast.logging.ILogger;
@@ -40,6 +41,7 @@ import com.hazelcast.version.Version;
 import javax.annotation.Nullable;
 import javax.security.auth.Subject;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -131,8 +133,11 @@ public class LightMasterContext {
         executionPlanMap = executionPlanMapTmp;
         logFine(logger, "Built execution plans for %s", jobIdString);
         Set<MemberInfo> participants = executionPlanMap.keySet();
+        InitExecutionOperationTLCache.set(new HashMap<>());
+
         Function<ExecutionPlan, Operation> operationCtor = plan -> {
             Data serializedPlan = nodeEngine.getSerializationService().toData(plan);
+            InitExecutionOperationTLCache.add(serializedPlan, plan.clone());
             return new InitExecutionOperation(jobId, jobId, membersView.getVersion(), coordinatorVersion, participants,
                     serializedPlan, true);
         };
@@ -140,6 +145,7 @@ public class LightMasterContext {
                 responses -> finalizeJob(findError(responses)),
                 error -> cancelInvocations()
         );
+        InitExecutionOperationTLCache.clear();
     }
 
     public long getJobId() {
