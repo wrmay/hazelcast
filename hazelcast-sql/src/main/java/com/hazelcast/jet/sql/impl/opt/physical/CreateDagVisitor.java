@@ -79,7 +79,7 @@ public class CreateDagVisitor {
 
     private static final int LOW_PRIORITY = 10;
     private static final int HIGH_PRIORITY = 1;
-    private static final int LOCAL_PARALLELISM = 2;
+    private static final int LOCAL_PARALLELISM = 6;
 
     private final DAG dag = new DAG();
     private final Set<PlanObjectKey> objectKeys = new HashSet<>();
