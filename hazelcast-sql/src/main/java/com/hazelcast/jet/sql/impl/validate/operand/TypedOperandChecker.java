@@ -16,12 +16,12 @@
 
 package com.hazelcast.jet.sql.impl.validate.operand;
 
-import com.hazelcast.jet.sql.impl.validate.types.HazelcastJsonType;
-import com.hazelcast.sql.impl.ParameterConverter;
 import com.hazelcast.jet.sql.impl.validate.HazelcastCallBinding;
 import com.hazelcast.jet.sql.impl.validate.HazelcastSqlValidator;
 import com.hazelcast.jet.sql.impl.validate.param.AbstractParameterConverter;
+import com.hazelcast.jet.sql.impl.validate.types.HazelcastJsonType;
 import com.hazelcast.jet.sql.impl.validate.types.HazelcastTypeUtils;
+import com.hazelcast.sql.impl.ParameterConverter;
 import com.hazelcast.sql.impl.type.QueryDataType;
 import org.apache.calcite.rel.type.RelDataType;
 import org.apache.calcite.rel.type.RelDataTypeFactory;
@@ -48,6 +48,7 @@ public class TypedOperandChecker extends AbstractOperandChecker {
     public static final TypedOperandChecker MAP = new TypedOperandChecker(SqlTypeName.MAP);
     public static final TypedOperandChecker COLUMN_LIST = new TypedOperandChecker(SqlTypeName.COLUMN_LIST);
     public static final TypedOperandChecker ROW = new TypedOperandChecker(SqlTypeName.ROW);
+    public static final TypedOperandChecker CURSOR = new TypedOperandChecker(SqlTypeName.CURSOR);
     public static final TypedOperandChecker SYMBOL = new TypedOperandChecker(SqlTypeName.SYMBOL);
     public static final TypedOperandChecker JSON = new TypedOperandChecker(HazelcastJsonType.TYPE);
 

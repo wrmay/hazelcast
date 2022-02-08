@@ -258,7 +258,8 @@ public class SqlTumbleTest extends SqlTestSupport {
         assertRowsEventuallyInAnyOrder(
                 "SELECT window_start, window_end FROM " +
                         "TABLE(TUMBLE(" +
-                        "  (SELECT * FROM TABLE(IMPOSE_ORDER(TABLE(" + name + "), DESCRIPTOR(ts), INTERVAL '0.002' SECOND)))" +
+//                        "  (SELECT * FROM TABLE(IMPOSE_ORDER(TABLE(" + name + "), DESCRIPTOR(ts), INTERVAL '0.002' SECOND)))" +
+                        "  IMPOSE_ORDER(TABLE " + name + ", DESCRIPTOR(ts), INTERVAL '0.002' SECOND)" +
                         "  , DESCRIPTOR(ts)" +
                         "  , INTERVAL '0.002' SECOND" +
                         ")) " +

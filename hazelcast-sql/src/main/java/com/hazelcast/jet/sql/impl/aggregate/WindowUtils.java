@@ -19,11 +19,11 @@ package com.hazelcast.jet.sql.impl.aggregate;
 import com.hazelcast.jet.Traverser;
 import com.hazelcast.jet.Traversers;
 import com.hazelcast.jet.core.SlidingWindowPolicy;
-import com.hazelcast.sql.impl.row.JetSqlRow;
 import com.hazelcast.jet.sql.impl.validate.ValidatorResource;
 import com.hazelcast.sql.impl.expression.Expression;
 import com.hazelcast.sql.impl.expression.ExpressionEvalContext;
 import com.hazelcast.sql.impl.row.EmptyRow;
+import com.hazelcast.sql.impl.row.JetSqlRow;
 import com.hazelcast.sql.impl.type.QueryDataType;
 import com.hazelcast.sql.impl.type.SqlDaySecondInterval;
 import org.apache.calcite.rel.type.RelDataType;
@@ -32,7 +32,9 @@ import org.apache.calcite.sql.SqlCall;
 import org.apache.calcite.sql.SqlCallBinding;
 import org.apache.calcite.sql.SqlIdentifier;
 import org.apache.calcite.sql.SqlNode;
+import org.apache.calcite.sql.SqlTableFunction;
 import org.apache.calcite.sql.SqlUtil;
+import org.apache.calcite.sql.type.SqlTypeName;
 import org.apache.calcite.sql.validate.SqlValidator;
 
 import java.time.Instant;
@@ -183,8 +185,11 @@ public final class WindowUtils {
         String orderingColumnName = orderingColumnIdentifier.getSimple();
 
         SqlValidator validator = binding.getValidator();
-        RelDataTypeField columnField = validator
-                .getValidatedNodeType(input)
+        RelDataType inputRowType = validator.getValidatedNodeType(input);
+        if (inputRowType.getSqlTypeName() == SqlTypeName.CURSOR) {
+            inputRowType = ((SqlTableFunction) ((SqlCall) input).getOperator()).getRowTypeInference().inferReturnType(null);
+        }
+        RelDataTypeField columnField = inputRowType
                 .getField(orderingColumnName, validator.getCatalogReader().nameMatcher().isCaseSensitive(), false);
         if (columnField == null) {
             throw SqlUtil.newContextException(descriptor.getParserPosition(),
