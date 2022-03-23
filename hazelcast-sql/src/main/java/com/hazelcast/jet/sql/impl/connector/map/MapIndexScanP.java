@@ -127,7 +127,10 @@ final class MapIndexScanP extends AbstractProcessor {
                 metadata.getValueDescriptor(),
                 metadata.getFieldPaths(),
                 metadata.getFieldTypes(),
-                Extractors.newBuilder(evalContext.getSerializationService()).build(),
+                Extractors.newBuilder(evalContext.getSerializationService())
+                        .withCacheMaxClassCount(2)
+                        .withCacheMaxGetterPerClassCount(10)
+                        .build(),
                 evalContext.getSerializationService()
         );
         isIndexSorted = metadata.getComparator() != null;
