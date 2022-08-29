@@ -77,7 +77,6 @@ public class StreamToStreamJoinPInnerTest extends JetTestSupport {
         ProcessorSupplier processorSupplier = ProcessorSupplier.of(createProcessor(1, 1));
 
         TestSupport.verifyProcessor(processorSupplier)
-                .disableSnapshots()
                 .outputChecker(TestSupport.SAME_ITEMS_ANY_ORDER)
                 .expectExactOutput(
                         in(0, jetRow(0L)),

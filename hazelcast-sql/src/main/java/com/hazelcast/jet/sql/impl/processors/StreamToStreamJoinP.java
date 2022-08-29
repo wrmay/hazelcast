@@ -20,6 +20,7 @@ import com.hazelcast.function.ToLongFunctionEx;
 import com.hazelcast.internal.serialization.SerializationService;
 import com.hazelcast.internal.serialization.impl.SerializationUtil;
 import com.hazelcast.internal.util.collection.Object2LongHashMap;
+import com.hazelcast.jet.Traverser;
 import com.hazelcast.jet.core.AbstractProcessor;
 import com.hazelcast.jet.core.Processor;
 import com.hazelcast.jet.core.ProcessorSupplier;
@@ -40,6 +41,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -50,6 +52,8 @@ import java.util.Queue;
 import java.util.Set;
 
 import static com.hazelcast.internal.util.CollectionUtil.hasNonEmptyIntersection;
+import static com.hazelcast.jet.Traversers.traverseIterable;
+import static com.hazelcast.jet.Util.entry;
 import static com.hazelcast.jet.impl.util.Util.logLateEvent;
 import static java.lang.Long.MAX_VALUE;
 
@@ -84,6 +88,11 @@ public class StreamToStreamJoinP extends AbstractProcessor {
     private final Queue<Object> pendingOutput = new ArrayDeque<>();
     private JetSqlRow emptyLeftRow;
     private JetSqlRow emptyRightRow;
+
+    private volatile boolean snapshotInitiated;
+    private Deque<Traverser<Entry<Integer, JetSqlRow>>> snapshotTraversers;
+    private Traverser<Entry<Byte, Long>> stateTraverser;
+    private int[] keyOffsets = new int[3];
 
     @SuppressWarnings("checkstyle:ExecutableStatementCount")
     public StreamToStreamJoinP(
@@ -265,6 +274,61 @@ public class StreamToStreamJoinP extends AbstractProcessor {
         return true;
     }
 
+    @Override
+    public boolean saveToSnapshot() {
+        if (!snapshotInitiated) {
+            snapshotTraversers = new ArrayDeque<>();
+            // we want to save watermark keys as is, so it's safe to start outside byte's values space.
+            int[] index = {Byte.MAX_VALUE + 1};
+
+            // left buffer
+            snapshotTraversers.add(traverseIterable(buffer[0])
+                    .map(item -> entry(index[0]++, item))
+                    .append(entry(index[0], null)));
+            keyOffsets[0] = index[0]++;
+
+            // right buffer
+            snapshotTraversers.add(traverseIterable(buffer[1])
+                    .map(item -> entry(index[0]++, item))
+                    .append(entry(index[0], null)));
+            keyOffsets[1] = index[0]++;
+
+            // unused event buffer
+            snapshotTraversers.add(traverseIterable(unusedEventsTracker)
+                    .map(item -> entry(index[0]++, item))
+                    .append(entry(index[0], null)));
+            keyOffsets[2] = index[0];
+
+            stateTraverser = traverseIterable(wmState.entrySet());
+
+            snapshotInitiated = true;
+        }
+        return didEmitToSnapshot();
+    }
+
+    @Override
+    protected void restoreFromSnapshot(@Nonnull Object key, @Nonnull Object value) {
+        if (key instanceof Byte) {
+            Byte bkey = (Byte) key;
+            wmState.put(bkey, (Long) value);
+        } else {
+            assert key instanceof Integer;
+            int ikey = (Integer) key;
+            if (ikey < keyOffsets[0]) {
+                buffer[0].add(ikey - keyOffsets[0], (JetSqlRow) value);
+            } else if (ikey < keyOffsets[1]) {
+                buffer[1].add(ikey - keyOffsets[1], (JetSqlRow) value);
+            } else if (ikey < keyOffsets[2]) {
+                unusedEventsTracker.add((JetSqlRow) value);
+            }
+        }
+    }
+
+    @Override
+    public boolean finishSnapshotRestore() {
+        return super.finishSnapshotRestore();
+    }
+
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean processPendingOutput() {
         while (!pendingOutput.isEmpty()) {
@@ -377,6 +441,28 @@ public class StreamToStreamJoinP extends AbstractProcessor {
             );
         }
         return joinedRow;
+    }
+
+    private enum Keys {
+        LAST_EMITTED_WM
+    }
+
+    private boolean didEmitToSnapshot() {
+        if (!snapshotTraversers.isEmpty()) {
+            Traverser<Map.Entry<Integer, JetSqlRow>> traverser = snapshotTraversers.peek();
+            boolean emitted = emitFromTraverserToSnapshot(traverser);
+            if (emitted) {
+                snapshotTraversers.poll();
+            }
+        } else {
+            if (emitFromTraverserToSnapshot(stateTraverser)) {
+                snapshotInitiated = false;
+                snapshotTraversers = null;
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public static final class StreamToStreamJoinProcessorSupplier implements ProcessorSupplier, DataSerializable {
