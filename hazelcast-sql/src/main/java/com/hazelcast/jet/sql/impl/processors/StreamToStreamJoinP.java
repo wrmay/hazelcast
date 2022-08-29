@@ -70,7 +70,8 @@ public class StreamToStreamJoinP extends AbstractProcessor {
     //  (1) removals at any position,
     //  (2) no index-based access, only full traversal
     // package-visible for tests
-    @SuppressWarnings("unchecked") final List<JetSqlRow>[] buffer = new List[]{new LinkedList<>(), new LinkedList<>()};
+    @SuppressWarnings("unchecked")
+    final List<JetSqlRow>[] buffer = new List[]{new LinkedList<>(), new LinkedList<>()};
 
     private final JetJoinInfo joinInfo;
     private final int outerJoinSide;
@@ -279,25 +280,26 @@ public class StreamToStreamJoinP extends AbstractProcessor {
         if (!snapshotInitiated) {
             snapshotTraversers = new ArrayDeque<>();
             // we want to save watermark keys as is, so it's safe to start outside byte's values space.
-            int[] index = {Byte.MAX_VALUE + 1};
+            final int[] index = {Byte.MAX_VALUE + 1};
+
+            keyOffsets[0] = Byte.MAX_VALUE + buffer[0].size() + 1;
+            keyOffsets[1] = keyOffsets[0] + buffer[1].size() + 1;
+            keyOffsets[2] = keyOffsets[1] + unusedEventsTracker.size() + 1;
 
             // left buffer
             snapshotTraversers.add(traverseIterable(buffer[0])
                     .map(item -> entry(index[0]++, item))
-                    .append(entry(index[0], null)));
-            keyOffsets[0] = index[0]++;
+                    .append(entry(index[0]++, null)));
 
             // right buffer
             snapshotTraversers.add(traverseIterable(buffer[1])
                     .map(item -> entry(index[0]++, item))
-                    .append(entry(index[0], null)));
-            keyOffsets[1] = index[0]++;
+                    .append(entry(index[0]++, null)));
 
             // unused event buffer
             snapshotTraversers.add(traverseIterable(unusedEventsTracker)
                     .map(item -> entry(index[0]++, item))
-                    .append(entry(index[0], null)));
-            keyOffsets[2] = index[0];
+                    .append(entry(index[0]++, null)));
 
             stateTraverser = traverseIterable(wmState.entrySet());
 
@@ -443,19 +445,18 @@ public class StreamToStreamJoinP extends AbstractProcessor {
         return joinedRow;
     }
 
-    private enum Keys {
-        LAST_EMITTED_WM
-    }
-
     private boolean didEmitToSnapshot() {
         if (!snapshotTraversers.isEmpty()) {
-            Traverser<Map.Entry<Integer, JetSqlRow>> traverser = snapshotTraversers.peek();
-            boolean emitted = emitFromTraverserToSnapshot(traverser);
+            System.err.println("Called");
+            boolean emitted = emitFromTraverserToSnapshot(snapshotTraversers.peek());
             if (emitted) {
+                System.err.println("Removed " + snapshotTraversers.peek() + ". " +
+                        "Key offsets = | " + keyOffsets[0] + " | " + keyOffsets[1] + " | " + keyOffsets[2] + " |");
                 snapshotTraversers.poll();
             }
         } else {
             if (emitFromTraverserToSnapshot(stateTraverser)) {
+                System.err.println("Snapshot EZ.");
                 snapshotInitiated = false;
                 snapshotTraversers = null;
                 return true;
