@@ -91,7 +91,7 @@ public final class IOUringAsyncServerSocket extends AsyncServerSocket {
     @Override
     public void listen(int backlog) {
         try {
-            serverSocket.listen(10);
+            serverSocket.listen(backlog);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -152,18 +152,9 @@ public final class IOUringAsyncServerSocket extends AsyncServerSocket {
     }
 
     @Override
-    public void close() {
-        if (closed.compareAndSet(false, true)) {
-            if(logger.isInfoEnabled()) {
-                logger.info("Closing  " + this);
-            }
-            eventloop.deregisterResource(this);
-            try {
-                serverSocket.close();
-            } catch (IOException e) {
-                throw new UncheckedIOException(e);
-            }
-        }
+    protected void doClose() throws IOException {
+        eventloop.deregisterResource(this);
+        serverSocket.close();
     }
 
     @Override
@@ -185,7 +176,7 @@ public final class IOUringAsyncServerSocket extends AsyncServerSocket {
         eventloop.offer(() -> {
             this.consumer = consumer;
             sq_addAccept();
-            if(logger.isInfoEnabled()) {
+            if (logger.isInfoEnabled()) {
                 logger.info("ServerSocket listening at " + localAddress());
             }
         });
@@ -204,7 +195,7 @@ public final class IOUringAsyncServerSocket extends AsyncServerSocket {
 
                 SocketAddress address = SockaddrIn.readIPv4(acceptMemory.memoryAddress, inet4AddressArray);
 
-                if(logger.isInfoEnabled()) {
+                if (logger.isInfoEnabled()) {
                     logger.info(this + " new connected accepted: " + address);
                 }
                 LinuxSocket socket = new LinuxSocket(res);

@@ -138,18 +138,6 @@ public final class EpollAsyncServerSocket extends AsyncServerSocket {
         }
     }
 
-    @Override
-    public void close() {
-        if (closed.compareAndSet(false, true)) {
-            System.out.println("Closing  " + this);
-            eventloop.deregisterResource(this);
-            try {
-                serverSocket.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
 
     @Override
     public void listen(int backlog) {
@@ -158,6 +146,12 @@ public final class EpollAsyncServerSocket extends AsyncServerSocket {
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
+    }
+
+    @Override
+    protected void doClose() throws IOException {
+        eventloop.deregisterResource(this);
+        serverSocket.close();
     }
 
     //

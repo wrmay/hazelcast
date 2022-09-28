@@ -20,11 +20,17 @@ import com.hazelcast.logging.ILogger;
 import com.hazelcast.logging.Logger;
 
 import java.io.Closeable;
+import java.io.IOException;
 import java.net.SocketAddress;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.hazelcast.internal.nio.IOUtil.closeResource;
+
+/**
+ * Represents an asynchronous ServerSocket. So
+ */
 public abstract class AsyncServerSocket implements Closeable {
 
     public final ConcurrentMap context = new ConcurrentHashMap();
@@ -63,7 +69,24 @@ public abstract class AsyncServerSocket implements Closeable {
     public void listen(int backlog) {
     }
 
-    public abstract void close();
+    @Override
+    public final void close() {
+        if (!closed.compareAndSet(false, true)) {
+            return;
+        }
+
+        if (logger.isInfoEnabled()) {
+            logger.info("Closing  " + this);
+        }
+
+        try {
+            doClose();
+        } catch (Exception e) {
+            logger.warning(e);
+        }
+    }
+
+    protected abstract void doClose() throws IOException;
 
     public final boolean isClosed() {
         return closed.get();
