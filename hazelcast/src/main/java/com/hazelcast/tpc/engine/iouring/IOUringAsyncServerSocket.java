@@ -88,14 +88,6 @@ public final class IOUringAsyncServerSocket extends AsyncServerSocket {
         return serverSocket.localAddress();
     }
 
-    @Override
-    public void listen(int backlog) {
-        try {
-            serverSocket.listen(backlog);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-    }
 
     @Override
     public boolean isReusePort() {
@@ -158,28 +150,37 @@ public final class IOUringAsyncServerSocket extends AsyncServerSocket {
     }
 
     @Override
-    public void bind(SocketAddress local) {
+    public void bind(SocketAddress socketAddress) {
         try {
-            serverSocket.bind(local);
+            serverSocket.bind(socketAddress);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
     }
 
-    private void sq_addAccept() {
-        sq.addAccept(serverSocket.intValue(),
-                acceptMemory.memoryAddress,
-                acceptMemory.lengthMemoryAddress, (short) 0);
+    @Override
+    public void listen(int backlog) {
+        try {
+            serverSocket.listen(backlog);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     public void accept(Consumer<IOUringAsyncSocket> consumer) {
-        eventloop.offer(() -> {
+        eventloop.execute(() -> {
             this.consumer = consumer;
             sq_addAccept();
             if (logger.isInfoEnabled()) {
                 logger.info("ServerSocket listening at " + localAddress());
             }
         });
+    }
+
+    private void sq_addAccept() {
+        sq.addAccept(serverSocket.intValue(),
+                acceptMemory.memoryAddress,
+                acceptMemory.lengthMemoryAddress, (short) 0);
     }
 
     private class EventloopHandler implements CompletionListener {

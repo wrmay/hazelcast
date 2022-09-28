@@ -22,6 +22,7 @@ import com.hazelcast.logging.Logger;
 import com.hazelcast.tpc.engine.iobuffer.IOBuffer;
 
 import java.io.Closeable;
+import java.io.IOException;
 import java.net.SocketAddress;
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
@@ -152,11 +153,8 @@ public abstract class AsyncSocket implements Closeable {
      * @throws NullPointerException if listener or executor is null.
      */
     public final void setCloseListener(CloseListener listener, Executor executor) {
-        checkNotNull(listener, "listener can't be null");
-        checkNotNull(executor, "executor can't be null");
-
-        this.closeListener = listener;
-        this.closeExecutor = executor;
+        this.closeListener = checkNotNull(listener, "listener can't be null");
+        this.closeExecutor = checkNotNull(executor, "executor can't be null");
     }
 
 
@@ -249,7 +247,11 @@ public abstract class AsyncSocket implements Closeable {
             logger.info("Closing  " + this);
         }
 
-        doClose();
+        try {
+            doClose();
+        }catch (Exception e){
+            logger.warning(e);
+        }
 
         if (closeListener != null) {
             try {
@@ -269,7 +271,7 @@ public abstract class AsyncSocket implements Closeable {
     /**
      * Takes care of the actual closing.
      */
-    protected abstract void doClose();
+    protected abstract void doClose() throws IOException;
 
     /**
      * Checks if this AsyncSocket is closed.

@@ -325,16 +325,12 @@ public final class EpollAsyncSocket extends AsyncSocket {
     }
 
     @Override
-    protected void doClose() {
-        if (socket != null) {
-            try {
-                socket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
+    protected void doClose() throws IOException {
         eventloop.deregisterResource(this);
+
+        if (socket != null) {
+            socket.close();
+        }
     }
 
     @Override

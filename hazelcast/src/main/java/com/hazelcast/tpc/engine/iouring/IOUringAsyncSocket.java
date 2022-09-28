@@ -304,20 +304,17 @@ public final class IOUringAsyncSocket extends AsyncSocket {
     }
 
     @Override
-    protected void doClose() {
+    protected void doClose() throws IOException {
         //todo: also think about releasing the resources like IOBuffers
         // perhaps add a one time close check
 
-        if (socket != null) {
-            try {
-                socket.close();
-            } catch (IOException e) {
-                logger.warning(e);
-            }
-        }
 
         if (eventloop != null) {
             eventloop.deregisterResource(this);
+        }
+
+        if (socket != null) {
+            socket.close();
         }
     }
 

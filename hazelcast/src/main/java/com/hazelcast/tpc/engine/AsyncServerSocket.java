@@ -29,7 +29,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import static com.hazelcast.internal.nio.IOUtil.closeResource;
 
 /**
- * Represents an asynchronous ServerSocket. So
+ * Represents an asynchronous ServerSocket. After activation, you call {@link #acc}
  */
 public abstract class AsyncServerSocket implements Closeable {
 
@@ -66,8 +66,7 @@ public abstract class AsyncServerSocket implements Closeable {
 
     public abstract void bind(SocketAddress socketAddress);
 
-    public void listen(int backlog) {
-    }
+    public abstract void listen(int backlog);
 
     @Override
     public final void close() {

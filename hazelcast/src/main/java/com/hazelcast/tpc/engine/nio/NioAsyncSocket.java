@@ -329,10 +329,10 @@ public final class NioAsyncSocket extends AsyncSocket {
 
     @Override
     protected void doClose() {
-        closeResource(socketChannel);
         if (eventloop != null) {
-            eventloop.deregisterResource(NioAsyncSocket.this);
+            eventloop.deregisterResource(this);
         }
+        closeResource(socketChannel);
     }
 
     @Override

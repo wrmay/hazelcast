@@ -125,13 +125,19 @@ public final class NioAsyncServerSocket extends AsyncServerSocket {
         eventloop.deregisterResource(this);
     }
 
+
     @Override
-    public void bind(SocketAddress local) {
+    public void listen(int backlog) {
+        // ignore; not needed for serverSocketChannel
+    }
+
+    @Override
+    public void bind(SocketAddress socketAddress) {
         try {
             if (logger.isInfoEnabled()) {
-                logger.info(eventloopThread.getName() + " Binding to " + local);
+                logger.info(eventloopThread.getName() + " Binding to " + socketAddress);
             }
-            serverSocketChannel.bind(local);
+            serverSocketChannel.bind(socketAddress);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
