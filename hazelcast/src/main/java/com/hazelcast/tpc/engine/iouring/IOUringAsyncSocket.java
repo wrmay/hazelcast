@@ -312,7 +312,7 @@ public final class IOUringAsyncSocket extends AsyncSocket {
             try {
                 socket.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.warning(e);
             }
         }
 

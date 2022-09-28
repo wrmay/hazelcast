@@ -70,13 +70,13 @@ public final class Engine {
     /**
      * Creates an Engine with the given Configuration.
      *
-     * @param configuration the Configuration.
+     * @param cfg the Configuration.
      * @throws NullPointerException when configuration is null.
      */
-    public Engine(Configuration configuration) {
-        this.eventloopCount = configuration.eventloopCount;
-        this.eventloopType = configuration.eventloopType;
-        this.monitorSilent = configuration.monitorSilent;
+    public Engine(Configuration cfg) {
+        this.eventloopCount = cfg.eventloopCount;
+        this.eventloopType = cfg.eventloopType;
+        this.monitorSilent = cfg.monitorSilent;
         this.eventloops = new Eventloop[eventloopCount];
         this.monitorThread = new MonitorThread(eventloops, monitorSilent);
         this.terminationLatch = new CountDownLatch(eventloopCount);
@@ -84,28 +84,28 @@ public final class Engine {
         for (int idx = 0; idx < eventloopCount; idx++) {
             switch (eventloopType) {
                 case NIO:
-                    NioConfiguration nioConfiguration = new NioConfiguration();
-                    nioConfiguration.setThreadAffinity(configuration.threadAffinity);
-                    nioConfiguration.setThreadName("eventloop-" + idx);
-                    nioConfiguration.setThreadFactory(configuration.threadFactory);
-                    configuration.eventloopConfigUpdater.accept(nioConfiguration);
-                    eventloops[idx] = new NioEventloop(nioConfiguration);
+                    NioConfiguration nioCfg = new NioConfiguration();
+                    nioCfg.setThreadAffinity(cfg.threadAffinity);
+                    nioCfg.setThreadName("eventloop-" + idx);
+                    nioCfg.setThreadFactory(cfg.threadFactory);
+                    cfg.eventloopConfigUpdater.accept(nioCfg);
+                    eventloops[idx] = new NioEventloop(nioCfg);
                     break;
                 case EPOLL:
-                    EpollConfiguration epollConfiguration = new EpollConfiguration();
-                    epollConfiguration.setThreadAffinity(configuration.threadAffinity);
-                    epollConfiguration.setThreadName("eventloop-" + idx);
-                    epollConfiguration.setThreadFactory(configuration.threadFactory);
-                    configuration.eventloopConfigUpdater.accept(epollConfiguration);
-                    eventloops[idx] = new EpollEventloop(epollConfiguration);
+                    EpollConfiguration epollCfg = new EpollConfiguration();
+                    epollCfg.setThreadAffinity(cfg.threadAffinity);
+                    epollCfg.setThreadName("eventloop-" + idx);
+                    epollCfg.setThreadFactory(cfg.threadFactory);
+                    cfg.eventloopConfigUpdater.accept(epollCfg);
+                    eventloops[idx] = new EpollEventloop(epollCfg);
                     break;
                 case IOURING:
-                    IOUringConfiguration ioUringConfiguration = new IOUringConfiguration();
-                    ioUringConfiguration.setThreadName("eventloop-" + idx);
-                    ioUringConfiguration.setThreadAffinity(configuration.threadAffinity);
-                    ioUringConfiguration.setThreadFactory(configuration.threadFactory);
-                    configuration.eventloopConfigUpdater.accept(ioUringConfiguration);
-                    eventloops[idx] = new IOUringEventloop(ioUringConfiguration);
+                    IOUringConfiguration ioUringCfg = new IOUringConfiguration();
+                    ioUringCfg.setThreadName("eventloop-" + idx);
+                    ioUringCfg.setThreadAffinity(cfg.threadAffinity);
+                    ioUringCfg.setThreadFactory(cfg.threadFactory);
+                    cfg.eventloopConfigUpdater.accept(ioUringCfg);
+                    eventloops[idx] = new IOUringEventloop(ioUringCfg);
                     break;
                 default:
                     throw new IllegalStateException("Unknown eventloopType:" + eventloopType);
