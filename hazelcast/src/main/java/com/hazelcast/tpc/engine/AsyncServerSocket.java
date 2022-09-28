@@ -29,8 +29,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import static com.hazelcast.internal.nio.IOUtil.closeResource;
 
 /**
- * Represents an asynchronous ServerSocket. After activation, you call {@link #acc}
- */
+ * A server socket that is asynchronous. So accepting incomming connections does not block,
+ * but are executed on an {@link Eventloop}.
+ * */
 public abstract class AsyncServerSocket implements Closeable {
 
     public final ConcurrentMap context = new ConcurrentHashMap();

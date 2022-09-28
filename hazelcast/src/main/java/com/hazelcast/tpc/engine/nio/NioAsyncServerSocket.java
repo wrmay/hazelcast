@@ -64,6 +64,11 @@ public final class NioAsyncServerSocket extends AsyncServerSocket {
         return eventloop;
     }
 
+    /**
+     * Returns the underlying {@link ServerSocketChannel}.
+     *
+     * @return the ServerSocketChannel.
+     */
     public ServerSocketChannel serverSocketChannel() {
         return serverSocketChannel;
     }
@@ -139,7 +144,7 @@ public final class NioAsyncServerSocket extends AsyncServerSocket {
             }
             serverSocketChannel.bind(socketAddress);
         } catch (IOException e) {
-            throw new UncheckedIOException(e);
+            throw new UncheckedIOException("Failed to bind to " + socketAddress, e);
         }
     }
 
@@ -153,7 +158,7 @@ public final class NioAsyncServerSocket extends AsyncServerSocket {
                             + serverSocketChannel.getLocalAddress());
                 }
             } catch (IOException e) {
-                throw new UncheckedIOException(e);
+                throw new UncheckedIOException("Failed to accept", e);
             }
         });
     }
@@ -168,7 +173,7 @@ public final class NioAsyncServerSocket extends AsyncServerSocket {
 
         @Override
         public void handleException(Exception e) {
-            logger.severe("NioServerChannel ran into a fatal exception", e);
+            logger.severe(this + " ran into a fatal exception", e);
         }
 
         @Override
@@ -177,7 +182,10 @@ public final class NioAsyncServerSocket extends AsyncServerSocket {
             NioAsyncSocket socket = new NioAsyncSocket(socketChannel);
             consumer.accept(socket);
 
-            logger.info("Connection Accepted: " + socketChannel.getLocalAddress());
+            if (logger.isInfoEnabled()) {
+                logger.info("Connection Accepted: " + socketChannel.getRemoteAddress()
+                        + "->" + socketChannel.getLocalAddress());
+            }
         }
     }
 }

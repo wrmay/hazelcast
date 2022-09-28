@@ -289,7 +289,7 @@ public abstract class Eventloop implements Executor {
     }
 
     /**
-     * Deregisters a resource.
+     * Deregisters a resource from this Eventloop.
      * <p>
      * This method is thread-safe.
      * <p>
@@ -340,7 +340,7 @@ public abstract class Eventloop implements Executor {
     }
 
     /**
-     * Offers a IOBuffer to be processed by this Eventloop.
+     * Offers an IOBuffer to be processed by this Eventloop.
      *
      * @param buff the buffer to process.
      * @return true if the buffer was accepted, false otherwise.
