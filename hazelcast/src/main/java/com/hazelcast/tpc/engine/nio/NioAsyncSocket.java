@@ -55,7 +55,7 @@ public final class NioAsyncSocket extends AsyncSocket {
     }
 
     private int unflushedBufsCapacity = 65536;
-    private NioAsyncReadHandler readHandler;
+
     // immutable state
     private final SocketChannel socketChannel;
     private final boolean clientSide;
@@ -68,11 +68,11 @@ public final class NioAsyncSocket extends AsyncSocket {
     // reading side of the socket.
     // ======================================================
     private ByteBuffer receiveBuffer;
+    private NioAsyncReadHandler readHandler;
 
     // ======================================================
     // writing side of the socket.
     // ======================================================
-    // private
     public final IOVector ioVector = new IOVector();
     private boolean regularSchedule = true;
     private boolean writeThrough;

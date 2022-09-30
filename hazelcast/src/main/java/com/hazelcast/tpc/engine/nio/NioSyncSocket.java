@@ -57,6 +57,11 @@ public final class NioSyncSocket extends SyncSocket {
         this.readHandler = checkNotNull(readHandler, "readHandler can't be null");
     }
 
+    /**
+     * Returns the underlying {@link SocketChannel}.
+     *
+     * @return the SocketChannel.
+     */
     public SocketChannel socketChannel() {
         return socketChannel;
     }
@@ -174,11 +179,11 @@ public final class NioSyncSocket extends SyncSocket {
                 int read = socketChannel.read(receiveBuffer);
                 if (read == -1) {
                     close();
-                    throw new IOException("Socket closed");
-                } else {
-                    bytesRead.inc(read);
-                    receiveBuffer.flip();
+                    throw new IOException("Socket closed " + this);
                 }
+
+                bytesRead.inc(read);
+                receiveBuffer.flip();
             }
         } catch (IOException e) {
             throw new UncheckedIOException(e);
@@ -207,11 +212,10 @@ public final class NioSyncSocket extends SyncSocket {
             int read = socketChannel.read(receiveBuffer);
             if (read == -1) {
                 close();
-                throw new IOException("Socket closed");
-            } else {
-                bytesRead.inc(read);
-                receiveBuffer.flip();
+                throw new IOException("Socket closed " + this);
             }
+            bytesRead.inc(read);
+            receiveBuffer.flip();
 
             return readHandler.decode(receiveBuffer);
         } catch (IOException e) {
@@ -232,8 +236,7 @@ public final class NioSyncSocket extends SyncSocket {
 
     @Override
     public boolean write(IOBuffer buf) {
-        checkNotNull(buf);
-        return ioVector.add(buf);
+        return ioVector.add(checkNotNull(buf));
     }
 
     @Override
@@ -248,14 +251,12 @@ public final class NioSyncSocket extends SyncSocket {
         try {
             socketChannel.connect(address);
         } catch (IOException e) {
-            throw new UncheckedIOException(e);
+            throw new UncheckedIOException("Failed to connect to [" + address + "]", e);
         }
     }
 
     @Override
-    public void close() {
-        if (closed.compareAndSet(false, true)) {
-            closeResource(socketChannel);
-        }
+    protected void doClose() throws IOException {
+        closeResource(socketChannel);
     }
 }

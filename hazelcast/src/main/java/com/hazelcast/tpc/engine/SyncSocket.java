@@ -22,6 +22,7 @@ import com.hazelcast.logging.Logger;
 import com.hazelcast.tpc.engine.iobuffer.IOBuffer;
 
 import java.io.Closeable;
+import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.SocketAddress;
 import java.util.concurrent.ConcurrentHashMap;
@@ -33,7 +34,7 @@ import static com.hazelcast.internal.util.counters.SwCounter.newSwCounter;
 
 /**
  * The SyncSocket is blocking; so therefor should not be used inside an {@link Eventloop}.
- *
+ * <p/>
  * Most methods in this class are not thread-safe.
  */
 public abstract class SyncSocket implements Closeable {
@@ -72,9 +73,9 @@ public abstract class SyncSocket implements Closeable {
 
     /**
      * Returns the remote address.
-     *
+     * <p/>
      * If the SyncSocket isn't connected, null is returned.
-     *
+     * <p/>
      * This method is thread-safe.
      *
      * @return the remote address.
@@ -85,9 +86,9 @@ public abstract class SyncSocket implements Closeable {
 
     /**
      * Returns the local address.
-     *
+     * <p/>
      * If the SyncSocket isn't connected, null is returned.
-     *
+     * <p/>
      * This method is thread-safe.
      *
      * @return the local address.
@@ -119,9 +120,9 @@ public abstract class SyncSocket implements Closeable {
     /**
      * TODO: Method needs to be redesigned; An IOBuffer should be passed as argument
      * and it should complete as soon as bytes are available.
-     *
+     * <p>
      * Reads a single IOBuffer from this SyncSocket and will block if there is no frame.
-     *
+     * <p>
      * This method is not thread-safe.
      *
      * @return the read Frame.
@@ -132,9 +133,9 @@ public abstract class SyncSocket implements Closeable {
     /**
      * TODO: Method needs to be redesigned; An IOBuffer should be passed as argument
      * and it should complete as soon as bytes are available.
-     *
+     * <p>
      * Tries to read a single Frame from this SyncSocket.
-     *
+     * <p>
      * This method is not thread-safe.
      *
      * @return the read frame or null if not enough data was available to read a full frame.
@@ -145,7 +146,7 @@ public abstract class SyncSocket implements Closeable {
     /**
      * Writes any scheduled frames are flushed to the socket. THis call blocks until any
      * scheduled frame have been written to the socket.
-     *
+     * <p>
      * This method is not thread-safe.
      */
     public abstract void flush();
@@ -153,12 +154,12 @@ public abstract class SyncSocket implements Closeable {
     /**
      * Writes an IOBuffer to the SyncSocket. The IOBuffer isn't immediately written; it is just
      * buffered.
-     *
+     * <p>
      * This call can be used to buffer a series of request and then call
      * {@link #flush()}.
-     *
+     * <p>
      * This method is not thread-safe.
-     *
+     * <p>
      * There is no guarantee that IOBuffer is actually going to be received by the caller if
      * the SyncSocket has accepted the IOBuffer. E.g. when the connection closes.
      *
@@ -169,14 +170,14 @@ public abstract class SyncSocket implements Closeable {
 
     /**
      * Writes a buf and writes it to the socket.
-     *
+     * <p>
      * This is the same as calling {@link #write(IOBuffer)} followed by a {@link #flush()}.
-     *
+     * <p>
      * There is no guarantee that buf is actually going to be received by the caller if
      * the SyncSocket has accepted the buf. E.g. when the connection closes.
-     *
+     * <p>
      * This method is not thread-safe.
-     *
+     * <p>
      * If there was no space, a {@link #flush()} is still triggered.
      *
      * @param buf the buf to write.
@@ -194,16 +195,28 @@ public abstract class SyncSocket implements Closeable {
 
     /**
      * Closes this {@link SyncSocket}.
-     *
+     * <p>
      * This method is thread-safe.
-     *
+     * <p>
      * If the AsyncSocket is already closed, the call is ignored.
      */
-    public abstract void close();
+    public final void close() {
+        if (!closed.compareAndSet(false, true)) {
+            return;
+        }
+
+        try {
+            doClose();
+        } catch (Exception e) {
+            logger.warning(e);
+        }
+    }
+
+    protected abstract void doClose() throws IOException;
 
     /**
      * Checks if this SyncSocket is closed.
-     *
+     * <p>
      * This method is thread-safe.
      *
      * @return true if closed, false otherwise.
