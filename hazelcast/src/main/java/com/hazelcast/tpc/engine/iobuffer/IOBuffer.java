@@ -182,6 +182,7 @@ public class IOBuffer {
     public char readChar() {
         return buff.getChar();
     }
+
     public IOBuffer reconstructComplete() {
         buff.flip();
         return this;
