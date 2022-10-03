@@ -44,6 +44,14 @@ public abstract class AsyncFile {
      */
     public abstract int fd();
 
+    /**
+     * Executes a noop asynchronously. This method exists purely for benchmarking
+     * purposes and is made for the io_uring NOOP.
+     * </p>
+     * Any other implementation is free to ignore it.
+     *
+     * @return a future.
+     */
     public abstract Fut nop();
 
     /**
