@@ -18,6 +18,7 @@ package com.hazelcast.table.impl;
 
 import com.hazelcast.tpc.offheapmap.ExampleQuery;
 import com.hazelcast.tpc.offheapmap.OffheapMap;
+import com.hazelcast.tpc.requestservice.FrameCodec;
 import com.hazelcast.tpc.requestservice.Op;
 import com.hazelcast.tpc.requestservice.OpCodes;
 
@@ -45,10 +46,9 @@ public class QueryOp extends Op {
 
         map.execute(query);
 
-        response.writeResponseHeader(partitionId, callId)
-                .writeLong(query.result)
-                .constructComplete();
-
+        FrameCodec.writeResponseHeader(response, partitionId, callId);
+        response.writeLong(query.result);
+        FrameCodec.constructComplete(response);
         return COMPLETED;
     }
 }

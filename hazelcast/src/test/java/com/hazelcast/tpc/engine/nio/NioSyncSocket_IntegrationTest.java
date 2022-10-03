@@ -4,6 +4,7 @@ import com.hazelcast.test.annotation.QuickTest;
 import com.hazelcast.tpc.engine.iobuffer.IOBuffer;
 import com.hazelcast.tpc.engine.iobuffer.IOBufferAllocator;
 import com.hazelcast.tpc.engine.iobuffer.NonConcurrentIOBufferAllocator;
+import com.hazelcast.tpc.requestservice.FrameCodec;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -58,7 +59,7 @@ public class NioSyncSocket_IntegrationTest {
             System.out.println("at: "+k);
             IOBuffer request = new IOBuffer(128, true);
             request.writeInt(-1);
-            request.constructComplete();
+            FrameCodec.constructComplete(request);
             clientSocket.writeAndFlush(request);
 
             IOBuffer response = clientSocket.read();
@@ -81,7 +82,7 @@ public class NioSyncSocket_IntegrationTest {
                 int size = buffer.getInt();
                 IOBuffer buf = responseAllocator.allocate(8);
                 buf.writeInt(-1);
-                buf.constructComplete();
+                FrameCodec.constructComplete(buf);
                 return buf;
             }
         });

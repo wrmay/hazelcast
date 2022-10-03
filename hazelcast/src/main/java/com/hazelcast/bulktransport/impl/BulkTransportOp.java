@@ -1,6 +1,7 @@
 package com.hazelcast.bulktransport.impl;
 
 import com.hazelcast.tpc.offheapmap.OffheapMap;
+import com.hazelcast.tpc.requestservice.FrameCodec;
 import com.hazelcast.tpc.requestservice.Op;
 import com.hazelcast.tpc.requestservice.OpCodes;
 import com.hazelcast.table.impl.TableManager;
@@ -18,8 +19,8 @@ public class BulkTransportOp extends Op {
         TableManager tableManager = managers.tableManager;
         OffheapMap map = tableManager.getOffheapMap(partitionId, null);
 
-        response.writeResponseHeader(partitionId, request.getLong(OFFSET_REQ_CALL_ID));
-        response.constructComplete();
+        FrameCodec.writeResponseHeader(response, partitionId, request.getLong(OFFSET_REQ_CALL_ID));
+        FrameCodec.constructComplete(response);
 
         return COMPLETED;
     }

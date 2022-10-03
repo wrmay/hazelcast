@@ -56,18 +56,18 @@ public class RequestNioReadHandler extends NioAsyncReadHandler {
                 inboundFrame.socket = socket;
             }
 
-            int size = inboundFrame.size();
+            int size = FrameCodec.size(inboundFrame);
             int remaining = size - inboundFrame.position();
             inboundFrame.write(buffer, remaining);
 
-            if (!inboundFrame.isComplete()) {
+            if (!FrameCodec.isComplete(inboundFrame)) {
                 break;
             }
 
             inboundFrame.reconstructComplete();
             //framesRead.inc();
 
-            if (inboundFrame.isFlagRaised(FLAG_OP_RESPONSE)) {
+            if (FrameCodec.isFlagRaised(inboundFrame, FLAG_OP_RESPONSE)) {
                 inboundFrame.next = responseChain;
                 responseChain = inboundFrame;
             } else {

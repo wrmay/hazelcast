@@ -117,9 +117,9 @@ public final class OpScheduler implements Eventloop.Scheduler {
             runSingle();
         } else {
             IOBuffer response = op.response;
-            response.writeResponseHeader(op.partitionId, op.callId, FLAG_OP_RESPONSE_CONTROL)
-                    .writeInt(RESPONSE_TYPE_OVERLOAD)
-                    .constructComplete();
+            FrameCodec.writeResponseHeader(response, op.partitionId, op.callId, FLAG_OP_RESPONSE_CONTROL);
+            response.writeInt(RESPONSE_TYPE_OVERLOAD);
+            FrameCodec.constructComplete(response);
             sendResponse(op);
         }
     }
@@ -163,10 +163,10 @@ public final class OpScheduler implements Eventloop.Scheduler {
                 case EXCEPTION:
                     exceptions.inc();
                     op.response.clear();
-                    op.response.writeResponseHeader(op.partitionId, op.callId, FLAG_OP_RESPONSE_CONTROL)
-                            .writeInt(RESPONSE_TYPE_EXCEPTION)
-                            .writeString(exception.getMessage())
-                            .constructComplete();
+                    FrameCodec.writeResponseHeader(op.response, op.partitionId, op.callId, FLAG_OP_RESPONSE_CONTROL);
+                    op.response.writeInt(RESPONSE_TYPE_EXCEPTION)
+                            .writeString(exception.getMessage());
+                    FrameCodec.constructComplete(op.response);
                     sendResponse(op);
                     break;
                 default:

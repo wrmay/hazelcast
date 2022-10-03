@@ -119,7 +119,7 @@ class ResponseHandler implements Consumer<IOBuffer> {
         response.position(OFFSET_RES_PAYLOAD);
         IOBuffer request = future.request;
         future.request = null;
-        int flags = request.flags();
+        int flags = FrameCodec.flags(request);
         if ((flags & FLAG_OP_RESPONSE_CONTROL) == 0) {
             future.complete(response);
         } else {

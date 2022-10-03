@@ -4,6 +4,7 @@ import com.hazelcast.tpc.engine.iobuffer.IOBuffer;
 import com.hazelcast.test.HazelcastParallelClassRunner;
 import com.hazelcast.test.annotation.ParallelJVMTest;
 import com.hazelcast.test.annotation.QuickTest;
+import com.hazelcast.tpc.requestservice.FrameCodec;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -23,11 +24,8 @@ public class BinTest {
 
         IOBuffer buf = new IOBuffer(32)
                 .writeInt(-1)
-                .writeSizedBytes(value)
-                .constructComplete();
-
-        System.out.println(buf.position());
-        System.out.println(buf.byteBuffer().limit());
+                .writeSizedBytes(value);
+        FrameCodec.constructComplete(buf);
 
         buf.position(INT_SIZE_IN_BYTES);
 

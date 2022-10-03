@@ -79,59 +79,10 @@ public class IOBuffer {
         buff.clear();
     }
 
-    public IOBuffer writeRequestHeader(int partitionId, int opcode) {
-        ensureRemaining(FrameCodec.OFFSET_REQ_PAYLOAD);
-        buff.putInt(-1); //size
-        buff.putInt(FrameCodec.FLAG_OP);
-        buff.putInt(partitionId);
-        buff.putLong(-1); //callid
-        buff.putInt(opcode);
-        return this;
-    }
-
-    public IOBuffer writeResponseHeader(int partitionId, long callId) {
-        return writeResponseHeader(partitionId, callId, 0);
-    }
-
-    public IOBuffer writeResponseHeader(int partitionId, long callId, int flags) {
-        ensureRemaining(FrameCodec.OFFSET_RES_PAYLOAD);
-        buff.putInt(-1);  //size
-        buff.putInt(FrameCodec.FLAG_OP_RESPONSE | flags);
-        buff.putInt(partitionId);
-        buff.putLong(callId);
-        return this;
-    }
-
-    public boolean isFlagRaised(int flag) {
-        int flags = buff.getInt(FrameCodec.OFFSET_FLAGS);
-        return (flags & flag) != 0;
-    }
-
-    public IOBuffer addFlags(int addedFlags) {
-        int oldFlags = buff.getInt(FrameCodec.OFFSET_FLAGS);
-        buff.putInt(FrameCodec.OFFSET_FLAGS, oldFlags | addedFlags);
-        return this;
-    }
-
-    public int flags() {
-        return buff.getInt(FrameCodec.OFFSET_FLAGS);
-    }
-
     public ByteBuffer byteBuffer() {
         return buff;
     }
 
-    public int size() {
-        if (buff.limit() < BYTES_INT) {
-            return -1;
-        }
-        return buff.getInt(0);
-    }
-
-    public void setSize(int size) {
-        //ensure capacity?
-        buff.putInt(0, size);
-    }
 
     public IOBuffer writeByte(byte value) {
         ensureRemaining(BYTE_SIZE_IN_BYTES);
@@ -216,6 +167,10 @@ public class IOBuffer {
         return buff.getLong(index);
     }
 
+    public void putInt(int index, int value) {
+        buff.putInt(index, value);
+    }
+
     public int readInt() {
         return buff.getInt();
     }
@@ -227,23 +182,7 @@ public class IOBuffer {
     public char readChar() {
         return buff.getChar();
     }
-
-    public boolean isComplete() {
-        if (buff.position() < BYTES_INT) {
-            // not enough bytes.
-            return false;
-        } else {
-            return buff.position() == buff.getInt(0);
-        }
-    }
-
     public IOBuffer reconstructComplete() {
-        buff.flip();
-        return this;
-    }
-
-    public IOBuffer constructComplete() {
-        buff.putInt(FrameCodec.OFFSET_SIZE, buff.position());
         buff.flip();
         return this;
     }
@@ -343,7 +282,6 @@ public class IOBuffer {
 
     public void ensureRemaining(int remaining) {
         if (buff.remaining() < remaining) {
-
             int newCapacity = nextPowerOfTwo(buff.capacity() + remaining);
 
             ByteBuffer newBuffer = buff.hasArray()

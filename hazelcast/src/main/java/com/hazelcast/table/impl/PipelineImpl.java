@@ -20,6 +20,7 @@ import com.hazelcast.internal.util.collection.Long2ObjectHashMap;
 import com.hazelcast.tpc.engine.SyncSocket;
 import com.hazelcast.tpc.engine.iobuffer.IOBuffer;
 import com.hazelcast.tpc.engine.iobuffer.IOBufferAllocator;
+import com.hazelcast.tpc.requestservice.FrameCodec;
 import com.hazelcast.tpc.requestservice.RequestService;
 import com.hazelcast.table.Pipeline;
 
@@ -53,9 +54,9 @@ public final class PipelineImpl implements Pipeline {
             throw new RuntimeException("Cross partition request detected; expected " + this.partitionId + " found: " + partitionId);
         }
 
-        IOBuffer request = requestAllocator.allocate(32)
-                .writeRequestHeader(partitionId, NOOP)
-                .constructComplete();
+        IOBuffer request = requestAllocator.allocate(32);
+        FrameCodec.writeRequestHeader(request, partitionId, NOOP);
+        FrameCodec.constructComplete(request);
 
 
         //requestService.invokeOnPartition();

@@ -25,6 +25,7 @@ import com.hazelcast.tpc.engine.nio.NioAsyncServerSocket;
 import com.hazelcast.tpc.engine.nio.NioAsyncSocket;
 import com.hazelcast.tpc.engine.nio.NioEventloop;
 import com.hazelcast.tpc.engine.nio.NioAsyncReadHandler;
+import com.hazelcast.tpc.requestservice.FrameCodec;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.InetSocketAddress;
@@ -65,7 +66,7 @@ public class RpcBenchmark {
             IOBuffer buf = new IOBuffer(128);
             buf.writeInt(-1);
             buf.writeLong(requestTotal / concurrency);
-            buf.constructComplete();
+            FrameCodec.constructComplete(buf);
             clientSocket.write(buf);
         }
         clientSocket.flush();
@@ -108,7 +109,7 @@ public class RpcBenchmark {
                         IOBuffer buf = responseAllocator.allocate(8);
                         buf.writeInt(-1);
                         buf.writeLong(l);
-                        buf.constructComplete();
+                        FrameCodec.constructComplete(buf);
                         socket.unsafeWriteAndFlush(buf);
                     }
                 }
@@ -148,7 +149,7 @@ public class RpcBenchmark {
                         IOBuffer buf = responseAllocator.allocate(8);
                         buf.writeInt(-1);
                         buf.writeLong(l - 1);
-                        buf.constructComplete();
+                        FrameCodec.constructComplete(buf);
                         socket.unsafeWriteAndFlush(buf);
                     }
                 }

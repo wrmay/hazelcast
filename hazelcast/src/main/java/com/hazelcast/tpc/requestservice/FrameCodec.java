@@ -18,6 +18,8 @@ package com.hazelcast.tpc.requestservice;
 
 
 
+import com.hazelcast.tpc.engine.iobuffer.IOBuffer;
+
 import static com.hazelcast.internal.nio.Bits.BYTES_INT;
 import static com.hazelcast.internal.nio.Bits.BYTES_LONG;
 
@@ -44,4 +46,65 @@ public class FrameCodec {
     public static final int OFFSET_REQ_CALL_ID = OFFSET_PARTITION_ID + BYTES_INT;
     public static final int OFFSET_REQ_OPCODE = OFFSET_REQ_CALL_ID + BYTES_LONG;
     public static final int OFFSET_REQ_PAYLOAD = OFFSET_REQ_OPCODE + BYTES_INT;
+
+    public static boolean isComplete(IOBuffer buff) {
+        if (buff.position() < BYTES_INT) {
+            // not enough bytes.
+            return false;
+        } else {
+            return buff.position() == buff.getInt(0);
+        }
+    }
+
+    public static int size(IOBuffer buff) {
+        if (buff.byteBuffer().limit() < BYTES_INT) {
+            return -1;
+        }
+        return buff.getInt(0);
+    }
+
+    public static void setSize(IOBuffer buffer, int size) {
+        //ensure capacity?
+        buffer.putInt(0, size);
+    }
+
+    public static void writeResponseHeader(IOBuffer buff, int partitionId, long callId) {
+        writeResponseHeader(buff, partitionId, callId, 0);
+    }
+
+    public static void writeResponseHeader(IOBuffer buff, int partitionId, long callId, int flags) {
+        buff.ensureRemaining(FrameCodec.OFFSET_RES_PAYLOAD);
+        buff.writeInt(-1);  //size
+        buff.writeInt(FrameCodec.FLAG_OP_RESPONSE | flags);
+        buff.writeInt(partitionId);
+        buff.writeLong(callId);
+    }
+
+    public static void writeRequestHeader(IOBuffer buff, int partitionId, int opcode) {
+        buff.ensureRemaining(FrameCodec.OFFSET_REQ_PAYLOAD);
+        buff.writeInt(-1); //size
+        buff.writeInt(FrameCodec.FLAG_OP);
+        buff.writeInt(partitionId);
+        buff.writeLong(-1); //callid
+        buff.writeInt(opcode);
+    }
+
+    public static void constructComplete(IOBuffer buff) {
+        buff.putInt(FrameCodec.OFFSET_SIZE, buff.position());
+        buff.byteBuffer().flip();
+    }
+
+    public static void addFlags(IOBuffer buff, int addedFlags) {
+        int oldFlags = buff.getInt(FrameCodec.OFFSET_FLAGS);
+        buff.putInt(FrameCodec.OFFSET_FLAGS, oldFlags | addedFlags);
+    }
+
+    public static int flags(IOBuffer buff) {
+        return buff.getInt(OFFSET_FLAGS);
+    }
+
+    public static boolean isFlagRaised(IOBuffer buff, int flag) {
+        int flags = buff.getInt(OFFSET_FLAGS);
+        return (flags & flag) != 0;
+    }
 }

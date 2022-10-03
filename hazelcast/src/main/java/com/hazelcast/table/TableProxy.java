@@ -23,6 +23,7 @@ import com.hazelcast.spi.impl.NodeEngineImpl;
 import com.hazelcast.tpc.engine.iobuffer.ConcurrentIOBufferAllocator;
 import com.hazelcast.tpc.engine.iobuffer.IOBuffer;
 import com.hazelcast.tpc.engine.iobuffer.IOBufferAllocator;
+import com.hazelcast.tpc.requestservice.FrameCodec;
 import com.hazelcast.tpc.requestservice.PartitionActorRef;
 import com.hazelcast.tpc.requestservice.RequestService;
 import com.hazelcast.bulktransport.impl.BulkTransportImpl;
@@ -82,13 +83,13 @@ public class TableProxy<K, V> extends AbstractDistributedObject implements Table
         Item item = (Item) v;
 
         int partitionId = hashToIndex(Long.hashCode(item.key), partitionCount);
-        IOBuffer request = requestAllocator.allocate(60)
-                .writeRequestHeader(partitionId, TABLE_UPSERT)
-                .writeString(name)
-                .writeLong(item.key)
-                .writeInt(item.a)
-                .writeInt(item.b)
-                .constructComplete();
+        IOBuffer request = requestAllocator.allocate(60);
+        FrameCodec.writeRequestHeader(request, partitionId, TABLE_UPSERT);
+        request.writeString(name);
+        request.writeLong(item.key);
+        request.writeInt(item.a);
+        request.writeInt(item.b);
+        FrameCodec.constructComplete(request);
         return partitionActorRefs[partitionId].submit(request);
     }
 
@@ -155,9 +156,9 @@ public class TableProxy<K, V> extends AbstractDistributedObject implements Table
     }
 
     private CompletableFuture<IOBuffer> asyncNoop(int partitionId) {
-        IOBuffer request = requestAllocator.allocate(32)
-                .writeRequestHeader(partitionId, NOOP)
-                .constructComplete();
+        IOBuffer request = requestAllocator.allocate(32);
+        FrameCodec.writeRequestHeader(request, partitionId, NOOP);
+        FrameCodec.constructComplete(request);
         return partitionActorRefs[partitionId].submit(request);
     }
 
@@ -188,11 +189,11 @@ public class TableProxy<K, V> extends AbstractDistributedObject implements Table
     public void set(byte[] key, byte[] value) {
         int partitionId = hashToIndex(Arrays.hashCode(key), partitionCount);
 
-        IOBuffer request = requestAllocator.allocate(60)
-                .writeRequestHeader(partitionId, SET)
-                .writeSizedBytes(key)
-                .writeSizedBytes(value)
-                .constructComplete();
+        IOBuffer request = requestAllocator.allocate(60);
+        FrameCodec.writeRequestHeader(request, partitionId, SET);
+        request.writeSizedBytes(key);
+        request.writeSizedBytes(value);
+        FrameCodec.constructComplete(request);
         CompletableFuture<IOBuffer> f = partitionActorRefs[partitionId].submit(request);
         try {
             IOBuffer response = f.get(requestTimeoutMs, MILLISECONDS);
@@ -206,9 +207,9 @@ public class TableProxy<K, V> extends AbstractDistributedObject implements Table
     public void bogusQuery() {
         CompletableFuture[] futures = new CompletableFuture[partitionCount];
         for (int partitionId = 0; partitionId < partitionCount; partitionId++) {
-            IOBuffer request = requestAllocator.allocate(60)
-                     .writeRequestHeader(partitionId, QUERY)
-                    .constructComplete();
+            IOBuffer request = requestAllocator.allocate(60);
+            FrameCodec.writeRequestHeader(request, partitionId, QUERY);
+            FrameCodec.constructComplete(request);
             futures[partitionId] = partitionActorRefs[partitionId].submit(request);
         }
 
@@ -225,10 +226,10 @@ public class TableProxy<K, V> extends AbstractDistributedObject implements Table
     public byte[] get(byte[] key) {
         int partitionId = hashToIndex(Arrays.hashCode(key), partitionCount);
 
-        IOBuffer request = requestAllocator.allocate(60)
-                .writeRequestHeader(partitionId, GET)
-                .writeSizedBytes(key)
-                .constructComplete();
+        IOBuffer request = requestAllocator.allocate(60);
+        FrameCodec.writeRequestHeader(request, partitionId, GET);
+        request.writeSizedBytes(key);
+        FrameCodec.constructComplete(request);
         CompletableFuture<IOBuffer> f = partitionActorRefs[partitionId].submit(request);
         IOBuffer response = null;
         try {

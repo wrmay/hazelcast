@@ -67,14 +67,14 @@ public class RequestIOUringReadHandler extends IOUringAsyncReadHandler {
                 buf.readBytes(inboundBuf.byteBuffer());
             }
 
-            if (!inboundBuf.isComplete()) {
+            if (!FrameCodec.isComplete(inboundBuf)) {
                 break;
             }
 
             inboundBuf.reconstructComplete();
             //framesRead.inc();
 
-            if (inboundBuf.isFlagRaised(FLAG_OP_RESPONSE)) {
+            if (FrameCodec.isFlagRaised(inboundBuf, FLAG_OP_RESPONSE)) {
                 inboundBuf.next = responses;
                 responses = inboundBuf;
             } else {

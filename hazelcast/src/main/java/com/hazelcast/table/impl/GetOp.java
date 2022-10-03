@@ -19,6 +19,7 @@ package com.hazelcast.table.impl;
 import com.hazelcast.tpc.offheapmap.Bin;
 import com.hazelcast.tpc.offheapmap.Bout;
 import com.hazelcast.tpc.offheapmap.OffheapMap;
+import com.hazelcast.tpc.requestservice.FrameCodec;
 import com.hazelcast.tpc.requestservice.Op;
 import com.hazelcast.tpc.requestservice.OpCodes;
 
@@ -44,10 +45,10 @@ public final class GetOp extends Op {
 
         key.init(request);
 
-        response.writeResponseHeader(partitionId, callId);
+        FrameCodec.writeResponseHeader(response, partitionId, callId);
         value.init(response);
         map.get(key, value);
-        response.constructComplete();
+        FrameCodec.constructComplete(response);
 
         return COMPLETED;
     }

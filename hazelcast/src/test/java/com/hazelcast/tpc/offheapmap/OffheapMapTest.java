@@ -5,6 +5,7 @@ import com.hazelcast.test.HazelcastParallelClassRunner;
 import com.hazelcast.test.annotation.ParallelJVMTest;
 import com.hazelcast.test.annotation.QuickTest;
 import com.hazelcast.tpc.OffheapAllocator;
+import com.hazelcast.tpc.requestservice.FrameCodec;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,8 +49,9 @@ public class OffheapMapTest {
         IOBuffer buf = new IOBuffer(32)
                 .writeInt(-1)
                 .writeSizedBytes(keyBytes)
-                .writeSizedBytes(valueBytes)
-                .constructComplete();
+                .writeSizedBytes(valueBytes);
+        FrameCodec.constructComplete(buf);
+
 
         buf.position(INT_SIZE_IN_BYTES);
 
@@ -66,8 +68,8 @@ public class OffheapMapTest {
         byte[] keyBytes = key.getBytes();
         IOBuffer buf = new IOBuffer(32)
                 .writeInt(-1)
-                .writeSizedBytes(keyBytes)
-                .constructComplete();
+                .writeSizedBytes(keyBytes);
+        FrameCodec.constructComplete(buf);
 
         buf.position(INT_SIZE_IN_BYTES);
 

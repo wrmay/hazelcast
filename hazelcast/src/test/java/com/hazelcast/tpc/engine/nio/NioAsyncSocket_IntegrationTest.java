@@ -5,6 +5,7 @@ import com.hazelcast.test.annotation.QuickTest;
 import com.hazelcast.tpc.engine.iobuffer.IOBuffer;
 import com.hazelcast.tpc.engine.iobuffer.IOBufferAllocator;
 import com.hazelcast.tpc.engine.iobuffer.NonConcurrentIOBufferAllocator;
+import com.hazelcast.tpc.requestservice.FrameCodec;
 import org.jetbrains.annotations.NotNull;
 import org.junit.After;
 import org.junit.Before;
@@ -69,7 +70,7 @@ public class NioAsyncSocket_IntegrationTest {
             IOBuffer buf = new IOBuffer(128);
             buf.writeInt(-1);
             buf.writeLong(requestTotal / concurrency);
-            buf.constructComplete();
+            FrameCodec.constructComplete(buf);
             clientSocket.write(buf);
         }
         clientSocket.flush();
@@ -100,7 +101,7 @@ public class NioAsyncSocket_IntegrationTest {
                         IOBuffer buf = responseAllocator.allocate(8);
                         buf.writeInt(-1);
                         buf.writeLong(l);
-                        buf.constructComplete();
+                        FrameCodec.constructComplete(buf);
                         socket.unsafeWriteAndFlush(buf);
                     }
                 }

@@ -16,6 +16,7 @@
 
 package com.hazelcast.table.impl;
 
+import com.hazelcast.tpc.requestservice.FrameCodec;
 import com.hazelcast.tpc.requestservice.Op;
 import com.hazelcast.tpc.requestservice.OpCodes;
 import com.hazelcast.table.Item;
@@ -41,8 +42,8 @@ public final class UpsertOp extends Op {
         item.b = request.readInt();
         map.put(item.key, item);
 
-        response.writeResponseHeader(partitionId, callId)
-                .constructComplete();
+        FrameCodec.writeResponseHeader(response,partitionId, callId);
+        FrameCodec.constructComplete(response);
 
         return Op.COMPLETED;
     }

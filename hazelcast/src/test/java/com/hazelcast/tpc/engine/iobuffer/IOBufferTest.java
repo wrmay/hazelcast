@@ -17,24 +17,6 @@ import static org.junit.Assert.assertTrue;
 @Category({QuickTest.class, ParallelJVMTest.class})
 public class IOBufferTest {
 
-    @Test
-    public void isFlagRaised_whenRaised() {
-        IOBuffer buf = new IOBuffer(100)
-                .writeResponseHeader(1, 100)
-                .addFlags(FLAG_OP_RESPONSE_CONTROL)
-                .constructComplete();
-
-        assertTrue(buf.isFlagRaised(FLAG_OP_RESPONSE_CONTROL));
-    }
-
-    @Test
-    public void isFlagRaised_whenNotRaised() {
-        IOBuffer buf = new IOBuffer(100)
-                .writeResponseHeader(1, 100)
-                .constructComplete();
-
-        assertFalse(buf.isFlagRaised(FLAG_OP_RESPONSE_CONTROL));
-    }
 
     @Test
     public void test() {

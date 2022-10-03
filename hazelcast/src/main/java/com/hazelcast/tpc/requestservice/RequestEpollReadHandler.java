@@ -63,11 +63,11 @@ public class RequestEpollReadHandler extends EpollReadHandler {
                 inboundBuf.socket = asyncSocket;
             }
 
-            int size = inboundBuf.size();
+            int size = FrameCodec.size(inboundBuf);
             int remaining = size - inboundBuf.position();
             inboundBuf.write(receiveBuffer, remaining);
 
-            if (!inboundBuf.isComplete()) {
+            if (!FrameCodec.isComplete(inboundBuf)) {
                 break;
             }
 
@@ -75,7 +75,7 @@ public class RequestEpollReadHandler extends EpollReadHandler {
             inboundBuf = null;
             //framesRead.inc();
 
-            if (inboundBuf.isFlagRaised(FLAG_OP_RESPONSE)) {
+            if (FrameCodec.isFlagRaised(inboundBuf, FLAG_OP_RESPONSE)) {
                 inboundBuf.next = responseChain;
                 responseChain = inboundBuf;
             } else {
