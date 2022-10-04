@@ -32,18 +32,18 @@ import static com.hazelcast.internal.util.QuickMath.nextPowerOfTwo;
 
 /**
  * The IOBuffer is used to read/write bytes from I/O devices like a socket or a file.
- *
+ * <p>
  * Currently, the IOBuffer has one ByteBuffer underneath. The problem is that if you have very large
  * payloads, a single chunk of memory is needed for those bytes. This can lead to allocation problems
  * due to fragmentation (perhaps it can't be allocated because of fragmentation), but it can also
  * lead to fragmentation because buffers can have different sizes.
- *
+ * <p>
  * So instead of having a single ByteBuffer underneath, allow for a list of ByteBuffer all with some
  * fixed size, e.g. up to 16 KB. So if a 1MB chunk of data is received, just 64 byte-arrays of 16KB.
  * This will prevent the above fragmentation problem although it could lead to some increased
  * internal fragmentation because more memory is allocated than used. I believe this isn't such a
  * big problem because IOBuffer are short lived.
- *
+ * <p>
  * So if an IOBuffer should contain a list of ByteBuffers, then regular reading/writing to the IOBuffer
  * should be agnostic of the composition.
  */
@@ -82,7 +82,6 @@ public class IOBuffer {
     public ByteBuffer byteBuffer() {
         return buff;
     }
-
 
     public IOBuffer writeByte(byte value) {
         ensureRemaining(BYTE_SIZE_IN_BYTES);
@@ -220,12 +219,30 @@ public class IOBuffer {
         return this;
     }
 
+    /**
+     * Returns the number of bytes remaining in this buffer for reading or writing
+     *
+     * @return
+     */
     public int remaining() {
         return buff.remaining();
     }
 
-    public int refCount() {
-        return refCount.get();
+    public void ensureRemaining(int remaining) {
+        if (buff.remaining() < remaining) {
+            int newCapacity = nextPowerOfTwo(buff.capacity() + remaining);
+
+            ByteBuffer newBuffer = buff.hasArray()
+                    ? ByteBuffer.allocate(newCapacity)
+                    : ByteBuffer.allocateDirect(newCapacity);
+            buff.flip();
+            newBuffer.put(buff);
+            buff = newBuffer;
+        }
+    }
+
+    public void readBytes(byte[] dst, int len) {
+        buff.get(dst, 0, len);
     }
 
     public void acquire() {
@@ -247,6 +264,10 @@ public class IOBuffer {
         } else {
             refCount.lazySet(refCount.get() + 1);
         }
+    }
+
+    public int refCount() {
+        return refCount.get();
     }
 
     public void release() {
@@ -279,22 +300,5 @@ public class IOBuffer {
                 throw new IllegalStateException("Too many releases. Ref counter must be larger than 0, current:" + current);
             }
         }
-    }
-
-    public void ensureRemaining(int remaining) {
-        if (buff.remaining() < remaining) {
-            int newCapacity = nextPowerOfTwo(buff.capacity() + remaining);
-
-            ByteBuffer newBuffer = buff.hasArray()
-                    ? ByteBuffer.allocate(newCapacity)
-                    : ByteBuffer.allocateDirect(newCapacity);
-            buff.flip();
-            newBuffer.put(buff);
-            buff = newBuffer;
-        }
-    }
-
-    public void readBytes(byte[] dst, int len) {
-        buff.get(dst, 0, len);
     }
 }
