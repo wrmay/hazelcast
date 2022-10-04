@@ -25,20 +25,19 @@ import static com.hazelcast.tpc.requestservice.FrameCodec.OFFSET_REQ_CALL_ID;
 /**
  * Slots for RequestFutures. Instead of using a ConcurrentHashMap and causing litter, there is an array with
  * an increasing counter that is used to find a free slot.
- *
+ * <p>
  * TODO:
- *
+ * <p>
  * - Backpressure is needed when no free slot can be found.
- *
+ * <p>
  * - If there are no free slots, the counter will be increased
- *   at a very high rate because the threads will spin on that
- *
+ * at a very high rate because the threads will spin on that
+ * <p>
  * - Two Concurrent threads will increase the counter and then access the array.
- *   So they will run into contention twice. If the callId would be reversed bitwise
- *   for lookup purposes, they will still content on the counter, but not on the array.
- *
+ * So they will run into contention twice. If the callId would be reversed bitwise
+ * for lookup purposes, they will still content on the counter, but not on the array.
+ * <p>
  * - Perhaps not use a shared
- *
  */
 class RequestSlots {
 
@@ -54,7 +53,7 @@ class RequestSlots {
 
     /**
      * Removes the RequestFuture with the given callId.
-     *
+     * <p>
      * If the RequestFuture with the callId doesn't exist, null is returned.
      *
      * @param callId the callIo of the RequestFuture to look for.

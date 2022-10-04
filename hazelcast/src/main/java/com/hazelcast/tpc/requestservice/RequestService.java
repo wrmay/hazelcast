@@ -64,28 +64,28 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
  * The RequestService is an application of the Engine.
- *
+ * <p>
  * The Reactor is very specific to requests/responses. It isn't a flexible framework unlike Seastar.
- *
+ * <p>
  * Mapping from partition to CPU is easy; just a simple mod.
- *
+ * <p>
  * RSS: How can we align:
  * - the CPU receiving data from some TCP/IP-connection.
  * - and pinning the same CPU to the RX-queue that processes that TCP/IP-connection
  * So how can we make sure that all TCP/IP-connections for that CPU are processed by the same CPU processing the IRQ.
- *
+ * <p>
  * And how can we make sure that for example we want to isolate a few CPUs for the RSS part, but then
  * forward to the CPU that owns the TCP/IP-connection
- *
+ * <p>
  * So it appears that Seastar is using the toeplitz hash
  * https://github.com/scylladb/seastar/issues/654
- *
+ * <p>
  * So we have a list of channels to some machine.
- *
+ * <p>
  * And we determine for each of the channel the toeplitz hash based on src/dst port/ip;
- *
+ * <p>
  * So this would determine which channels are mapped to some CPU.
- *
+ * <p>
  * So how do we go from partition to a channel?
  */
 public class RequestService {
@@ -373,7 +373,7 @@ public class RequestService {
         long callId = requests.nextCallId();
         request.putLong(OFFSET_REQ_CALL_ID, callId);
         //System.out.println("request.refCount:"+request.refCount());
-      //  requests.map.put(callId, future);
+        //  requests.map.put(callId, future);
         socket.writeAndFlush(request);
         return future;
     }

@@ -26,14 +26,14 @@ import static java.lang.System.currentTimeMillis;
  * Instead of using a ConcurrentHashMap where we are going to get litter when an
  * request is inserted and when a request is removed, use an array of slots. In this
  * array you can write with a volatile write.
- *
+ * <p>
  * Then there is a second array containing the available positions. This array has a
  * head and a tail. Items are removed from the head and added to the tail. A cas is
  * needed for each of these operations.
- *
+ * <p>
  * This will resolve the litter problem. Also there is less contention on the counter;
  * although not that much of an issue unless many calls on single partition.
- *
+ * <p>
  * The problem is when requests are lost. Then the slots won't be reclaimed.
  */
 class Requests {

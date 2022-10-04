@@ -31,12 +31,12 @@ import static com.hazelcast.internal.nio.IOUtil.closeResource;
 /**
  * A server socket that is asynchronous. So accepting incomming connections does not block,
  * but are executed on an {@link Eventloop}.
- * */
+ */
 public abstract class AsyncServerSocket implements Closeable {
 
     public final ConcurrentMap context = new ConcurrentHashMap();
 
-    protected final ILogger logger = Logger.getLogger(this.getClass());
+    protected final ILogger logger = Logger.getLogger(getClass());
     protected final AtomicBoolean closed = new AtomicBoolean(false);
 
     public final SocketAddress localAddress() {

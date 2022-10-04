@@ -38,7 +38,7 @@ import static com.hazelcast.internal.nio.Bits.BYTES_LONG;
 
 /**
  * A very trivial benchmark to measure the throughput we can get with a RPC system.
- *
+ * <p>
  * JMH would be better; but for now this will give some insights.
  */
 public class RpcBenchmark {

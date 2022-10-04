@@ -25,7 +25,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * A {@link IOBufferAllocator} that can be used in parallel by multiple threads.
- *
+ * <p>
  * It also allows the {@link #allocate()} of a {@link IOBuffer} to be done by a different
  * thread than {@link #free(IOBuffer)}.
  */

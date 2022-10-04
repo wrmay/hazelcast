@@ -28,11 +28,11 @@ import static java.lang.System.currentTimeMillis;
 /**
  * For configuration of jemalloc on the JVM
  * https://github.com/jeffgriffith/native-jvm-leaks
- *
+ * <p>
  * pveentjer@wopr:~$ ldconfig -p | grep jemalloc
  * libjemalloc.so.2 (libc6,x86-64) => /lib64/libjemalloc.so.2
  * libjemalloc.so (libc6,x86-64) => /lib64/libjemalloc.so
- *
+ * <p>
  * export LD_PRELOAD=/lib64/libjemalloc.so
  */
 public class OffheapMap {

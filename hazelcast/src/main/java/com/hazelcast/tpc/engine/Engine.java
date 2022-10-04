@@ -46,7 +46,7 @@ import static java.lang.System.getProperty;
 
 /**
  * The Engine is effectively an array of eventloops
- *
+ * <p>
  * The Engine is not aware of any specific applications. E.g. it could execute operations, but it
  * can equally well run client requests or completely different applications.
  */
@@ -116,7 +116,7 @@ public final class Engine {
 
     /**
      * Returns the Engine State.
-     *
+     * <p>
      * This method is thread-safe.
      *
      * @return the engine state.
@@ -145,7 +145,7 @@ public final class Engine {
 
     /**
      * Returns the number of Eventloop instances in this Engine.
-     *
+     * <p>
      * This method is thread-safe.
      *
      * @return the number of eventloop instances.
@@ -191,7 +191,7 @@ public final class Engine {
 
     /**
      * Shuts down the Engine. If the Engine is already shutdown or terminated, the call is ignored.
-     *
+     * <p>
      * This method is thread-safe.
      */
     public void shutdown() {
@@ -226,7 +226,7 @@ public final class Engine {
 
     /**
      * Awaits for the termination of the Engine.
-     *
+     * <p>
      * This method is thread-safe.
      *
      * @param timeout the timeout
@@ -239,8 +239,8 @@ public final class Engine {
     }
 
     void notifyEventloopTerminated() {
-        synchronized (terminationLatch){
-            if(terminationLatch.getCount()==1){
+        synchronized (terminationLatch) {
+            if (terminationLatch.getCount() == 1) {
                 state.set(State.TERMINATED);
             }
             terminationLatch.countDown();
@@ -264,7 +264,7 @@ public final class Engine {
         }
 
         public void setThreadFactory(ThreadFactory threadFactory) {
-            this.threadFactory = checkNotNull(threadFactory,"threadFactory can't be null");
+            this.threadFactory = checkNotNull(threadFactory, "threadFactory can't be null");
         }
 
         public void setEventloopType(Eventloop.Type eventloopType) {

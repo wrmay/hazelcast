@@ -97,7 +97,7 @@ public abstract class AsyncSocket implements Closeable {
     /**
      * Returns the remote address.
      * <p>
-     * If the AsyncSocket isn't connected, null is returned.
+     * If the AsyncSocket isn't connected yet, null is returned.
      * <p>
      * This method is thread-safe.
      *
@@ -110,7 +110,7 @@ public abstract class AsyncSocket implements Closeable {
     /**
      * Returns the local address.
      * <p>
-     * If the AsyncSocket isn't connected, null is returned.
+     * If the AsyncSocket isn't connected yet, null is returned.
      * <p>
      * This method is thread-safe.
      *
@@ -249,7 +249,7 @@ public abstract class AsyncSocket implements Closeable {
 
         try {
             doClose();
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.warning(e);
         }
 

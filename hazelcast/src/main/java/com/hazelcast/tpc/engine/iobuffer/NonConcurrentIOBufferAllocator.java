@@ -20,7 +20,7 @@ import java.nio.ByteBuffer;
 
 /**
  * A {@link IOBufferAllocator} that can only be used serially (so by a single thread).
- *
+ * <p>
  * {@link #allocate()} should be done by the same thread as {@link #free(IOBuffer)}.
  */
 public final class NonConcurrentIOBufferAllocator implements IOBufferAllocator {

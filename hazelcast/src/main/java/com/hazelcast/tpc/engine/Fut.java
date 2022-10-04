@@ -25,12 +25,12 @@ import static com.hazelcast.internal.util.Preconditions.checkNotNull;
 /**
  * This an object similar in nature to the {@link java.util.concurrent.CompletableFuture} that
  * is designed to work with the {@link Eventloop}.
- *
+ * <p>
  * The reason this class is called Fut instead of future, it that it is annoying to have multiple
  * future classes on classpath with respect to code completion.
- *
+ * <p>
  * This class is not thread-safe and should only be used inside the {@link Eventloop}.
- *
+ * <p>
  * The Fut supports pooling. So when you get a promise, make sure you call {@link #release()}
  * when you are done with it.
  *

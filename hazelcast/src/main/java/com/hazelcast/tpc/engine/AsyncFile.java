@@ -20,7 +20,7 @@ import net.smacke.jaydio.DirectIoLib;
 
 /**
  * Represents a File that can only be accessed asynchronously.
- *
+ * <p/>
  * This class isn't thread-safe. It should only be processed by the owning {@link Eventloop}.
  */
 public abstract class AsyncFile {
@@ -37,7 +37,7 @@ public abstract class AsyncFile {
 
     /**
      * Returns the file descriptor.
-     *
+     * <p/>
      * If {@link #open(int)} hasn't been called, then the value is undefined.
      *
      * @return the file decriptor.
@@ -82,12 +82,12 @@ public abstract class AsyncFile {
 
     /**
      * Reads data from a file from some offset.
-     *
+     * <p>
      * todo:
      * The problem is that we can't just pass any buffer. In case of DIO, the buffer
      * needs to be properly aligned. So if there would be a map.get, you can't just start adding
      * the data after.
-     *
+     * <p>
      * todo: use an IOBuffer instead of an bufferAddress/length. This way can integrate with
      * AsyncFileChannel.
      *
