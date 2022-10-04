@@ -106,7 +106,8 @@ public final class OpScheduler implements Eventloop.Scheduler {
         op.response = request.socket != null
                 ? remoteResponseAllocator.allocate(OFFSET_RES_PAYLOAD)
                 : localResponseAllocator.allocate(OFFSET_RES_PAYLOAD);
-        op.request = request.position(OFFSET_REQ_PAYLOAD);
+        op.request = request;
+        op.request.position(OFFSET_REQ_PAYLOAD);
         schedule(op);
     }
 
@@ -164,8 +165,8 @@ public final class OpScheduler implements Eventloop.Scheduler {
                     exceptions.inc();
                     op.response.clear();
                     FrameCodec.writeResponseHeader(op.response, op.partitionId, op.callId, FLAG_OP_RESPONSE_CONTROL);
-                    op.response.writeInt(RESPONSE_TYPE_EXCEPTION)
-                            .writeString(exception.getMessage());
+                    op.response.writeInt(RESPONSE_TYPE_EXCEPTION);
+                    op.response.writeString(exception.getMessage());
                     FrameCodec.constructComplete(op.response);
                     sendResponse(op);
                     break;

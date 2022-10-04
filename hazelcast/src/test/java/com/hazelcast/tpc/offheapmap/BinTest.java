@@ -18,13 +18,13 @@ import static org.junit.Assert.assertEquals;
 public class BinTest {
 
     @Test
-    public void test(){
+    public void test() {
         byte[] value = "foo".getBytes();
-        System.out.println("value.length:"+value.length);
+        System.out.println("value.length:" + value.length);
 
-        IOBuffer buf = new IOBuffer(32)
-                .writeInt(-1)
-                .writeSizedBytes(value);
+        IOBuffer buf = new IOBuffer(32);
+        buf.writeInt(-1);
+        buf.writeSizedBytes(value);
         FrameCodec.constructComplete(buf);
 
         buf.position(INT_SIZE_IN_BYTES);

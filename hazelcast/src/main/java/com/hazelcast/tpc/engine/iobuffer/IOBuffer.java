@@ -59,9 +59,6 @@ public class IOBuffer {
     // make field?
     protected AtomicInteger refCount = new AtomicInteger();
 
-    public IOBuffer() {
-    }
-
     public IOBuffer(int size) {
         this(size, false);
     }
@@ -75,47 +72,42 @@ public class IOBuffer {
         this.buff = buffer;
     }
 
-    public void clear() {
-        buff.clear();
-    }
-
     public ByteBuffer byteBuffer() {
         return buff;
     }
 
-    public IOBuffer writeByte(byte value) {
-        ensureRemaining(BYTE_SIZE_IN_BYTES);
-        buff.put(value);
-        return this;
+    public void clear() {
+        buff.clear();
     }
 
-    public IOBuffer writeChar(char value) {
+    public void writeByte(byte value) {
+        ensureRemaining(BYTE_SIZE_IN_BYTES);
+        buff.put(value);
+    }
+
+    public void writeChar(char value) {
         ensureRemaining(CHAR_SIZE_IN_BYTES);
         buff.putChar(value);
-        return this;
     }
 
     public void setInt(int pos, int value) {
         buff.putInt(pos, value);
     }
 
-    public IOBuffer writeInt(int value) {
+    public void writeInt(int value) {
         ensureRemaining(BYTES_INT);
         buff.putInt(value);
-        return this;
     }
 
-    public IOBuffer writeSizedBytes(byte[] src) {
+    public void writeSizedBytes(byte[] src) {
         ensureRemaining(src.length + BYTES_INT);
         buff.putInt(src.length);
         buff.put(src);
-        return this;
     }
 
-    public IOBuffer writeBytes(byte[] src) {
+    public void writeBytes(byte[] src) {
         ensureRemaining(src.length);
         buff.put(src);
-        return this;
     }
 
     public int position() {
@@ -123,7 +115,7 @@ public class IOBuffer {
     }
 
     // very inefficient
-    public IOBuffer writeString(String s) {
+    public void writeString(String s) {
         int length = s.length();
 
         ensureRemaining(BYTES_INT + length * BYTES_CHAR);
@@ -132,7 +124,6 @@ public class IOBuffer {
         for (int k = 0; k < length; k++) {
             buff.putChar(s.charAt(k));
         }
-        return this;
     }
 
     // very inefficient
@@ -152,10 +143,9 @@ public class IOBuffer {
         return sb.toString();
     }
 
-    public IOBuffer writeLong(long value) {
+    public void writeLong(long value) {
         ensureRemaining(BYTES_LONG);
         buff.putLong(value);
-        return this;
     }
 
     public void putLong(int index, long value) {
@@ -195,7 +185,7 @@ public class IOBuffer {
         return buff.get(index);
     }
 
-    public IOBuffer write(ByteBuffer src, int count) {
+    public void write(ByteBuffer src, int count) {
         ensureRemaining(count);
 
         if (src.remaining() <= count) {
@@ -206,17 +196,14 @@ public class IOBuffer {
             buff.put(src);
             src.limit(limit);
         }
-        return this;
     }
 
-    public IOBuffer position(int position) {
+    public void position(int position) {
         buff.position(position);
-        return this;
     }
 
-    public IOBuffer incPosition(int delta) {
+    public void incPosition(int delta) {
         buff.position(buff.position() + delta);
-        return this;
     }
 
     /**

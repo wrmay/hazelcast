@@ -46,10 +46,10 @@ public class OffheapMapTest {
         byte[] keyBytes = key.getBytes();
         byte[] valueBytes = value.getBytes();
 
-        IOBuffer buf = new IOBuffer(32)
-                .writeInt(-1)
-                .writeSizedBytes(keyBytes)
-                .writeSizedBytes(valueBytes);
+        IOBuffer buf = new IOBuffer(32);
+        buf.writeInt(-1);
+        buf.writeSizedBytes(keyBytes);
+        buf.writeSizedBytes(valueBytes);
         FrameCodec.constructComplete(buf);
 
 
@@ -66,9 +66,9 @@ public class OffheapMapTest {
 
     public String get(String key) {
         byte[] keyBytes = key.getBytes();
-        IOBuffer buf = new IOBuffer(32)
-                .writeInt(-1)
-                .writeSizedBytes(keyBytes);
+        IOBuffer buf = new IOBuffer(32);
+        buf.writeInt(-1);
+        buf.writeSizedBytes(keyBytes);
         FrameCodec.constructComplete(buf);
 
         buf.position(INT_SIZE_IN_BYTES);
