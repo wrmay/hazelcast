@@ -45,6 +45,14 @@ import static com.hazelcast.internal.util.QuickMath.nextPowerOfTwo;
  * <p>
  * So if an IOBuffer should contain a list of ByteBuffers, then regular reading/writing to the IOBuffer
  * should be agnostic of the composition.
+ *
+ * Another feature that is required is ability to block align the pointer. This is needed for O_DIRECT. Probably
+ * this isn't needed when we can just pass any pointer. It should be the task of the pointer provider to block align.
+ *
+ * Also the ability to wrap any pointer. For more information see:
+ * https://stackoverflow.com/questions/16465477/is-there-a-way-to-create-a-direct-bytebuffer-from-a-pointer-solely-in-java
+ * E.g. in case of the buffer pool (application specific page cache) we just want to take a pointer to
+ * some memory in the bufferpool and pass it to the IOBuffer for reading/writing that page to disk.
  */
 public class IOBuffer {
 
