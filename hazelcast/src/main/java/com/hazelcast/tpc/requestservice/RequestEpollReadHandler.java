@@ -71,7 +71,7 @@ public class RequestEpollReadHandler extends EpollReadHandler {
                 break;
             }
 
-            inboundBuf.reconstructComplete();
+            inboundBuf.flip();
             inboundBuf = null;
             //framesRead.inc();
 

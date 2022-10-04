@@ -17,7 +17,6 @@
 package com.hazelcast.tpc.engine.iobuffer;
 
 import com.hazelcast.tpc.engine.AsyncSocket;
-import com.hazelcast.tpc.requestservice.FrameCodec;
 
 import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -80,27 +79,55 @@ public class IOBuffer {
         buff.clear();
     }
 
+    public int position() {
+        return buff.position();
+    }
+
+    public void position(int position) {
+        buff.position(position);
+    }
+
+    public void incPosition(int delta) {
+        buff.position(buff.position() + delta);
+    }
+
+    public void flip() {
+        buff.flip();
+    }
+
+    /**
+     * Returns the number of bytes remaining in this buffer for reading or writing
+     *
+     * @return
+     */
+    public int remaining() {
+        return buff.remaining();
+    }
+
+    public void ensureRemaining(int remaining) {
+        if (buff.remaining() < remaining) {
+            int newCapacity = nextPowerOfTwo(buff.capacity() + remaining);
+
+            ByteBuffer newBuffer = buff.hasArray()
+                    ? ByteBuffer.allocate(newCapacity)
+                    : ByteBuffer.allocateDirect(newCapacity);
+            buff.flip();
+            newBuffer.put(buff);
+            buff = newBuffer;
+        }
+    }
+
+    public byte getByte(int index) {
+        return buff.get(index);
+    }
+
     public void writeByte(byte value) {
         ensureRemaining(BYTE_SIZE_IN_BYTES);
         buff.put(value);
     }
 
-    public void writeChar(char value) {
-        ensureRemaining(CHAR_SIZE_IN_BYTES);
-        buff.putChar(value);
-    }
-
-    public void setInt(int pos, int value) {
-        buff.putInt(pos, value);
-    }
-
-    public void writeInt(int value) {
-        ensureRemaining(BYTES_INT);
-        buff.putInt(value);
-    }
-
     public void writeSizedBytes(byte[] src) {
-        ensureRemaining(src.length + BYTES_INT);
+        ensureRemaining(BYTES_INT + src.length);
         buff.putInt(src.length);
         buff.put(src);
     }
@@ -110,8 +137,64 @@ public class IOBuffer {
         buff.put(src);
     }
 
-    public int position() {
-        return buff.position();
+    public void readBytes(byte[] dst, int len) {
+        buff.get(dst, 0, len);
+    }
+
+    public char readChar() {
+        return buff.getChar();
+    }
+
+    public int getInt(int index) {
+        return buff.getInt(index);
+    }
+
+    public void writeChar(char value) {
+        ensureRemaining(CHAR_SIZE_IN_BYTES);
+        buff.putChar(value);
+    }
+
+    public int readInt() {
+        return buff.getInt();
+    }
+
+    public void putInt(int index, int value) {
+        buff.putInt(index, value);
+    }
+
+    public void writeInt(int value) {
+        ensureRemaining(BYTES_INT);
+        buff.putInt(value);
+    }
+
+    public long readLong() {
+        return buff.getLong();
+    }
+
+    public long getLong(int index) {
+        return buff.getLong(index);
+    }
+
+    public void putLong(int index, long value) {
+        buff.putLong(index, value);
+    }
+
+    public void writeLong(long value) {
+        ensureRemaining(BYTES_LONG);
+        buff.putLong(value);
+    }
+
+    public void write(ByteBuffer src, int count) {
+        ensureRemaining(count);
+
+        if (src.remaining() <= count) {
+            buff.put(src);
+        } else {
+            int limit = src.limit();
+            src.limit(src.position() + count);
+            buff.put(src);
+            src.limit(limit);
+        }
     }
 
     // very inefficient
@@ -141,95 +224,6 @@ public class IOBuffer {
             sb.append(buff.getChar());
         }
         return sb.toString();
-    }
-
-    public void writeLong(long value) {
-        ensureRemaining(BYTES_LONG);
-        buff.putLong(value);
-    }
-
-    public void putLong(int index, long value) {
-        buff.putLong(index, value);
-    }
-
-    public long getLong(int index) {
-        return buff.getLong(index);
-    }
-
-    public void putInt(int index, int value) {
-        buff.putInt(index, value);
-    }
-
-    public int readInt() {
-        return buff.getInt();
-    }
-
-    public long readLong() {
-        return buff.getLong();
-    }
-
-    public char readChar() {
-        return buff.getChar();
-    }
-
-    public IOBuffer reconstructComplete() {
-        buff.flip();
-        return this;
-    }
-
-    public int getInt(int index) {
-        return buff.getInt(index);
-    }
-
-    public byte getByte(int index) {
-        return buff.get(index);
-    }
-
-    public void write(ByteBuffer src, int count) {
-        ensureRemaining(count);
-
-        if (src.remaining() <= count) {
-            buff.put(src);
-        } else {
-            int limit = src.limit();
-            src.limit(src.position() + count);
-            buff.put(src);
-            src.limit(limit);
-        }
-    }
-
-    public void position(int position) {
-        buff.position(position);
-    }
-
-    public void incPosition(int delta) {
-        buff.position(buff.position() + delta);
-    }
-
-    /**
-     * Returns the number of bytes remaining in this buffer for reading or writing
-     *
-     * @return
-     */
-    public int remaining() {
-        return buff.remaining();
-    }
-
-    public void ensureRemaining(int remaining) {
-        if (buff.remaining() < remaining) {
-            int newCapacity = nextPowerOfTwo(buff.capacity() + remaining);
-
-            ByteBuffer newBuffer = buff.hasArray()
-                    ? ByteBuffer.allocate(newCapacity)
-                    : ByteBuffer.allocateDirect(newCapacity);
-            buff.flip();
-            newBuffer.put(buff);
-            buff = newBuffer;
-        }
-    }
-
-    public void readBytes(byte[] dst, int len) {
-        buff.get(dst, 0, len);
     }
 
     public void acquire() {

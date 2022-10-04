@@ -109,7 +109,7 @@ public class NioSyncSocket_IntegrationTest {
 
                         IOBuffer buf = responseAllocator.allocate(8);
                         buf.writeInt(-1);
-                        buf.reconstructComplete();
+                        buf.flip();
                         socket.unsafeWriteAndFlush(buf);
                     }
                 }

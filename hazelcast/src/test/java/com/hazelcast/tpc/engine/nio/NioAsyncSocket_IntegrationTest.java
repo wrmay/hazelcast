@@ -134,7 +134,7 @@ public class NioAsyncSocket_IntegrationTest {
                         IOBuffer buf = responseAllocator.allocate(8);
                         buf.writeInt(-1);
                         buf.writeLong(l - 1);
-                        buf.reconstructComplete();
+                        buf.flip();
                         socket.unsafeWriteAndFlush(buf);
                     }
                 }

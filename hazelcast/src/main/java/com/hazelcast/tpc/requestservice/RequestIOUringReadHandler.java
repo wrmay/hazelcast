@@ -71,7 +71,7 @@ public class RequestIOUringReadHandler extends IOUringAsyncReadHandler {
                 break;
             }
 
-            inboundBuf.reconstructComplete();
+            inboundBuf.flip();
             //framesRead.inc();
 
             if (FrameCodec.isFlagRaised(inboundBuf, FLAG_OP_RESPONSE)) {
