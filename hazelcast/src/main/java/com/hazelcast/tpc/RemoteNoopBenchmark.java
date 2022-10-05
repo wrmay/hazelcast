@@ -18,8 +18,8 @@ public class RemoteNoopBenchmark {
 
         Table table = node1.getTable("piranaha");
 
-        long operations = 2_000_000;
-        int concurrency = 1;
+        long operations = 5_000_000;
+        int concurrency = 10;
         long iterations = operations / concurrency;
 
         long startMs = System.currentTimeMillis();

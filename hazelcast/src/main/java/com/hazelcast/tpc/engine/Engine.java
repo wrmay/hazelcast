@@ -170,6 +170,8 @@ public final class Engine {
      * @throws IllegalStateException if
      */
     public void start() {
+        System.out.println("Starting " + eventloopCount + " eventloops");
+
         for (; ; ) {
             State oldState = state.get();
             if (oldState != NEW) {
