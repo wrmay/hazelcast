@@ -485,29 +485,19 @@ public abstract class Eventloop implements Executor {
     }
 
     /**
-     * The {@link Runnable} executed by the eventloop {@link Thread}.
+     * The {@link Runnable} containing the actual eventloop logic and is executed by by the eventloop {@link Thread}.
      */
     private final class EventloopTask implements Runnable {
 
         @Override
         public void run() {
-            if (allowedCpus != null) {
-                ThreadAffinityHelper.setAffinity(allowedCpus);
-                BitSet actualCpus = ThreadAffinityHelper.getAffinity();
-                if (!actualCpus.equals(allowedCpus)) {
-                    logger.warning(Thread.currentThread().getName() + " affinity was not applied successfully. "
-                            + "Expected CPUs:" + allowedCpus + ". Actual CPUs:" + actualCpus);
-                } else {
-                    logger.info(Thread.currentThread().getName() + " has affinity for CPUs:" + allowedCpus);
-                }
-            }
+            setAffinity();
 
             try {
                 unsafe = createUnsafe();
                 beforeEventloop();
                 eventLoop();
             } catch (Throwable e) {
-                e.printStackTrace();
                 logger.severe(e);
             } finally {
                 state = TERMINATED;
@@ -521,13 +511,31 @@ public abstract class Eventloop implements Executor {
                 }
             }
         }
+
+        private void setAffinity() {
+            if (allowedCpus != null) {
+                ThreadAffinityHelper.setAffinity(allowedCpus);
+                BitSet actualCpus = ThreadAffinityHelper.getAffinity();
+                if (!actualCpus.equals(allowedCpus)) {
+                    logger.warning(Thread.currentThread().getName() + " affinity was not applied successfully. "
+                            + "Expected CPUs:" + allowedCpus + ". Actual CPUs:" + actualCpus);
+                } else {
+                    logger.info(Thread.currentThread().getName() + " has affinity for CPUs:" + allowedCpus);
+                }
+            }
+        }
     }
 
     /**
-     * Exposes methods that should only be called from within the Eventloop.
+     * Exposes methods that should only be called from within the {@link Eventloop}.
      */
     public abstract class Unsafe {
 
+        /**
+         * Returns the {@link Eventloop} that belongs to this {@link Unsafe} instance.
+         *
+         * @return the Eventloop.
+         */
         public Eventloop eventloop() {
             return Eventloop.this;
         }
