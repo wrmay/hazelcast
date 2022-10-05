@@ -110,7 +110,7 @@ public abstract class Eventloop implements Executor {
         this.scheduler = config.scheduler;
         this.localRunQueue = new CircularQueue<>(config.localRunQueueCapacity);
         this.concurrentRunQueue = new MpmcArrayQueue(config.concurrentRunQueueCapacity);
-        scheduler.eventloop(this);
+        scheduler.init(this);
         this.eventloopThread = config.threadFactory.newThread(new EventloopTask());
         if (config.threadName != null) {
             eventloopThread.setName(config.threadName);
@@ -173,6 +173,11 @@ public abstract class Eventloop implements Executor {
         return state;
     }
 
+    /**
+     * Creates the Eventloop specific Unsafe instance.
+     *
+     * @return the create Unsafe instance.
+     */
     protected abstract Unsafe createUnsafe();
 
     /**
@@ -322,7 +327,7 @@ public abstract class Eventloop implements Executor {
     }
 
     /**
-     * Offers a task to be executed on this Eventloop.
+     * Offers a task to be executed on this {@link Eventloop}.
      *
      * @param task the task to execute.
      * @return true if the task was accepted, false otherwise.
@@ -340,9 +345,9 @@ public abstract class Eventloop implements Executor {
     }
 
     /**
-     * Offers an IOBuffer to be processed by this Eventloop.
+     * Offers an {@link IOBuffer} to be processed by this {@link Eventloop}.
      *
-     * @param buff the buffer to process.
+     * @param buff the {@link IOBuffer} to process.
      * @return true if the buffer was accepted, false otherwise.
      * @throws NullPointerException if buff is null.
      */
@@ -617,7 +622,7 @@ public abstract class Eventloop implements Executor {
 
     public interface Scheduler {
 
-        void eventloop(Eventloop eventloop);
+        void init(Eventloop eventloop);
 
         boolean tick();
 

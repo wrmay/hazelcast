@@ -79,7 +79,7 @@ public final class OpScheduler implements Eventloop.Scheduler {
     }
 
     @Override
-    public void eventloop(Eventloop eventloop) {
+    public void init(Eventloop eventloop) {
         this.eventloop = eventloop;
     }
 

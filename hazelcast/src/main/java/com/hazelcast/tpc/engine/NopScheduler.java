@@ -24,7 +24,7 @@ import com.hazelcast.tpc.engine.iobuffer.IOBuffer;
 public class NopScheduler implements Eventloop.Scheduler {
 
     @Override
-    public void eventloop(Eventloop eventloop) {
+    public void init(Eventloop eventloop) {
     }
 
     @Override
