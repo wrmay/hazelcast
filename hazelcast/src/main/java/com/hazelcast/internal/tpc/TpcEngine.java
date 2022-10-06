@@ -38,19 +38,19 @@ import java.util.function.Consumer;
 
 import static com.hazelcast.internal.util.Preconditions.checkNotNull;
 import static com.hazelcast.internal.util.Preconditions.checkPositive;
-import static com.hazelcast.internal.tpc.Engine.State.NEW;
-import static com.hazelcast.internal.tpc.Engine.State.RUNNING;
-import static com.hazelcast.internal.tpc.Engine.State.SHUTDOWN;
+import static com.hazelcast.internal.tpc.TpcEngine.State.NEW;
+import static com.hazelcast.internal.tpc.TpcEngine.State.RUNNING;
+import static com.hazelcast.internal.tpc.TpcEngine.State.SHUTDOWN;
 import static java.lang.System.currentTimeMillis;
 import static java.lang.System.getProperty;
 
 /**
- * The Engine is effectively an array of eventloops
+ * The TpcEngine is effectively an array of eventloops
  * <p>
- * The Engine is not aware of any specific applications. E.g. it could execute operations, but it
+ * The TpcEngine is not aware of any specific applications. E.g. it could execute operations, but it
  * can equally well run client requests or completely different applications.
  */
-public final class Engine {
+public final class TpcEngine {
 
     private final boolean monitorSilent;
     private final Eventloop.Type eventloopType;
@@ -61,19 +61,19 @@ public final class Engine {
     final CountDownLatch terminationLatch;
 
     /**
-     * Creates an Engine with the default {@link Configuration}.
+     * Creates an TpcEngine with the default {@link Configuration}.
      */
-    public Engine() {
+    public TpcEngine() {
         this(new Configuration());
     }
 
     /**
-     * Creates an Engine with the given Configuration.
+     * Creates an TpcEngine with the given Configuration.
      *
      * @param cfg the Configuration.
      * @throws NullPointerException when configuration is null.
      */
-    public Engine(Configuration cfg) {
+    public TpcEngine(Configuration cfg) {
         this.eventloopCount = cfg.eventloopCount;
         this.eventloopType = cfg.eventloopType;
         this.monitorSilent = cfg.monitorSilent;
@@ -115,7 +115,7 @@ public final class Engine {
     }
 
     /**
-     * Returns the Engine State.
+     * Returns the TpcEngine State.
      * <p>
      * This method is thread-safe.
      *
@@ -126,7 +126,7 @@ public final class Engine {
     }
 
     /**
-     * Returns the type of Eventloop used by this Engine.
+     * Returns the type of Eventloop used by this TpcEngine.
      *
      * @return the type of Eventloop.
      */
@@ -144,7 +144,7 @@ public final class Engine {
     }
 
     /**
-     * Returns the number of Eventloop instances in this Engine.
+     * Returns the number of Eventloop instances in this TpcEngine.
      * <p>
      * This method is thread-safe.
      *
@@ -165,7 +165,7 @@ public final class Engine {
     }
 
     /**
-     * Starts the Engine by starting all the {@link Eventloop} instances.
+     * Starts the TpcEngine by starting all the {@link Eventloop} instances.
      *
      * @throws IllegalStateException if
      */
@@ -175,7 +175,7 @@ public final class Engine {
         for (; ; ) {
             State oldState = state.get();
             if (oldState != NEW) {
-                throw new IllegalStateException("Can't start Engine, it isn't in NEW state.");
+                throw new IllegalStateException("Can't start TpcEngine, it isn't in NEW state.");
             }
 
             if (!state.compareAndSet(oldState, RUNNING)) {
@@ -192,7 +192,7 @@ public final class Engine {
     }
 
     /**
-     * Shuts down the Engine. If the Engine is already shutdown or terminated, the call is ignored.
+     * Shuts down the TpcEngine. If the TpcEngine is already shutdown or terminated, the call is ignored.
      * <p>
      * This method is thread-safe.
      */
@@ -227,13 +227,13 @@ public final class Engine {
     }
 
     /**
-     * Awaits for the termination of the Engine.
+     * Awaits for the termination of the TpcEngine.
      * <p>
      * This method is thread-safe.
      *
      * @param timeout the timeout
      * @param unit    the TimeUnit
-     * @return true if the Engine is terminated.
+     * @return true if the TpcEngine is terminated.
      * @throws InterruptedException if the calling thread got interrupted while waiting.
      */
     public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
@@ -250,7 +250,7 @@ public final class Engine {
     }
 
     /**
-     * Contains the configuration of the {@link Engine}.
+     * Contains the configuration of the {@link TpcEngine}.
      */
     public static class Configuration {
         private int eventloopCount = Integer.parseInt(getProperty("reactor.count", "" + Runtime.getRuntime().availableProcessors()));

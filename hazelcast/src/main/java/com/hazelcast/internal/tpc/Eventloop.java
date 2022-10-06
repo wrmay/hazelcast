@@ -96,7 +96,7 @@ public abstract class Eventloop implements Executor {
 
     protected final Thread eventloopThread;
 
-    Engine engine;
+    TpcEngine engine;
 
     /**
      * Creates a new {@link Eventloop}.

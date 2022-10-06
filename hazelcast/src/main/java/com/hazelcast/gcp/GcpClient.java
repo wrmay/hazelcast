@@ -151,7 +151,7 @@ class GcpClient {
         } else if (e.getHttpErrorCode() == HTTP_FORBIDDEN) {
             if (!isKnownExceptionAlreadyLogged) {
                 LOGGER.warning("Google Cloud API access is forbidden! Starting standalone. To use Hazelcast GCP discovery, "
-                        + "make sure that your service account has at minimum \"Read Only\" Access Scope to Compute Engine API.");
+                        + "make sure that your service account has at minimum \"Read Only\" Access Scope to Compute TpcEngine API.");
                 isKnownExceptionAlreadyLogged = true;
             }
         } else if (e.getHttpErrorCode() == HTTP_NOT_FOUND) {

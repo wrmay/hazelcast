@@ -22,6 +22,7 @@ import com.hazelcast.internal.metrics.MetricsRegistry;
 import com.hazelcast.internal.metrics.Probe;
 import com.hazelcast.internal.metrics.StaticMetricsProvider;
 import com.hazelcast.internal.nio.Packet;
+import com.hazelcast.internal.tpc.TpcEngine;
 import com.hazelcast.logging.ILogger;
 import com.hazelcast.logging.LoggingService;
 import com.hazelcast.spi.impl.PartitionSpecificRunnable;
@@ -35,7 +36,6 @@ import com.hazelcast.spi.impl.operationservice.PartitionTaskFactory;
 import com.hazelcast.spi.impl.operationservice.UrgentSystemOperation;
 import com.hazelcast.spi.impl.operationservice.impl.operations.Backup;
 import com.hazelcast.spi.properties.HazelcastProperties;
-import com.hazelcast.internal.tpc.Engine;
 import com.hazelcast.internal.tpc.Eventloop;
 import com.hazelcast.tpc.requestservice.TPCEventloopThread;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -101,11 +101,11 @@ public final class TPCOperationExecutor implements OperationExecutor, StaticMetr
     private final Address thisAddress;
     private final OperationRunner adHocOperationRunner;
     private final int priorityThreadCount;
-    private final Engine engine;
+    private final TpcEngine engine;
 
     public TPCOperationExecutor(HazelcastProperties properties,
                                 LoggingService loggerService,
-                                Engine engine,
+                                TpcEngine engine,
                                 Address thisAddress,
                                 OperationRunnerFactory runnerFactory,
                                 NodeExtension nodeExtension,

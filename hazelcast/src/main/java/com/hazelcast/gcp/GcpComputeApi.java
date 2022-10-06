@@ -29,7 +29,7 @@ import static com.hazelcast.gcp.Utils.lastPartOf;
 /**
  * Responsible for connecting to the Google Cloud Compute API.
  *
- * @see <a href="https://cloud.google.com/compute/docs/reference/rest/v1/">Compute Engine API</a>
+ * @see <a href="https://cloud.google.com/compute/docs/reference/rest/v1/">Compute TpcEngine API</a>
  */
 class GcpComputeApi {
     private static final String GOOGLE_API_ENDPOINT = "https://www.googleapis.com";

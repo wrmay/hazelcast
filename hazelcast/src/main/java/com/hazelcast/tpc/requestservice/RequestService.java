@@ -21,11 +21,11 @@ import com.hazelcast.instance.EndpointQualifier;
 import com.hazelcast.internal.serialization.InternalSerializationService;
 import com.hazelcast.internal.server.ServerConnectionManager;
 import com.hazelcast.internal.server.tcp.TcpServerConnection;
+import com.hazelcast.internal.tpc.TpcEngine;
 import com.hazelcast.internal.util.HashUtil;
 import com.hazelcast.logging.ILogger;
 import com.hazelcast.spi.impl.NodeEngineImpl;
 import com.hazelcast.internal.tpc.AsyncSocket;
-import com.hazelcast.internal.tpc.Engine;
 import com.hazelcast.internal.tpc.Eventloop;
 import com.hazelcast.internal.tpc.ReadHandler;
 import com.hazelcast.internal.tpc.epoll.EpollAsyncServerSocket;
@@ -63,7 +63,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 
 
 /**
- * The RequestService is an application of the Engine.
+ * The RequestService is an application of the TpcEngine.
  * <p>
  * The Reactor is very specific to requests/responses. It isn't a flexible framework unlike Seastar.
  * <p>
@@ -106,7 +106,7 @@ public class RequestService {
     public volatile boolean shuttingdown = false;
     public final Managers managers;
     private final RequestRegistry requestRegistry;
-    private Engine engine;
+    private TpcEngine engine;
     private final int concurrentRequestLimit;
     private final Map<Eventloop, Supplier<? extends ReadHandler>> readHandlerSuppliers = new HashMap<>();
     private PartitionActorRef[] partitionActorRefs;
@@ -141,7 +141,7 @@ public class RequestService {
         managers.tableManager = new TableManager(partitionActorRefs.length);
     }
 
-    public Engine getEngine() {
+    public TpcEngine getEngine() {
         return engine;
     }
 
@@ -150,8 +150,8 @@ public class RequestService {
     }
 
     @NotNull
-    private Engine newEngine() {
-        Engine.Configuration configuration = new Engine.Configuration();
+    private TpcEngine newEngine() {
+        TpcEngine.Configuration configuration = new TpcEngine.Configuration();
         configuration.setThreadFactory(TPCEventloopThread::new);
         configuration.setEventloopConfigUpdater(eventloopConfiguration -> {
             // remote responses will be created and released by the TPC thread.
@@ -171,7 +171,7 @@ public class RequestService {
             eventloopConfiguration.setScheduler(opScheduler);
         });
 
-        Engine engine = new Engine(configuration);
+        TpcEngine engine = new TpcEngine(configuration);
 
         if (socketCount % engine.eventloopCount() != 0) {
             throw new IllegalStateException("socket count is not multiple of eventloop count");
@@ -358,7 +358,7 @@ public class RequestService {
         try {
             engine.awaitTermination(5, SECONDS);
         } catch (InterruptedException e) {
-            logger.warning("Engine failed to terminate.");
+            logger.warning("TpcEngine failed to terminate.");
             Thread.currentThread().interrupt();
         }
 

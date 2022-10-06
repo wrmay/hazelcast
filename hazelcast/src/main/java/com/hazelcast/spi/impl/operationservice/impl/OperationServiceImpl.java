@@ -30,6 +30,7 @@ import com.hazelcast.internal.metrics.StaticMetricsProvider;
 import com.hazelcast.internal.nio.Packet;
 import com.hazelcast.internal.partition.InternalPartitionService;
 import com.hazelcast.internal.serialization.InternalSerializationService;
+import com.hazelcast.internal.tpc.TpcEngine;
 import com.hazelcast.internal.util.LatencyDistribution;
 import com.hazelcast.internal.util.counters.Counter;
 import com.hazelcast.internal.util.counters.MwCounter;
@@ -50,7 +51,6 @@ import com.hazelcast.spi.impl.operationservice.OperationService;
 import com.hazelcast.spi.impl.operationservice.PartitionTaskFactory;
 import com.hazelcast.spi.impl.operationservice.UrgentSystemOperation;
 import com.hazelcast.spi.properties.HazelcastProperties;
-import com.hazelcast.internal.tpc.Engine;
 
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -189,7 +189,7 @@ public final class OperationServiceImpl implements StaticMetricsProvider, LiveOp
 
         if (nodeEngine.getTpcBootstrap().isEnabled()) {
             logger.info("Using TPCOperationExecutor");
-            Engine engine = nodeEngine.getTpcBootstrap().getEngine();
+            TpcEngine engine = nodeEngine.getTpcBootstrap().getEngine();
             this.operationExecutor = new TPCOperationExecutor(
                     properties, node.loggingService, engine, thisAddress, new OperationRunnerFactoryImpl(this),
                     node.getNodeExtension(), hzName, configClassLoader);

@@ -20,7 +20,7 @@ import com.hazelcast.cluster.Address;
 import com.hazelcast.internal.partition.InternalPartitionService;
 import com.hazelcast.internal.server.tcp.TcpServerConnection;
 import com.hazelcast.internal.tpc.AsyncSocket;
-import com.hazelcast.internal.tpc.Engine;
+import com.hazelcast.internal.tpc.TpcEngine;
 import com.hazelcast.internal.tpc.Eventloop;
 import com.hazelcast.internal.tpc.actor.ActorRef;
 import com.hazelcast.internal.tpc.iobuffer.IOBuffer;
@@ -44,7 +44,7 @@ public final class PartitionActorRef extends ActorRef<IOBuffer> {
 
     public PartitionActorRef(int partitionId,
                              InternalPartitionService partitionService,
-                             Engine engine,
+                             TpcEngine engine,
                              RequestService requestService,
                              Address thisAddress,
                              Requests requests) {

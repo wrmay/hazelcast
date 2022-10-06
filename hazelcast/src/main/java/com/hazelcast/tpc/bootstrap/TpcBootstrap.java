@@ -2,10 +2,10 @@ package com.hazelcast.tpc.bootstrap;
 
 import com.hazelcast.cluster.Address;
 import com.hazelcast.internal.serialization.InternalSerializationService;
+import com.hazelcast.internal.tpc.TpcEngine;
 import com.hazelcast.logging.ILogger;
 import com.hazelcast.spi.impl.NodeEngineImpl;
 import com.hazelcast.internal.tpc.AsyncServerSocket;
-import com.hazelcast.internal.tpc.Engine;
 import com.hazelcast.internal.tpc.Eventloop;
 import com.hazelcast.internal.tpc.ReadHandler;
 import com.hazelcast.internal.tpc.nio.NioAsyncReadHandler;
@@ -38,7 +38,7 @@ public class TpcBootstrap {
     private final boolean writeThrough;
     private final boolean regularSchedule;
     public volatile boolean shuttingdown = false;
-    private Engine engine;
+    private TpcEngine engine;
     private final Map<Eventloop, Supplier<? extends ReadHandler>> readHandlerSuppliers = new HashMap<>();
     private List<AsyncServerSocket> serverSockets = new ArrayList<>();
     private final boolean enabled;
@@ -61,20 +61,20 @@ public class TpcBootstrap {
         return enabled;
     }
 
-    public Engine getEngine() {
+    public TpcEngine getEngine() {
         return engine;
     }
 
-    private Engine newEngine() {
+    private TpcEngine newEngine() {
         if (!enabled) {
             return null;
         }
 
-        Engine.Configuration configuration = new Engine.Configuration();
+        TpcEngine.Configuration configuration = new TpcEngine.Configuration();
         configuration.setThreadFactory(TPCEventloopThread::new);
         configuration.setEventloopType(Eventloop.Type.NIO);
 
-        Engine engine = new Engine(configuration);
+        TpcEngine engine = new TpcEngine(configuration);
 
         if (socketCount % engine.eventloopCount() != 0) {
             throw new IllegalStateException("socket count is not multiple of eventloop count");
@@ -152,7 +152,7 @@ public class TpcBootstrap {
         try {
             engine.awaitTermination(5, SECONDS);
         } catch (InterruptedException e) {
-            logger.warning("Engine failed to terminate.");
+            logger.warning("TpcEngine failed to terminate.");
             Thread.currentThread().interrupt();
         }
 

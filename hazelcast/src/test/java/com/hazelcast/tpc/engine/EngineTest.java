@@ -1,6 +1,6 @@
 package com.hazelcast.tpc.engine;
 
-import com.hazelcast.internal.tpc.Engine;
+import com.hazelcast.internal.tpc.TpcEngine;
 import com.hazelcast.test.HazelcastParallelClassRunner;
 import com.hazelcast.test.annotation.QuickTest;
 import org.junit.After;
@@ -11,8 +11,8 @@ import org.junit.runner.RunWith;
 import java.util.concurrent.TimeUnit;
 
 import static com.hazelcast.test.HazelcastTestSupport.sleepMillis;
-import static com.hazelcast.internal.tpc.Engine.State.SHUTDOWN;
-import static com.hazelcast.internal.tpc.Engine.State.TERMINATED;
+import static com.hazelcast.internal.tpc.TpcEngine.State.SHUTDOWN;
+import static com.hazelcast.internal.tpc.TpcEngine.State.TERMINATED;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -20,7 +20,7 @@ import static org.junit.Assert.assertTrue;
 @Category({QuickTest.class})
 public class EngineTest {
 
-    private Engine engine;
+    private TpcEngine engine;
 
     @After
     public void after() {
@@ -33,14 +33,14 @@ public class EngineTest {
 
     @Test
     public void start_whenNew() {
-        engine = new Engine();
+        engine = new TpcEngine();
         engine.start();
-        assertEquals(Engine.State.RUNNING, engine.state());
+        assertEquals(TpcEngine.State.RUNNING, engine.state());
     }
 
     @Test(expected = IllegalStateException.class)
     public void start_whenRunning() {
-        engine = new Engine();
+        engine = new TpcEngine();
         engine.start();
         engine.start();
     }
@@ -49,14 +49,14 @@ public class EngineTest {
 
     @Test
     public void shutdown_whenNew() {
-        engine = new Engine();
+        engine = new TpcEngine();
         engine.shutdown();
         assertEquals(TERMINATED, engine.state());
     }
 
     @Test
     public void shutdown_whenRunning() throws InterruptedException {
-        engine = new Engine();
+        engine = new TpcEngine();
         engine.start();
         engine.eventloop(0).offer(() -> {
             sleepMillis(1000);
@@ -69,7 +69,7 @@ public class EngineTest {
 
     @Test
     public void shutdown_whenShutdown() throws InterruptedException {
-        engine = new Engine();
+        engine = new TpcEngine();
         engine.start();
         engine.eventloop(0).offer(() -> {
             sleepMillis(1000);
@@ -84,7 +84,7 @@ public class EngineTest {
 
     @Test
     public void shutdown_whenTerminated() {
-        engine = new Engine();
+        engine = new TpcEngine();
         engine.shutdown();
 
         engine.shutdown();

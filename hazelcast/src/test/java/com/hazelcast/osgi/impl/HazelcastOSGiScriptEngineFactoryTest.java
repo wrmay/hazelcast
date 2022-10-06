@@ -63,7 +63,7 @@ public class HazelcastOSGiScriptEngineFactoryTest extends HazelcastOSGiScripting
     private void verifyScriptEngineFactory(ScriptEngineFactory scriptEngineFactory) {
         assertNotNull(scriptEngineFactory);
 
-        assertEquals("Groovy Scripting Engine", scriptEngineFactory.getEngineName());
+        assertEquals("Groovy Scripting TpcEngine", scriptEngineFactory.getEngineName());
         assertNotNull(scriptEngineFactory.getEngineVersion());
         assertArrayEquals(singletonList("groovy").toArray(), scriptEngineFactory.getExtensions().toArray());
         assertEquals("Groovy", scriptEngineFactory.getLanguageName());

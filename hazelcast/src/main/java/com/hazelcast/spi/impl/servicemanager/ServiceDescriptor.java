@@ -30,7 +30,7 @@ public interface ServiceDescriptor {
     String getServiceName();
 
     /**
-     * @param nodeEngine - Hazelcast Node Engine;
+     * @param nodeEngine - Hazelcast Node TpcEngine;
      * @return Hazelcast service;
      */
     Object getService(NodeEngine nodeEngine);
