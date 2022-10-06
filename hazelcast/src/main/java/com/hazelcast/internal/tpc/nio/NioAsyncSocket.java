@@ -367,7 +367,7 @@ public final class NioAsyncSocket extends AsyncSocket {
 
         @Override
         public void handleException(Exception e) {
-            e.printStackTrace();
+            logger.warning(e);
             close();
         }
 

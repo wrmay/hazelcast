@@ -351,7 +351,7 @@ public final class IOUringAsyncSocket extends AsyncSocket {
                 future.completeExceptionally(new IOException("Could not connect to " + address));
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.warning(e);
             future.completeExceptionally(e);
         }
 

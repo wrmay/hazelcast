@@ -380,7 +380,7 @@ public abstract class Eventloop implements Executor {
             try {
                 scheduledTask.run();
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.warning(e);
             }
         }
 
@@ -393,7 +393,7 @@ public abstract class Eventloop implements Executor {
             try {
                 task.run();
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.warning(e);
             }
         }
     }
@@ -407,7 +407,7 @@ public abstract class Eventloop implements Executor {
                 try {
                     ((Runnable) task).run();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    logger.warning(e);
                 }
             } else if (task instanceof IOBuffer) {
                 scheduler.schedule((IOBuffer) task);
