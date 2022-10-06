@@ -1,8 +1,10 @@
 package com.hazelcast.tpc.engine.iouring;
 
+import com.hazelcast.internal.engine.iouring.IORequestScheduler;
+import com.hazelcast.internal.engine.iouring.IOUringEventloop;
 import com.hazelcast.internal.util.ThreadAffinity;
-import com.hazelcast.tpc.engine.AsyncFile;
-import com.hazelcast.tpc.engine.iouring.IOUringEventloop.IOUringConfiguration;
+import com.hazelcast.internal.engine.AsyncFile;
+import com.hazelcast.internal.engine.iouring.IOUringEventloop.IOUringConfiguration;
 
 import java.nio.file.FileSystems;
 import java.util.ArrayList;

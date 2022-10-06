@@ -18,13 +18,13 @@ package com.hazelcast.tpc;
 
 
 import com.hazelcast.internal.util.ThreadAffinity;
-import com.hazelcast.tpc.engine.iobuffer.IOBuffer;
-import com.hazelcast.tpc.engine.iobuffer.IOBufferAllocator;
-import com.hazelcast.tpc.engine.iobuffer.NonConcurrentIOBufferAllocator;
-import com.hazelcast.tpc.engine.nio.NioAsyncServerSocket;
-import com.hazelcast.tpc.engine.nio.NioAsyncSocket;
-import com.hazelcast.tpc.engine.nio.NioEventloop;
-import com.hazelcast.tpc.engine.nio.NioAsyncReadHandler;
+import com.hazelcast.internal.engine.iobuffer.IOBuffer;
+import com.hazelcast.internal.engine.iobuffer.IOBufferAllocator;
+import com.hazelcast.internal.engine.iobuffer.NonConcurrentIOBufferAllocator;
+import com.hazelcast.internal.engine.nio.NioAsyncServerSocket;
+import com.hazelcast.internal.engine.nio.NioAsyncSocket;
+import com.hazelcast.internal.engine.nio.NioEventloop;
+import com.hazelcast.internal.engine.nio.NioAsyncReadHandler;
 import com.hazelcast.tpc.requestservice.FrameCodec;
 import org.jetbrains.annotations.NotNull;
 

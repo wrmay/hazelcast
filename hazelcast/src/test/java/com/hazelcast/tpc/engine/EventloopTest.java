@@ -1,15 +1,16 @@
 package com.hazelcast.tpc.engine;
 
 
+import com.hazelcast.internal.engine.Eventloop;
 import org.junit.Test;
 
 import java.util.concurrent.CountDownLatch;
 
 import static com.hazelcast.test.HazelcastTestSupport.sleepMillis;
-import static com.hazelcast.tpc.engine.Eventloop.State.NEW;
-import static com.hazelcast.tpc.engine.Eventloop.State.RUNNING;
-import static com.hazelcast.tpc.engine.Eventloop.State.SHUTDOWN;
-import static com.hazelcast.tpc.engine.Eventloop.State.TERMINATED;
+import static com.hazelcast.internal.engine.Eventloop.State.NEW;
+import static com.hazelcast.internal.engine.Eventloop.State.RUNNING;
+import static com.hazelcast.internal.engine.Eventloop.State.SHUTDOWN;
+import static com.hazelcast.internal.engine.Eventloop.State.TERMINATED;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

@@ -50,7 +50,7 @@ import com.hazelcast.spi.impl.operationservice.OperationService;
 import com.hazelcast.spi.impl.operationservice.PartitionTaskFactory;
 import com.hazelcast.spi.impl.operationservice.UrgentSystemOperation;
 import com.hazelcast.spi.properties.HazelcastProperties;
-import com.hazelcast.tpc.engine.Engine;
+import com.hazelcast.internal.engine.Engine;
 
 import java.util.ArrayList;
 import java.util.BitSet;

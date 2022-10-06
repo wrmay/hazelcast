@@ -18,7 +18,7 @@ package com.hazelcast.tpc.util;
 
 import java.time.Instant;
 
-import static com.hazelcast.tpc.engine.AsyncFile.pageSize;
+import static com.hazelcast.internal.engine.AsyncFile.pageSize;
 
 public class Util {
 

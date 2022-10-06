@@ -17,9 +17,9 @@
 package com.hazelcast.table.impl;
 
 import com.hazelcast.internal.util.collection.Long2ObjectHashMap;
-import com.hazelcast.tpc.engine.SyncSocket;
-import com.hazelcast.tpc.engine.iobuffer.IOBuffer;
-import com.hazelcast.tpc.engine.iobuffer.IOBufferAllocator;
+import com.hazelcast.internal.engine.SyncSocket;
+import com.hazelcast.internal.engine.iobuffer.IOBuffer;
+import com.hazelcast.internal.engine.iobuffer.IOBufferAllocator;
 import com.hazelcast.tpc.requestservice.FrameCodec;
 import com.hazelcast.tpc.requestservice.RequestService;
 import com.hazelcast.table.Pipeline;

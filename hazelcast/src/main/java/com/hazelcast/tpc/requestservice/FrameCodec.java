@@ -17,7 +17,7 @@
 package com.hazelcast.tpc.requestservice;
 
 
-import com.hazelcast.tpc.engine.iobuffer.IOBuffer;
+import com.hazelcast.internal.engine.iobuffer.IOBuffer;
 
 import static com.hazelcast.internal.nio.Bits.BYTES_INT;
 import static com.hazelcast.internal.nio.Bits.BYTES_LONG;

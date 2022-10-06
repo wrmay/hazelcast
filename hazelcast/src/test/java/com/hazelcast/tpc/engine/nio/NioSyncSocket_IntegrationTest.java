@@ -1,9 +1,14 @@
 package com.hazelcast.tpc.engine.nio;
 
+import com.hazelcast.internal.engine.nio.NioAsyncReadHandler;
+import com.hazelcast.internal.engine.nio.NioAsyncServerSocket;
+import com.hazelcast.internal.engine.nio.NioEventloop;
+import com.hazelcast.internal.engine.nio.NioSyncReadHandler;
+import com.hazelcast.internal.engine.nio.NioSyncSocket;
 import com.hazelcast.test.annotation.QuickTest;
-import com.hazelcast.tpc.engine.iobuffer.IOBuffer;
-import com.hazelcast.tpc.engine.iobuffer.IOBufferAllocator;
-import com.hazelcast.tpc.engine.iobuffer.NonConcurrentIOBufferAllocator;
+import com.hazelcast.internal.engine.iobuffer.IOBuffer;
+import com.hazelcast.internal.engine.iobuffer.IOBufferAllocator;
+import com.hazelcast.internal.engine.iobuffer.NonConcurrentIOBufferAllocator;
 import com.hazelcast.tpc.requestservice.FrameCodec;
 import org.junit.Before;
 import org.junit.Test;

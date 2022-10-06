@@ -1,5 +1,6 @@
 package com.hazelcast.tpc.engine.iobuffer;
 
+import com.hazelcast.internal.engine.iobuffer.IOBuffer;
 import com.hazelcast.test.HazelcastParallelClassRunner;
 import com.hazelcast.test.annotation.ParallelJVMTest;
 import com.hazelcast.test.annotation.QuickTest;
@@ -8,7 +9,6 @@ import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 
 import static com.hazelcast.internal.nio.Bits.*;
-import static com.hazelcast.tpc.requestservice.FrameCodec.FLAG_OP_RESPONSE_CONTROL;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

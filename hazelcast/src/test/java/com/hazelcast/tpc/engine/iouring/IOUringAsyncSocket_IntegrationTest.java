@@ -1,10 +1,14 @@
 package com.hazelcast.tpc.engine.iouring;
 
+import com.hazelcast.internal.engine.iouring.IOUringAsyncReadHandler;
+import com.hazelcast.internal.engine.iouring.IOUringAsyncServerSocket;
+import com.hazelcast.internal.engine.iouring.IOUringAsyncSocket;
+import com.hazelcast.internal.engine.iouring.IOUringEventloop;
 import com.hazelcast.test.HazelcastSerialClassRunner;
 import com.hazelcast.test.annotation.QuickTest;
-import com.hazelcast.tpc.engine.iobuffer.IOBuffer;
-import com.hazelcast.tpc.engine.iobuffer.IOBufferAllocator;
-import com.hazelcast.tpc.engine.iobuffer.NonConcurrentIOBufferAllocator;
+import com.hazelcast.internal.engine.iobuffer.IOBuffer;
+import com.hazelcast.internal.engine.iobuffer.IOBufferAllocator;
+import com.hazelcast.internal.engine.iobuffer.NonConcurrentIOBufferAllocator;
 import com.hazelcast.tpc.requestservice.FrameCodec;
 import io.netty.buffer.ByteBuf;
 import org.jetbrains.annotations.NotNull;

@@ -18,7 +18,7 @@ package com.hazelcast.tpc.requestservice;
 
 import com.hazelcast.bulktransport.impl.BulkTransportOp;
 import com.hazelcast.bulktransport.impl.InitBulkTransportOp;
-import com.hazelcast.tpc.engine.iobuffer.IOBuffer;
+import com.hazelcast.internal.engine.iobuffer.IOBuffer;
 import com.hazelcast.table.impl.GetOp;
 import com.hazelcast.table.impl.NoOp;
 import com.hazelcast.table.impl.QueryOp;

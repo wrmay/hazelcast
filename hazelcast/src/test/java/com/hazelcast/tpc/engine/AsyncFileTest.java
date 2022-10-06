@@ -1,9 +1,10 @@
 package com.hazelcast.tpc.engine;
 
+import com.hazelcast.internal.engine.AsyncFile;
+import com.hazelcast.internal.engine.Eventloop;
 import io.netty.channel.unix.Buffer;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -20,7 +21,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 
 import static com.hazelcast.test.HazelcastTestSupport.assertOpenEventually;
-import static com.hazelcast.tpc.engine.AsyncFile.pageSize;
+import static com.hazelcast.internal.engine.AsyncFile.pageSize;
 import static com.hazelcast.tpc.util.Util.toPageAlignedAddress;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

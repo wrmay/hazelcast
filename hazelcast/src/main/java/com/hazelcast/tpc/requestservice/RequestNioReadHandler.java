@@ -16,9 +16,9 @@
 
 package com.hazelcast.tpc.requestservice;
 
-import com.hazelcast.tpc.engine.iobuffer.IOBuffer;
-import com.hazelcast.tpc.engine.iobuffer.IOBufferAllocator;
-import com.hazelcast.tpc.engine.nio.NioAsyncReadHandler;
+import com.hazelcast.internal.engine.iobuffer.IOBuffer;
+import com.hazelcast.internal.engine.iobuffer.IOBufferAllocator;
+import com.hazelcast.internal.engine.nio.NioAsyncReadHandler;
 
 import java.nio.ByteBuffer;
 import java.util.function.Consumer;

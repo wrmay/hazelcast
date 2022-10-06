@@ -32,7 +32,7 @@ package com.hazelcast.tpc.requestservice;
  */
 
 import com.hazelcast.internal.util.concurrent.MPSCQueue;
-import com.hazelcast.tpc.engine.iobuffer.IOBuffer;
+import com.hazelcast.internal.engine.iobuffer.IOBuffer;
 
 import java.util.function.Consumer;
 

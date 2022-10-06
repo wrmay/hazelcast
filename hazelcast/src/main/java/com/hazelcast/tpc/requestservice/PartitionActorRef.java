@@ -19,11 +19,11 @@ package com.hazelcast.tpc.requestservice;
 import com.hazelcast.cluster.Address;
 import com.hazelcast.internal.partition.InternalPartitionService;
 import com.hazelcast.internal.server.tcp.TcpServerConnection;
-import com.hazelcast.tpc.engine.AsyncSocket;
-import com.hazelcast.tpc.engine.Engine;
-import com.hazelcast.tpc.engine.Eventloop;
-import com.hazelcast.tpc.engine.actor.ActorRef;
-import com.hazelcast.tpc.engine.iobuffer.IOBuffer;
+import com.hazelcast.internal.engine.AsyncSocket;
+import com.hazelcast.internal.engine.Engine;
+import com.hazelcast.internal.engine.Eventloop;
+import com.hazelcast.internal.engine.actor.ActorRef;
+import com.hazelcast.internal.engine.iobuffer.IOBuffer;
 
 import static com.hazelcast.internal.util.HashUtil.hashToIndex;
 

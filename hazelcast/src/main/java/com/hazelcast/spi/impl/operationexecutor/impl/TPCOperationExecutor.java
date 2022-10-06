@@ -22,7 +22,6 @@ import com.hazelcast.internal.metrics.MetricsRegistry;
 import com.hazelcast.internal.metrics.Probe;
 import com.hazelcast.internal.metrics.StaticMetricsProvider;
 import com.hazelcast.internal.nio.Packet;
-import com.hazelcast.internal.util.ThreadAffinity;
 import com.hazelcast.logging.ILogger;
 import com.hazelcast.logging.LoggingService;
 import com.hazelcast.spi.impl.PartitionSpecificRunnable;
@@ -36,9 +35,8 @@ import com.hazelcast.spi.impl.operationservice.PartitionTaskFactory;
 import com.hazelcast.spi.impl.operationservice.UrgentSystemOperation;
 import com.hazelcast.spi.impl.operationservice.impl.operations.Backup;
 import com.hazelcast.spi.properties.HazelcastProperties;
-import com.hazelcast.spi.properties.HazelcastProperty;
-import com.hazelcast.tpc.engine.Engine;
-import com.hazelcast.tpc.engine.Eventloop;
+import com.hazelcast.internal.engine.Engine;
+import com.hazelcast.internal.engine.Eventloop;
 import com.hazelcast.tpc.requestservice.TPCEventloopThread;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
@@ -58,7 +56,6 @@ import static com.hazelcast.internal.metrics.MetricDescriptorConstants.OPERATION
 import static com.hazelcast.internal.metrics.MetricDescriptorConstants.OPERATION_PREFIX;
 import static com.hazelcast.internal.metrics.ProbeLevel.MANDATORY;
 import static com.hazelcast.internal.util.Preconditions.checkNotNull;
-import static com.hazelcast.internal.util.ThreadAffinity.newSystemThreadAffinity;
 import static com.hazelcast.internal.util.ThreadUtil.createThreadPoolName;
 import static com.hazelcast.spi.properties.ClusterProperty.GENERIC_OPERATION_THREAD_COUNT;
 import static com.hazelcast.spi.properties.ClusterProperty.PARTITION_COUNT;
