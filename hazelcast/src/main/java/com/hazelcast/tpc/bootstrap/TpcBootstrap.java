@@ -47,7 +47,7 @@ public class TpcBootstrap {
         this.nodeEngine = nodeEngine;
         this.logger = nodeEngine.getLogger(RequestService.class);
         this.ss = (InternalSerializationService) nodeEngine.getSerializationService();
-        this.enabled = Boolean.parseBoolean(getProperty("reactor.enabled", "true"));
+        this.enabled = Boolean.parseBoolean(getProperty("reactor.enabled", "false"));
         logger.info("TPC: " + (enabled ? "enabled" : "disabled"));
         this.writeThrough = Boolean.parseBoolean(getProperty("reactor.write-through", "false"));
         this.regularSchedule = Boolean.parseBoolean(getProperty("reactor.regular-schedule", "true"));
@@ -72,6 +72,7 @@ public class TpcBootstrap {
 
         Engine.Configuration configuration = new Engine.Configuration();
         configuration.setThreadFactory(TPCEventloopThread::new);
+        configuration.setEventloopType(Eventloop.Type.NIO);
 
         Engine engine = new Engine(configuration);
 

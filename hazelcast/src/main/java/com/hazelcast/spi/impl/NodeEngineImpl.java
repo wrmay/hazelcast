@@ -133,6 +133,7 @@ public class NodeEngineImpl implements NodeEngine {
     private final ConcurrencyDetection concurrencyDetection;
     private final TenantControlServiceImpl tenantControlService;
     private final TpcBootstrap tpcBootstrap;
+    private final RequestService requestService;
 
     @SuppressWarnings("checkstyle:executablestatementcount")
     public NodeEngineImpl(Node node) {
@@ -147,6 +148,12 @@ public class NodeEngineImpl implements NodeEngine {
             this.proxyService = new ProxyServiceImpl(this);
             this.serviceManager = new ServiceManagerImpl(this);
             this.executionService = new ExecutionServiceImpl(this);
+            if (System.getProperty("alto.enabled", "false").equals("true")) {
+                this.requestService = new RequestService(this);
+            } else {
+                this.requestService = null;
+            }
+
             this.tpcBootstrap = new TpcBootstrap(this);
             this.operationService = new OperationServiceImpl(this);
             this.eventService = new EventServiceImpl(this);
@@ -192,8 +199,13 @@ public class NodeEngineImpl implements NodeEngine {
         }
     }
 
-    public TpcBootstrap getTpcBootstrap(){
+    public TpcBootstrap getTpcBootstrap() {
         return tpcBootstrap;
+    }
+
+
+    public RequestService getRequestService() {
+        return requestService;
     }
 
     private void checkMapMergePolicies(Node node) {
@@ -262,7 +274,9 @@ public class NodeEngineImpl implements NodeEngine {
         splitBrainProtectionService.start();
         sqlService.start();
         tpcBootstrap.start();
-
+        if (requestService != null) {
+            requestService.start();
+        }
         diagnostics.start();
         node.getNodeExtension().registerPlugins(diagnostics);
     }
@@ -576,8 +590,11 @@ public class NodeEngineImpl implements NodeEngine {
         if (diagnostics != null) {
             diagnostics.shutdown();
         }
-        if(tpcBootstrap !=null){
+        if (tpcBootstrap != null) {
             tpcBootstrap.shutdown();
+        }
+        if (requestService != null) {
+            requestService.shutdown();
         }
     }
 

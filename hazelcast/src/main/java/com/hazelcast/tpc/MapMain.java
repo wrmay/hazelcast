@@ -23,6 +23,7 @@ import com.hazelcast.table.Table;
 public class MapMain {
 
     public static void main(String[] args) throws Exception {
+        System.setProperty("alto.enabled","true");
         HazelcastInstance node1 = Hazelcast.newHazelcastInstance();
         HazelcastInstance node2 = Hazelcast.newHazelcastInstance();
 

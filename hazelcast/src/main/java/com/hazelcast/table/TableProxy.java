@@ -55,7 +55,7 @@ public class TableProxy<K, V> extends AbstractDistributedObject implements Table
 
     public TableProxy(NodeEngineImpl nodeEngine, TableService tableService, String name) {
         super(nodeEngine, tableService);
-        this.requestService = null;// nodeEngine.getTpcBootstrap();
+        this.requestService = nodeEngine.getRequestService();
         this.name = name;
         this.partitionCount = nodeEngine.getPartitionService().getPartitionCount();
         this.requestAllocator = new ConcurrentIOBufferAllocator(128, true);
