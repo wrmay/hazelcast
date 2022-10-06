@@ -25,7 +25,7 @@ public class LocalNoopBenchmark {
     public static void main(String[] args) throws Exception {
         HazelcastInstance node1 = Hazelcast.newHazelcastInstance();
 
-        Table table = node1.getTable("piranaha");
+        Table table = node1.getTable("sometable");
 
         long operations = 25_000_000;
         int concurrency = 200;

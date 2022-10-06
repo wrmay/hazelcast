@@ -28,7 +28,7 @@ public class NoopBenchmark {
         HazelcastInstance node1 = Hazelcast.newHazelcastInstance();
         HazelcastInstance node2 = Hazelcast.newHazelcastInstance();
 
-        Table table = node1.getTable("piranaha");
+        Table table = node1.getTable("sometable");
 
         long iterations = operations / concurrency;
 

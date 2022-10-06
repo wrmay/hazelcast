@@ -4,10 +4,15 @@ import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.table.Table;
 
+/**
+ * There is great variability between the runs. I believe this is related to the amount of batching that happens at the
+ * network level.
+ */
 public class RemoteNoopBenchmark {
 
     public static void main(String[] args) throws Exception {
         System.setProperty("reactor.count", "1");
+        System.setProperty("reactor.channels", "1");
         HazelcastInstance node1 = Hazelcast.newHazelcastInstance();
         HazelcastInstance node2 = Hazelcast.newHazelcastInstance();
 
@@ -16,9 +21,9 @@ public class RemoteNoopBenchmark {
         System.out.println("Waiting for partition tables to settle: done");
         int partitionId = node2.getPartitionService().getPartitions().iterator().next().getPartitionId();
 
-        Table table = node1.getTable("piranaha");
+        Table table = node1.getTable("sometable");
 
-        long operations = 5_000_000;
+        long operations = 50_000_000;
         int concurrency = 10;
         long iterations = operations / concurrency;
 
