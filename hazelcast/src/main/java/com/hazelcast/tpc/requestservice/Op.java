@@ -16,7 +16,7 @@
 
 package com.hazelcast.tpc.requestservice;
 
-import com.hazelcast.internal.engine.iobuffer.IOBuffer;
+import com.hazelcast.internal.tpc.iobuffer.IOBuffer;
 
 import java.io.EOFException;
 

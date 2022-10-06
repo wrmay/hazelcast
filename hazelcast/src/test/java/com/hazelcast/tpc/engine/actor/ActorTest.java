@@ -1,11 +1,11 @@
 package com.hazelcast.tpc.engine.actor;
 
 
-import com.hazelcast.internal.engine.actor.Actor;
-import com.hazelcast.internal.engine.actor.ActorRef;
+import com.hazelcast.internal.tpc.actor.Actor;
+import com.hazelcast.internal.tpc.actor.ActorRef;
 import com.hazelcast.test.HazelcastParallelClassRunner;
 import com.hazelcast.test.annotation.QuickTest;
-import com.hazelcast.internal.engine.nio.NioEventloop;
+import com.hazelcast.internal.tpc.nio.NioEventloop;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

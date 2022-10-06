@@ -62,8 +62,8 @@ import com.hazelcast.spi.impl.operationservice.impl.OperationServiceImpl;
 import com.hazelcast.spi.impl.proxyservice.ProxyService;
 import com.hazelcast.spi.properties.ClusterProperty;
 import com.hazelcast.sql.impl.client.SqlAbstractMessageTask;
-import com.hazelcast.internal.engine.iobuffer.ConcurrentIOBufferAllocator;
-import com.hazelcast.internal.engine.iobuffer.IOBufferAllocator;
+import com.hazelcast.internal.tpc.iobuffer.ConcurrentIOBufferAllocator;
+import com.hazelcast.internal.tpc.iobuffer.IOBufferAllocator;
 import com.hazelcast.transaction.TransactionManagerService;
 
 import javax.annotation.Nonnull;

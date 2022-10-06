@@ -16,8 +16,8 @@
 
 package com.hazelcast.tpc.requestservice;
 
-import com.hazelcast.internal.engine.actor.Actor;
-import com.hazelcast.internal.engine.iobuffer.IOBuffer;
+import com.hazelcast.internal.tpc.actor.Actor;
+import com.hazelcast.internal.tpc.iobuffer.IOBuffer;
 
 
 /**

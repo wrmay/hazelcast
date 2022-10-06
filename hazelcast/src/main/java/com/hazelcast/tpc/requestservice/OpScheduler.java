@@ -17,11 +17,11 @@
 package com.hazelcast.tpc.requestservice;
 
 import com.hazelcast.internal.util.counters.SwCounter;
-import com.hazelcast.internal.engine.actor.Actor;
+import com.hazelcast.internal.tpc.actor.Actor;
 import com.hazelcast.tpc.util.CircularQueue;
-import com.hazelcast.internal.engine.Eventloop;
-import com.hazelcast.internal.engine.iobuffer.IOBuffer;
-import com.hazelcast.internal.engine.iobuffer.IOBufferAllocator;
+import com.hazelcast.internal.tpc.Eventloop;
+import com.hazelcast.internal.tpc.iobuffer.IOBuffer;
+import com.hazelcast.internal.tpc.iobuffer.IOBufferAllocator;
 
 import static com.hazelcast.internal.util.counters.SwCounter.newSwCounter;
 import static com.hazelcast.tpc.requestservice.FrameCodec.FLAG_OP_RESPONSE_CONTROL;

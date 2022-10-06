@@ -1,6 +1,6 @@
 package com.hazelcast.tpc.requestservice;
 
-import com.hazelcast.internal.engine.iobuffer.IOBuffer;
+import com.hazelcast.internal.tpc.iobuffer.IOBuffer;
 import org.junit.Test;
 
 import static com.hazelcast.tpc.requestservice.FrameCodec.FLAG_OP_RESPONSE_CONTROL;

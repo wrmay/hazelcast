@@ -1,11 +1,11 @@
 package com.hazelcast.tpc.engine;
 
 
-import com.hazelcast.internal.engine.Fut;
-import com.hazelcast.internal.engine.FutAllocator;
+import com.hazelcast.internal.tpc.Fut;
+import com.hazelcast.internal.tpc.FutAllocator;
 import com.hazelcast.test.HazelcastParallelClassRunner;
 import com.hazelcast.test.annotation.QuickTest;
-import com.hazelcast.internal.engine.nio.NioEventloop;
+import com.hazelcast.internal.tpc.nio.NioEventloop;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

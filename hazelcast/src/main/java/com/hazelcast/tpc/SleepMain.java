@@ -16,8 +16,8 @@
 
 package com.hazelcast.tpc;
 
-import com.hazelcast.internal.engine.Eventloop;
-import com.hazelcast.internal.engine.nio.NioEventloop;
+import com.hazelcast.internal.tpc.Eventloop;
+import com.hazelcast.internal.tpc.nio.NioEventloop;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 

@@ -6,7 +6,7 @@ import com.hazelcast.client.impl.protocol.ClientMessage;
 import com.hazelcast.client.impl.protocol.ClientMessageReader;
 import com.hazelcast.client.impl.protocol.codec.builtin.FixedSizeTypesCodec;
 import com.hazelcast.internal.nio.Connection;
-import com.hazelcast.internal.engine.nio.NioAsyncReadHandler;
+import com.hazelcast.internal.tpc.nio.NioAsyncReadHandler;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.ByteBuffer;

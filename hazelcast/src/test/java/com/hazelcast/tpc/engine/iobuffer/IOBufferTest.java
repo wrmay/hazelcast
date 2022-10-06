@@ -1,6 +1,6 @@
 package com.hazelcast.tpc.engine.iobuffer;
 
-import com.hazelcast.internal.engine.iobuffer.IOBuffer;
+import com.hazelcast.internal.tpc.iobuffer.IOBuffer;
 import com.hazelcast.test.HazelcastParallelClassRunner;
 import com.hazelcast.test.annotation.ParallelJVMTest;
 import com.hazelcast.test.annotation.QuickTest;

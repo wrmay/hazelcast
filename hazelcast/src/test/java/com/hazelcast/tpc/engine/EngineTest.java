@@ -1,6 +1,6 @@
 package com.hazelcast.tpc.engine;
 
-import com.hazelcast.internal.engine.Engine;
+import com.hazelcast.internal.tpc.Engine;
 import com.hazelcast.test.HazelcastParallelClassRunner;
 import com.hazelcast.test.annotation.QuickTest;
 import org.junit.After;
@@ -11,8 +11,8 @@ import org.junit.runner.RunWith;
 import java.util.concurrent.TimeUnit;
 
 import static com.hazelcast.test.HazelcastTestSupport.sleepMillis;
-import static com.hazelcast.internal.engine.Engine.State.SHUTDOWN;
-import static com.hazelcast.internal.engine.Engine.State.TERMINATED;
+import static com.hazelcast.internal.tpc.Engine.State.SHUTDOWN;
+import static com.hazelcast.internal.tpc.Engine.State.TERMINATED;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 

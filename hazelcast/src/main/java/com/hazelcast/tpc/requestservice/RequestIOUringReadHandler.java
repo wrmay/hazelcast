@@ -16,10 +16,10 @@
 
 package com.hazelcast.tpc.requestservice;
 
-import com.hazelcast.internal.engine.iobuffer.IOBuffer;
-import com.hazelcast.internal.engine.iobuffer.IOBufferAllocator;
+import com.hazelcast.internal.tpc.iobuffer.IOBuffer;
+import com.hazelcast.internal.tpc.iobuffer.IOBufferAllocator;
 import io.netty.buffer.ByteBuf;
-import com.hazelcast.internal.engine.iouring.IOUringAsyncReadHandler;
+import com.hazelcast.internal.tpc.iouring.IOUringAsyncReadHandler;
 
 import java.nio.ByteBuffer;
 import java.util.function.Consumer;

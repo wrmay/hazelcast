@@ -16,11 +16,11 @@
 
 package com.hazelcast.tpc;
 
-import com.hazelcast.internal.engine.actor.Actor;
-import com.hazelcast.internal.engine.actor.EchoActor;
-import com.hazelcast.internal.engine.actor.LocalActorRef;
-import com.hazelcast.internal.engine.Eventloop;
-import com.hazelcast.internal.engine.nio.NioEventloop;
+import com.hazelcast.internal.tpc.actor.Actor;
+import com.hazelcast.internal.tpc.actor.EchoActor;
+import com.hazelcast.internal.tpc.actor.LocalActorRef;
+import com.hazelcast.internal.tpc.Eventloop;
+import com.hazelcast.internal.tpc.nio.NioEventloop;
 
 public class ActorMain {
 

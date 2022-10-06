@@ -2,8 +2,8 @@ package com.hazelcast.bulktransport.impl;
 
 import com.hazelcast.bulktransport.BulkTransport;
 import com.hazelcast.cluster.Address;
-import com.hazelcast.internal.engine.AsyncSocket;
-import com.hazelcast.internal.engine.iobuffer.IOBufferAllocator;
+import com.hazelcast.internal.tpc.AsyncSocket;
+import com.hazelcast.internal.tpc.iobuffer.IOBufferAllocator;
 import com.hazelcast.tpc.requestservice.RequestService;
 
 import java.io.File;

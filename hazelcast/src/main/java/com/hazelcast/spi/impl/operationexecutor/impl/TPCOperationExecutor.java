@@ -35,8 +35,8 @@ import com.hazelcast.spi.impl.operationservice.PartitionTaskFactory;
 import com.hazelcast.spi.impl.operationservice.UrgentSystemOperation;
 import com.hazelcast.spi.impl.operationservice.impl.operations.Backup;
 import com.hazelcast.spi.properties.HazelcastProperties;
-import com.hazelcast.internal.engine.Engine;
-import com.hazelcast.internal.engine.Eventloop;
+import com.hazelcast.internal.tpc.Engine;
+import com.hazelcast.internal.tpc.Eventloop;
 import com.hazelcast.tpc.requestservice.TPCEventloopThread;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 

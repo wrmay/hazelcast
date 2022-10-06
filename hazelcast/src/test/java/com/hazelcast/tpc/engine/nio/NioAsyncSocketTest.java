@@ -1,12 +1,12 @@
 package com.hazelcast.tpc.engine.nio;
 
-import com.hazelcast.internal.engine.nio.NioAsyncSocket;
-import com.hazelcast.internal.engine.nio.NioEventloop;
+import com.hazelcast.internal.tpc.nio.NioAsyncSocket;
+import com.hazelcast.internal.tpc.nio.NioEventloop;
 import com.hazelcast.test.HazelcastSerialClassRunner;
 import com.hazelcast.test.annotation.QuickTest;
-import com.hazelcast.internal.engine.AsyncSocket;
+import com.hazelcast.internal.tpc.AsyncSocket;
 import com.hazelcast.tpc.engine.AsyncSocketTest;
-import com.hazelcast.internal.engine.Eventloop;
+import com.hazelcast.internal.tpc.Eventloop;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 

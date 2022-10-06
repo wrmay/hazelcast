@@ -1,10 +1,10 @@
 package com.hazelcast.tpc.engine.iouring;
 
-import com.hazelcast.internal.engine.iouring.IORequestScheduler;
-import com.hazelcast.internal.engine.iouring.IOUringEventloop;
+import com.hazelcast.internal.tpc.iouring.IORequestScheduler;
+import com.hazelcast.internal.tpc.iouring.IOUringEventloop;
 import com.hazelcast.internal.util.ThreadAffinity;
-import com.hazelcast.internal.engine.AsyncFile;
-import com.hazelcast.internal.engine.iouring.IOUringEventloop.IOUringConfiguration;
+import com.hazelcast.internal.tpc.AsyncFile;
+import com.hazelcast.internal.tpc.iouring.IOUringEventloop.IOUringConfiguration;
 import io.netty.channel.unix.Buffer;
 
 import java.nio.ByteBuffer;
@@ -18,7 +18,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.BiConsumer;
 
-import static com.hazelcast.internal.engine.AsyncFile.pageSize;
+import static com.hazelcast.internal.tpc.AsyncFile.pageSize;
 import static com.hazelcast.tpc.util.Util.toPageAlignedAddress;
 
 public class AsyncFileWriteBenchmark {

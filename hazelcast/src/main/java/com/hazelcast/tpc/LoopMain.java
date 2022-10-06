@@ -17,8 +17,8 @@
 package com.hazelcast.tpc;
 
 import com.hazelcast.function.FunctionEx;
-import com.hazelcast.internal.engine.Eventloop;
-import com.hazelcast.internal.engine.nio.NioEventloop;
+import com.hazelcast.internal.tpc.Eventloop;
+import com.hazelcast.internal.tpc.nio.NioEventloop;
 
 import java.util.function.BiConsumer;
 
