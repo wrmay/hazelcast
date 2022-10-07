@@ -4,7 +4,7 @@ import com.hazelcast.bulktransport.BulkTransport;
 import com.hazelcast.cluster.Address;
 import com.hazelcast.internal.tpc.AsyncSocket;
 import com.hazelcast.internal.tpc.iobuffer.IOBufferAllocator;
-import com.hazelcast.internal.alto.runtime.AltoRuntime;
+import com.hazelcast.internal.alto.AltoRuntime;
 
 import java.io.File;
 import java.util.concurrent.atomic.AtomicBoolean;

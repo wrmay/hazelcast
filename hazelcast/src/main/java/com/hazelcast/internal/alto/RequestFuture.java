@@ -16,24 +16,16 @@
 
 package com.hazelcast.internal.alto;
 
-import com.hazelcast.internal.tpc.Eventloop;
-import com.hazelcast.internal.tpc.nio.NioEventloop;
+import com.hazelcast.internal.tpc.iobuffer.IOBuffer;
 
-import static java.util.concurrent.TimeUnit.SECONDS;
+import java.util.concurrent.CompletableFuture;
 
-public class SleepMain {
+public class RequestFuture<T> extends CompletableFuture<T> {
 
-    public static void main(String[] args) {
-        Eventloop eventloop = new NioEventloop();
-        eventloop.start();
+    public IOBuffer request;
+    public long callId;
 
-        eventloop.offer(() -> {
-            eventloop.unsafe().sleep(10, SECONDS).then((o, o2) -> {
-                System.out.println("Slept 10");
-            });
-            eventloop.unsafe().sleep(10, SECONDS).then((o, o2) -> {
-                System.out.println("Slept 5");
-            });
-        });
+    public RequestFuture(IOBuffer request) {
+        this.request = request;
     }
 }

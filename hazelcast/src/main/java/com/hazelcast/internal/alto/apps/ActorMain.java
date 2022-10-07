@@ -14,14 +14,26 @@
  * limitations under the License.
  */
 
-package com.hazelcast.internal.alto.runtime;
+package com.hazelcast.internal.alto.apps;
 
-import com.hazelcast.bulktransport.impl.BulkTransportService;
-import com.hazelcast.table.impl.TableManager;
+import com.hazelcast.internal.tpc.actor.Actor;
+import com.hazelcast.internal.tpc.actor.EchoActor;
+import com.hazelcast.internal.tpc.actor.LocalActorRef;
+import com.hazelcast.internal.tpc.Eventloop;
+import com.hazelcast.internal.tpc.nio.NioEventloop;
 
-public class Managers {
+public class ActorMain {
 
-    public TableManager tableManager;
+    public static void main(String[] args) {
+        Eventloop eventloop = new NioEventloop();
+        eventloop.start();
 
-    public BulkTransportService bulkTransportService;
+        Actor actor = new EchoActor();
+        actor.activate(eventloop);
+
+        LocalActorRef handle = actor.handle();
+        handle.send("foo");
+        handle.send("bar");
+    }
+
 }

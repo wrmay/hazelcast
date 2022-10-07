@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hazelcast.internal.alto.runtime;
+package com.hazelcast.internal.alto;
 
 import java.net.SocketAddress;
 import java.util.concurrent.ConcurrentHashMap;

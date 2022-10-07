@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package com.hazelcast.internal.alto.runtime;
+package com.hazelcast.internal.alto;
 
-import com.hazelcast.internal.tpc.iobuffer.IOBuffer;
+import io.netty.util.NetUtil;
 
-import java.util.concurrent.CompletableFuture;
+// TODO: This should be removed I think
+public class SocketConfig {
 
-public class RequestFuture<T> extends CompletableFuture<T> {
-
-    public IOBuffer request;
-    public long callId;
-
-    public RequestFuture(IOBuffer request) {
-        this.request = request;
-    }
+    public int receiveBufferSize = 256 * 1024;
+    public int sendBufferSize = 256 * 1024;
+    public boolean tcpNoDelay = true;
+    public boolean tcpQuickAck = true;
+    public int backlog = NetUtil.SOMAXCONN;
+    public boolean keepAlive = true;
+    public int soTimeout = 0;
 }

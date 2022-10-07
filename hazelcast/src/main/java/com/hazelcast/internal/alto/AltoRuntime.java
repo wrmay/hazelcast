@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hazelcast.internal.alto.runtime;
+package com.hazelcast.internal.alto;
 
 import com.hazelcast.cluster.Address;
 import com.hazelcast.instance.EndpointQualifier;
@@ -58,7 +58,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
 import static com.hazelcast.internal.util.HashUtil.hashToIndex;
-import static com.hazelcast.internal.alto.runtime.FrameCodec.OFFSET_REQ_CALL_ID;
+import static com.hazelcast.internal.alto.FrameCodec.OFFSET_REQ_CALL_ID;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 

@@ -17,9 +17,9 @@
 package com.hazelcast.table.impl;
 
 
-import com.hazelcast.internal.alto.runtime.FrameCodec;
-import com.hazelcast.internal.alto.runtime.Op;
-import com.hazelcast.internal.alto.runtime.OpCodes;
+import com.hazelcast.internal.alto.FrameCodec;
+import com.hazelcast.internal.alto.Op;
+import com.hazelcast.internal.alto.OpCodes;
 
 import java.util.concurrent.atomic.AtomicLong;
 

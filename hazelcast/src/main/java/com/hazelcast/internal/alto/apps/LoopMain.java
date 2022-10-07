@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hazelcast.internal.alto;
+package com.hazelcast.internal.alto.apps;
 
 import com.hazelcast.function.FunctionEx;
 import com.hazelcast.internal.tpc.Eventloop;

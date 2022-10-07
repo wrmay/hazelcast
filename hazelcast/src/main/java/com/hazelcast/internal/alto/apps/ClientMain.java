@@ -1,4 +1,4 @@
-package com.hazelcast.internal.alto;
+package com.hazelcast.internal.alto.apps;
 
 import com.hazelcast.client.HazelcastClient;
 import com.hazelcast.core.Hazelcast;

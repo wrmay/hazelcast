@@ -18,9 +18,9 @@ package com.hazelcast.table.impl;
 
 import com.hazelcast.internal.alto.offheapmap.ExampleQuery;
 import com.hazelcast.internal.alto.offheapmap.OffheapMap;
-import com.hazelcast.internal.alto.runtime.FrameCodec;
-import com.hazelcast.internal.alto.runtime.Op;
-import com.hazelcast.internal.alto.runtime.OpCodes;
+import com.hazelcast.internal.alto.FrameCodec;
+import com.hazelcast.internal.alto.Op;
+import com.hazelcast.internal.alto.OpCodes;
 
 public class QueryOp extends Op {
 

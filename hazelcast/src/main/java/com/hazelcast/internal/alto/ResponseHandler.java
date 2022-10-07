@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hazelcast.internal.alto.runtime;
+package com.hazelcast.internal.alto;
 /*
  * Copyright (c) 2008-2022, Hazelcast, Inc. All Rights Reserved.
  *
@@ -37,12 +37,12 @@ import com.hazelcast.internal.tpc.iobuffer.IOBuffer;
 import java.util.function.Consumer;
 
 import static com.hazelcast.internal.util.HashUtil.hashToIndex;
-import static com.hazelcast.internal.alto.runtime.FrameCodec.FLAG_OP_RESPONSE_CONTROL;
-import static com.hazelcast.internal.alto.runtime.FrameCodec.OFFSET_PARTITION_ID;
-import static com.hazelcast.internal.alto.runtime.FrameCodec.OFFSET_RES_CALL_ID;
-import static com.hazelcast.internal.alto.runtime.FrameCodec.OFFSET_RES_PAYLOAD;
-import static com.hazelcast.internal.alto.runtime.FrameCodec.RESPONSE_TYPE_EXCEPTION;
-import static com.hazelcast.internal.alto.runtime.FrameCodec.RESPONSE_TYPE_OVERLOAD;
+import static com.hazelcast.internal.alto.FrameCodec.FLAG_OP_RESPONSE_CONTROL;
+import static com.hazelcast.internal.alto.FrameCodec.OFFSET_PARTITION_ID;
+import static com.hazelcast.internal.alto.FrameCodec.OFFSET_RES_CALL_ID;
+import static com.hazelcast.internal.alto.FrameCodec.OFFSET_RES_PAYLOAD;
+import static com.hazelcast.internal.alto.FrameCodec.RESPONSE_TYPE_EXCEPTION;
+import static com.hazelcast.internal.alto.FrameCodec.RESPONSE_TYPE_OVERLOAD;
 
 
 class ResponseHandler implements Consumer<IOBuffer> {

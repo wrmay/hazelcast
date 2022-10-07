@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hazelcast.internal.alto;
+package com.hazelcast.internal.alto.apps;
 
 
 import com.hazelcast.internal.util.ThreadAffinity;
@@ -25,7 +25,7 @@ import com.hazelcast.internal.tpc.nio.NioAsyncServerSocket;
 import com.hazelcast.internal.tpc.nio.NioAsyncSocket;
 import com.hazelcast.internal.tpc.nio.NioEventloop;
 import com.hazelcast.internal.tpc.nio.NioAsyncReadHandler;
-import com.hazelcast.internal.alto.runtime.FrameCodec;
+import com.hazelcast.internal.alto.FrameCodec;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.InetSocketAddress;

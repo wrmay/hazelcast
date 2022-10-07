@@ -16,17 +16,17 @@
 
 package com.hazelcast.table.impl;
 
-import com.hazelcast.internal.alto.runtime.AltoRuntime;
+import com.hazelcast.internal.alto.AltoRuntime;
 import com.hazelcast.internal.util.collection.Long2ObjectHashMap;
 import com.hazelcast.internal.tpc.SyncSocket;
 import com.hazelcast.internal.tpc.iobuffer.IOBuffer;
 import com.hazelcast.internal.tpc.iobuffer.IOBufferAllocator;
-import com.hazelcast.internal.alto.runtime.FrameCodec;
+import com.hazelcast.internal.alto.FrameCodec;
 import com.hazelcast.table.Pipeline;
 
 import java.util.List;
 
-import static com.hazelcast.internal.alto.runtime.OpCodes.NOOP;
+import static com.hazelcast.internal.alto.OpCodes.NOOP;
 
 
 // todo: we don't need a IOBuffer for all the requests. We should just add to an existing IOBuffer.

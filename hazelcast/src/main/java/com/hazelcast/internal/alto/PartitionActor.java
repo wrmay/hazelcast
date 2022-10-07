@@ -17,23 +17,17 @@
 package com.hazelcast.internal.alto;
 
 import com.hazelcast.internal.tpc.actor.Actor;
-import com.hazelcast.internal.tpc.actor.EchoActor;
-import com.hazelcast.internal.tpc.actor.LocalActorRef;
-import com.hazelcast.internal.tpc.Eventloop;
-import com.hazelcast.internal.tpc.nio.NioEventloop;
+import com.hazelcast.internal.tpc.iobuffer.IOBuffer;
 
-public class ActorMain {
 
-    public static void main(String[] args) {
-        Eventloop eventloop = new NioEventloop();
-        eventloop.start();
+/**
+ * Processes messages within a partition. Issues like replication already have
+ * been taken care of by the infrastructure.
+ */
+public class PartitionActor extends Actor {
 
-        Actor actor = new EchoActor();
-        actor.activate(eventloop);
-
-        LocalActorRef handle = actor.handle();
-        handle.send("foo");
-        handle.send("bar");
+    @Override
+    public void process(Object m) {
+        IOBuffer request = (IOBuffer) m;
     }
-
 }

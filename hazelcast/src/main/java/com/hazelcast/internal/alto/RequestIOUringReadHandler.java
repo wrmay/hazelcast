@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hazelcast.internal.alto.runtime;
+package com.hazelcast.internal.alto;
 
 import com.hazelcast.internal.tpc.iobuffer.IOBuffer;
 import com.hazelcast.internal.tpc.iobuffer.IOBufferAllocator;
@@ -25,7 +25,7 @@ import java.nio.ByteBuffer;
 import java.util.function.Consumer;
 
 import static com.hazelcast.internal.nio.Bits.INT_SIZE_IN_BYTES;
-import static com.hazelcast.internal.alto.runtime.FrameCodec.FLAG_OP_RESPONSE;
+import static com.hazelcast.internal.alto.FrameCodec.FLAG_OP_RESPONSE;
 
 public class RequestIOUringReadHandler extends IOUringAsyncReadHandler {
     private IOBuffer inboundBuf;

@@ -9,7 +9,7 @@ import com.hazelcast.test.annotation.QuickTest;
 import com.hazelcast.internal.tpc.iobuffer.IOBuffer;
 import com.hazelcast.internal.tpc.iobuffer.IOBufferAllocator;
 import com.hazelcast.internal.tpc.iobuffer.NonConcurrentIOBufferAllocator;
-import com.hazelcast.internal.alto.runtime.FrameCodec;
+import com.hazelcast.internal.alto.FrameCodec;
 import org.jetbrains.annotations.NotNull;
 import org.junit.After;
 import org.junit.Before;

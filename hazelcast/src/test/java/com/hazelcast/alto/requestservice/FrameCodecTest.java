@@ -1,10 +1,10 @@
 package com.hazelcast.alto.requestservice;
 
-import com.hazelcast.internal.alto.runtime.FrameCodec;
+import com.hazelcast.internal.alto.FrameCodec;
 import com.hazelcast.internal.tpc.iobuffer.IOBuffer;
 import org.junit.Test;
 
-import static com.hazelcast.internal.alto.runtime.FrameCodec.FLAG_OP_RESPONSE_CONTROL;
+import static com.hazelcast.internal.alto.FrameCodec.FLAG_OP_RESPONSE_CONTROL;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
