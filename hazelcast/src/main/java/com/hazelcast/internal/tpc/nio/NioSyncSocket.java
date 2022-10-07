@@ -34,6 +34,9 @@ import static java.net.StandardSocketOptions.SO_RCVBUF;
 import static java.net.StandardSocketOptions.SO_SNDBUF;
 import static java.net.StandardSocketOptions.TCP_NODELAY;
 
+/**
+ * Nio version of the {@link SyncSocket}.
+ */
 public final class NioSyncSocket extends SyncSocket {
 
     private final SocketChannel socketChannel;

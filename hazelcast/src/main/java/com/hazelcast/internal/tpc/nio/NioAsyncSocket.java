@@ -47,7 +47,9 @@ import static java.nio.channels.SelectionKey.OP_CONNECT;
 import static java.nio.channels.SelectionKey.OP_READ;
 import static java.nio.channels.SelectionKey.OP_WRITE;
 
-
+/**
+ * Nio version of the {@link AsyncSocket}.
+ */
 public final class NioAsyncSocket extends AsyncSocket {
 
     public static NioAsyncSocket open() {

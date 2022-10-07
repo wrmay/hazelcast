@@ -23,6 +23,9 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.Queue;
 
+/**
+ * Contains logic to do vectorized I/O (so instead of passing a single buffer, an array of buffer is passed).
+ */
 public final class IOVector {
 
     private final static int IOV_MAX = 1024;

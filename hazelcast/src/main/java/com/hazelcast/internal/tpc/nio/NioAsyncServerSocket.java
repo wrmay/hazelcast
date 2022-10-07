@@ -33,6 +33,9 @@ import static java.net.StandardSocketOptions.SO_REUSEADDR;
 import static java.net.StandardSocketOptions.SO_REUSEPORT;
 import static java.nio.channels.SelectionKey.OP_ACCEPT;
 
+/**
+ * Nio version of the {@link AsyncServerSocket}.
+ */
 public final class NioAsyncServerSocket extends AsyncServerSocket {
 
     private final ServerSocketChannel serverSocketChannel;

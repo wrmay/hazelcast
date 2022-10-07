@@ -28,6 +28,9 @@ import java.util.Iterator;
 import static com.hazelcast.tpc.util.Util.epochNanos;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
+/**
+ * Nio version of the {@link Eventloop}.
+ */
 public final class NioEventloop extends Eventloop {
     final Selector selector;
 
