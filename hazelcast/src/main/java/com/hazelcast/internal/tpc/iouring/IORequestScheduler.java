@@ -20,8 +20,8 @@ import com.hazelcast.internal.tpc.AsyncFile;
 import com.hazelcast.internal.tpc.Fut;
 import com.hazelcast.internal.util.collection.Int2ObjectHashMap;
 import com.hazelcast.internal.tpc.iouring.IOUringEventloop.IOUringUnsafe;
-import com.hazelcast.tpc.util.CircularQueue;
-import com.hazelcast.tpc.util.SlabAllocator;
+import com.hazelcast.internal.alto.util.CircularQueue;
+import com.hazelcast.internal.alto.util.SlabAllocator;
 
 import io.netty.incubator.channel.uring.IOUringSubmissionQueue;
 

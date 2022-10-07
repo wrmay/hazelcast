@@ -17,8 +17,8 @@
 package com.hazelcast.table.impl;
 
 
-import com.hazelcast.tpc.OffheapAllocator;
-import com.hazelcast.tpc.offheapmap.OffheapMap;
+import com.hazelcast.internal.alto.OffheapAllocator;
+import com.hazelcast.internal.alto.offheapmap.OffheapMap;
 
 import java.util.HashMap;
 import java.util.Map;

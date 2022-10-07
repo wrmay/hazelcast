@@ -20,13 +20,13 @@ import com.hazelcast.internal.util.collection.Long2ObjectHashMap;
 import com.hazelcast.internal.tpc.SyncSocket;
 import com.hazelcast.internal.tpc.iobuffer.IOBuffer;
 import com.hazelcast.internal.tpc.iobuffer.IOBufferAllocator;
-import com.hazelcast.tpc.requestservice.FrameCodec;
-import com.hazelcast.tpc.requestservice.RequestService;
+import com.hazelcast.internal.alto.requestservice.FrameCodec;
+import com.hazelcast.internal.alto.requestservice.RequestService;
 import com.hazelcast.table.Pipeline;
 
 import java.util.List;
 
-import static com.hazelcast.tpc.requestservice.OpCodes.NOOP;
+import static com.hazelcast.internal.alto.requestservice.OpCodes.NOOP;
 
 
 // todo: we don't need a IOBuffer for all the requests. We should just add to an existing IOBuffer.

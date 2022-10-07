@@ -1,12 +1,12 @@
 package com.hazelcast.bulktransport.impl;
 
-import com.hazelcast.tpc.offheapmap.OffheapMap;
-import com.hazelcast.tpc.requestservice.FrameCodec;
-import com.hazelcast.tpc.requestservice.Op;
-import com.hazelcast.tpc.requestservice.OpCodes;
+import com.hazelcast.internal.alto.offheapmap.OffheapMap;
+import com.hazelcast.internal.alto.requestservice.FrameCodec;
+import com.hazelcast.internal.alto.requestservice.Op;
+import com.hazelcast.internal.alto.requestservice.OpCodes;
 import com.hazelcast.table.impl.TableManager;
 
-import static com.hazelcast.tpc.requestservice.FrameCodec.OFFSET_REQ_CALL_ID;
+import static com.hazelcast.internal.alto.requestservice.FrameCodec.OFFSET_REQ_CALL_ID;
 
 public class BulkTransportOp extends Op {
 

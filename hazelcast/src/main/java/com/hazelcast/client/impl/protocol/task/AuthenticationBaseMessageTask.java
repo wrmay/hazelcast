@@ -28,7 +28,6 @@ import com.hazelcast.security.Credentials;
 import com.hazelcast.security.PasswordCredentials;
 import com.hazelcast.security.SecurityContext;
 import com.hazelcast.security.UsernamePasswordCredentials;
-import com.hazelcast.tpc.bootstrap.TpcBootstrap;
 
 import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;

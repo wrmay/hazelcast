@@ -16,11 +16,11 @@
 
 package com.hazelcast.table.impl;
 
-import com.hazelcast.tpc.offheapmap.Bin;
-import com.hazelcast.tpc.offheapmap.OffheapMap;
-import com.hazelcast.tpc.requestservice.FrameCodec;
-import com.hazelcast.tpc.requestservice.Op;
-import com.hazelcast.tpc.requestservice.OpCodes;
+import com.hazelcast.internal.alto.offheapmap.Bin;
+import com.hazelcast.internal.alto.offheapmap.OffheapMap;
+import com.hazelcast.internal.alto.requestservice.FrameCodec;
+import com.hazelcast.internal.alto.requestservice.Op;
+import com.hazelcast.internal.alto.requestservice.OpCodes;
 
 public final class SetOp extends Op {
 
