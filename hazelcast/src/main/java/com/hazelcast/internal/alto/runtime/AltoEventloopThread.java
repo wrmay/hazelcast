@@ -26,13 +26,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * This is the TPC version of the {@link PartitionOperationThreadImpl}.
  */
-public class TPCEventloopThread extends HazelcastManagedThread implements PartitionOperationThread {
+public class AltoEventloopThread extends HazelcastManagedThread implements PartitionOperationThread {
 
     private final static AtomicInteger THREAD_ID = new AtomicInteger();
 
     private final int threadId;
 
-    public TPCEventloopThread(Runnable target) {
+    public AltoEventloopThread(Runnable target) {
         super(target);
         this.threadId = THREAD_ID.incrementAndGet();
     }

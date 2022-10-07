@@ -13,7 +13,7 @@ import com.hazelcast.internal.tpc.nio.NioAsyncReadHandler;
 import com.hazelcast.internal.tpc.nio.NioAsyncServerSocket;
 import com.hazelcast.internal.tpc.nio.NioEventloop;
 import com.hazelcast.internal.alto.runtime.SocketConfig;
-import com.hazelcast.internal.alto.runtime.TPCEventloopThread;
+import com.hazelcast.internal.alto.runtime.AltoEventloopThread;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -71,7 +71,7 @@ public class TpcBootstrap {
         }
 
         TpcEngine.Configuration configuration = new TpcEngine.Configuration();
-        configuration.setThreadFactory(TPCEventloopThread::new);
+        configuration.setThreadFactory(AltoEventloopThread::new);
         configuration.setEventloopType(Eventloop.Type.NIO);
 
         TpcEngine engine = new TpcEngine(configuration);

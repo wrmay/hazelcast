@@ -35,9 +35,8 @@ public abstract class Eventloop_Unsafe_Test {
     public void test_sleep() {
         AtomicInteger executedCount = new AtomicInteger();
         long startMs = System.currentTimeMillis();
-        eventloop.offer(() -> eventloop.unsafe.sleep(1, SECONDS)
+        eventloop.offer(() -> eventloop.unsafe().sleep(1, SECONDS)
                 .then((o, ex) -> executedCount.incrementAndGet()));
-
 
         assertEqualsEventually(1, executedCount);
         long duration = System.currentTimeMillis() - startMs;
@@ -50,11 +49,10 @@ public abstract class Eventloop_Unsafe_Test {
         int iterations = 10;
         CountDownLatch completed = new CountDownLatch(1);
 
-        eventloop.offer(() -> eventloop.unsafe.loop(eventloop -> {
+        eventloop.offer(() -> eventloop.unsafe().loop(eventloop -> {
             executedCount.incrementAndGet();
             return executedCount.get() < iterations;
         }).then((o,ex) -> completed.countDown()));
-
 
         assertOpenEventually(completed);
         assertEquals(executedCount.get(), iterations);

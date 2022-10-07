@@ -45,10 +45,10 @@ public class Fut<E> {
     private final Eventloop eventloop;
     private List<BiConsumer<E, Throwable>> consumers = new ArrayList<>();
     private boolean releaseOnComplete = false;
-    int refCount = 1;
-    FutAllocator allocator;
+    public int refCount = 1;
+    public FutAllocator allocator;
 
-    protected Fut(Eventloop eventloop) {
+    public Fut(Eventloop eventloop) {
         this.eventloop = checkNotNull(eventloop);
     }
 

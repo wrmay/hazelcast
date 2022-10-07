@@ -63,10 +63,10 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 
 
 /**
- * The AltoRuntime is an application of the TpcEngine.
- * <p>
- * The Reactor is very specific to requests/responses. It isn't a flexible framework unlike Seastar.
- * <p>
+ * The AltoRuntime is runtime that provides the infrastructure to build next generation data-structures.
+ * For more information see:
+ * https://www.micahlerner.com/2022/06/04/data-parallel-actors-a-programming-model-for-scalable-query-serving-systems.html
+= * <p>
  * Mapping from partition to CPU is easy; just a simple mod.
  * <p>
  * RSS: How can we align:
@@ -152,7 +152,7 @@ public class AltoRuntime {
     @NotNull
     private TpcEngine newEngine() {
         TpcEngine.Configuration configuration = new TpcEngine.Configuration();
-        configuration.setThreadFactory(TPCEventloopThread::new);
+        configuration.setThreadFactory(AltoEventloopThread::new);
         configuration.setEventloopConfigUpdater(eventloopConfiguration -> {
             // remote responses will be created and released by the TPC thread.
             // So a non-concurrent allocator is good enough.

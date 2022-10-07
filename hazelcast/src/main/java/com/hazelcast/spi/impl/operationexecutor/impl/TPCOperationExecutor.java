@@ -37,7 +37,7 @@ import com.hazelcast.spi.impl.operationservice.UrgentSystemOperation;
 import com.hazelcast.spi.impl.operationservice.impl.operations.Backup;
 import com.hazelcast.spi.properties.HazelcastProperties;
 import com.hazelcast.internal.tpc.Eventloop;
-import com.hazelcast.internal.alto.runtime.TPCEventloopThread;
+import com.hazelcast.internal.alto.runtime.AltoEventloopThread;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.util.BitSet;
@@ -426,7 +426,7 @@ public final class TPCOperationExecutor implements OperationExecutor, StaticMetr
         }
 
         // we are only allowed to execute partition aware actions on an Eventloop
-        if (currentThread.getClass() != TPCEventloopThread.class) {
+        if (currentThread.getClass() != AltoEventloopThread.class) {
             return false;
         }
 
@@ -453,7 +453,7 @@ public final class TPCOperationExecutor implements OperationExecutor, StaticMetr
             return true;
         }
 
-        if (currentThread.getClass() != TPCEventloopThread.class) {
+        if (currentThread.getClass() != AltoEventloopThread.class) {
             return true;
         }
 
