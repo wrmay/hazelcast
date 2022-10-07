@@ -16,9 +16,9 @@
 
 package com.hazelcast.table.impl;
 
-import com.hazelcast.internal.alto.requestservice.FrameCodec;
-import com.hazelcast.internal.alto.requestservice.Op;
-import com.hazelcast.internal.alto.requestservice.OpCodes;
+import com.hazelcast.internal.alto.runtime.FrameCodec;
+import com.hazelcast.internal.alto.runtime.Op;
+import com.hazelcast.internal.alto.runtime.OpCodes;
 import com.hazelcast.table.Item;
 
 import java.util.Map;

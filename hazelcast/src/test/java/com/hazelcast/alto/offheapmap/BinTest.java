@@ -5,7 +5,7 @@ import com.hazelcast.internal.tpc.iobuffer.IOBuffer;
 import com.hazelcast.test.HazelcastParallelClassRunner;
 import com.hazelcast.test.annotation.ParallelJVMTest;
 import com.hazelcast.test.annotation.QuickTest;
-import com.hazelcast.internal.alto.requestservice.FrameCodec;
+import com.hazelcast.internal.alto.runtime.FrameCodec;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;

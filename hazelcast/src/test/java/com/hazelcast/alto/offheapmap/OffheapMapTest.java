@@ -8,7 +8,7 @@ import com.hazelcast.test.HazelcastParallelClassRunner;
 import com.hazelcast.test.annotation.ParallelJVMTest;
 import com.hazelcast.test.annotation.QuickTest;
 import com.hazelcast.internal.alto.OffheapAllocator;
-import com.hazelcast.internal.alto.requestservice.FrameCodec;
+import com.hazelcast.internal.alto.runtime.FrameCodec;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

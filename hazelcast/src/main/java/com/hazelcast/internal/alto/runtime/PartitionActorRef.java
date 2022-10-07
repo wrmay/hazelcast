@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hazelcast.internal.alto.requestservice;
+package com.hazelcast.internal.alto.runtime;
 
 import com.hazelcast.cluster.Address;
 import com.hazelcast.internal.partition.InternalPartitionService;

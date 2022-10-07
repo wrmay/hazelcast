@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hazelcast.internal.alto.requestservice;
+package com.hazelcast.internal.alto.runtime;
 
 import com.hazelcast.internal.tpc.actor.Actor;
 import com.hazelcast.internal.tpc.iobuffer.IOBuffer;

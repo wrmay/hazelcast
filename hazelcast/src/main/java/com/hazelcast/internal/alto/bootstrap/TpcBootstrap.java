@@ -1,7 +1,7 @@
 package com.hazelcast.internal.alto.bootstrap;
 
 import com.hazelcast.cluster.Address;
-import com.hazelcast.internal.alto.requestservice.RequestService;
+import com.hazelcast.internal.alto.runtime.RequestService;
 import com.hazelcast.internal.serialization.InternalSerializationService;
 import com.hazelcast.internal.tpc.TpcEngine;
 import com.hazelcast.logging.ILogger;
@@ -12,8 +12,8 @@ import com.hazelcast.internal.tpc.ReadHandler;
 import com.hazelcast.internal.tpc.nio.NioAsyncReadHandler;
 import com.hazelcast.internal.tpc.nio.NioAsyncServerSocket;
 import com.hazelcast.internal.tpc.nio.NioEventloop;
-import com.hazelcast.internal.alto.requestservice.SocketConfig;
-import com.hazelcast.internal.alto.requestservice.TPCEventloopThread;
+import com.hazelcast.internal.alto.runtime.SocketConfig;
+import com.hazelcast.internal.alto.runtime.TPCEventloopThread;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;

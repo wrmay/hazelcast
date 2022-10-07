@@ -25,7 +25,7 @@ import com.hazelcast.internal.tpc.nio.NioAsyncServerSocket;
 import com.hazelcast.internal.tpc.nio.NioAsyncSocket;
 import com.hazelcast.internal.tpc.nio.NioEventloop;
 import com.hazelcast.internal.tpc.nio.NioAsyncReadHandler;
-import com.hazelcast.internal.alto.requestservice.FrameCodec;
+import com.hazelcast.internal.alto.runtime.FrameCodec;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.InetSocketAddress;

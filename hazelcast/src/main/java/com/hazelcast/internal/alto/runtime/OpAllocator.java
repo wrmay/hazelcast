@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hazelcast.internal.alto.requestservice;
+package com.hazelcast.internal.alto.runtime;
 
 import com.hazelcast.bulktransport.impl.BulkTransportOp;
 import com.hazelcast.bulktransport.impl.InitBulkTransportOp;
@@ -28,16 +28,16 @@ import com.hazelcast.table.impl.UpsertOp;
 
 import java.util.function.Supplier;
 
-import static com.hazelcast.internal.alto.requestservice.FrameCodec.OFFSET_REQ_OPCODE;
-import static com.hazelcast.internal.alto.requestservice.OpCodes.BULK_TRANSPORT;
-import static com.hazelcast.internal.alto.requestservice.OpCodes.GET;
-import static com.hazelcast.internal.alto.requestservice.OpCodes.INIT_BULK_TRANSPORT;
-import static com.hazelcast.internal.alto.requestservice.OpCodes.MAX_OPCODE;
-import static com.hazelcast.internal.alto.requestservice.OpCodes.NOOP;
-import static com.hazelcast.internal.alto.requestservice.OpCodes.QUERY;
-import static com.hazelcast.internal.alto.requestservice.OpCodes.SET;
-import static com.hazelcast.internal.alto.requestservice.OpCodes.TABLE_SELECT_BY_KEY;
-import static com.hazelcast.internal.alto.requestservice.OpCodes.TABLE_UPSERT;
+import static com.hazelcast.internal.alto.runtime.FrameCodec.OFFSET_REQ_OPCODE;
+import static com.hazelcast.internal.alto.runtime.OpCodes.BULK_TRANSPORT;
+import static com.hazelcast.internal.alto.runtime.OpCodes.GET;
+import static com.hazelcast.internal.alto.runtime.OpCodes.INIT_BULK_TRANSPORT;
+import static com.hazelcast.internal.alto.runtime.OpCodes.MAX_OPCODE;
+import static com.hazelcast.internal.alto.runtime.OpCodes.NOOP;
+import static com.hazelcast.internal.alto.runtime.OpCodes.QUERY;
+import static com.hazelcast.internal.alto.runtime.OpCodes.SET;
+import static com.hazelcast.internal.alto.runtime.OpCodes.TABLE_SELECT_BY_KEY;
+import static com.hazelcast.internal.alto.runtime.OpCodes.TABLE_UPSERT;
 
 public final class OpAllocator {
 

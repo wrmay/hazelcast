@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hazelcast.internal.alto.requestservice;
+package com.hazelcast.internal.alto.runtime;
 
 import com.hazelcast.internal.util.counters.SwCounter;
 import com.hazelcast.internal.tpc.actor.Actor;
@@ -24,16 +24,16 @@ import com.hazelcast.internal.tpc.iobuffer.IOBuffer;
 import com.hazelcast.internal.tpc.iobuffer.IOBufferAllocator;
 
 import static com.hazelcast.internal.util.counters.SwCounter.newSwCounter;
-import static com.hazelcast.internal.alto.requestservice.FrameCodec.FLAG_OP_RESPONSE_CONTROL;
-import static com.hazelcast.internal.alto.requestservice.FrameCodec.OFFSET_PARTITION_ID;
-import static com.hazelcast.internal.alto.requestservice.FrameCodec.OFFSET_REQ_CALL_ID;
-import static com.hazelcast.internal.alto.requestservice.FrameCodec.OFFSET_REQ_PAYLOAD;
-import static com.hazelcast.internal.alto.requestservice.FrameCodec.OFFSET_RES_PAYLOAD;
-import static com.hazelcast.internal.alto.requestservice.FrameCodec.RESPONSE_TYPE_EXCEPTION;
-import static com.hazelcast.internal.alto.requestservice.FrameCodec.RESPONSE_TYPE_OVERLOAD;
-import static com.hazelcast.internal.alto.requestservice.Op.BLOCKED;
-import static com.hazelcast.internal.alto.requestservice.Op.COMPLETED;
-import static com.hazelcast.internal.alto.requestservice.Op.EXCEPTION;
+import static com.hazelcast.internal.alto.runtime.FrameCodec.FLAG_OP_RESPONSE_CONTROL;
+import static com.hazelcast.internal.alto.runtime.FrameCodec.OFFSET_PARTITION_ID;
+import static com.hazelcast.internal.alto.runtime.FrameCodec.OFFSET_REQ_CALL_ID;
+import static com.hazelcast.internal.alto.runtime.FrameCodec.OFFSET_REQ_PAYLOAD;
+import static com.hazelcast.internal.alto.runtime.FrameCodec.OFFSET_RES_PAYLOAD;
+import static com.hazelcast.internal.alto.runtime.FrameCodec.RESPONSE_TYPE_EXCEPTION;
+import static com.hazelcast.internal.alto.runtime.FrameCodec.RESPONSE_TYPE_OVERLOAD;
+import static com.hazelcast.internal.alto.runtime.Op.BLOCKED;
+import static com.hazelcast.internal.alto.runtime.Op.COMPLETED;
+import static com.hazelcast.internal.alto.runtime.Op.EXCEPTION;
 
 /**
  * todo: add control on number of requests of single socket.

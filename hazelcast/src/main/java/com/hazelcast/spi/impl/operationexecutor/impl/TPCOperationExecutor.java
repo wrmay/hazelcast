@@ -37,7 +37,7 @@ import com.hazelcast.spi.impl.operationservice.UrgentSystemOperation;
 import com.hazelcast.spi.impl.operationservice.impl.operations.Backup;
 import com.hazelcast.spi.properties.HazelcastProperties;
 import com.hazelcast.internal.tpc.Eventloop;
-import com.hazelcast.internal.alto.requestservice.TPCEventloopThread;
+import com.hazelcast.internal.alto.runtime.TPCEventloopThread;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.util.BitSet;

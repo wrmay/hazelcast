@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-package com.hazelcast.internal.alto.requestservice;
+package com.hazelcast.internal.alto.runtime;
 
-import io.netty.util.NetUtil;
+public class OpCodes {
 
-public class SocketConfig {
+    public final static byte TABLE_UPSERT = 0;
+    public final static byte TABLE_SELECT_BY_KEY = 1;
+    public final static byte NOOP = 2;
+    public final static byte GET = 3;
+    public final static byte SET = 4;
+    public final static byte QUERY = 5;
+    public final static byte INIT_BULK_TRANSPORT = 6;
+    public final static byte BULK_TRANSPORT = 7;
 
-    public int receiveBufferSize = 256 * 1024;
-    public int sendBufferSize = 256 * 1024;
-    public boolean tcpNoDelay = true;
-    public boolean tcpQuickAck = true;
-    public int backlog = NetUtil.SOMAXCONN;
-    public boolean keepAlive = true;
-    public int soTimeout = 0;
+    public final static byte MAX_OPCODE = BULK_TRANSPORT;
 }

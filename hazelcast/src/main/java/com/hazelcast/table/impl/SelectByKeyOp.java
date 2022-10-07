@@ -16,9 +16,9 @@
 
 package com.hazelcast.table.impl;
 
-import com.hazelcast.internal.alto.requestservice.Op;
+import com.hazelcast.internal.alto.runtime.Op;
 
-import static com.hazelcast.internal.alto.requestservice.OpCodes.TABLE_SELECT_BY_KEY;
+import static com.hazelcast.internal.alto.runtime.OpCodes.TABLE_SELECT_BY_KEY;
 
 public final class SelectByKeyOp extends Op {
 

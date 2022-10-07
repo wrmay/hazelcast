@@ -14,14 +14,17 @@
  * limitations under the License.
  */
 
-package com.hazelcast.internal.alto.requestservice;
+package com.hazelcast.internal.alto.runtime;
 
-import com.hazelcast.bulktransport.impl.BulkTransportService;
-import com.hazelcast.table.impl.TableManager;
+import io.netty.util.NetUtil;
 
-public class Managers {
+public class SocketConfig {
 
-    public TableManager tableManager;
-
-    public BulkTransportService bulkTransportService;
+    public int receiveBufferSize = 256 * 1024;
+    public int sendBufferSize = 256 * 1024;
+    public boolean tcpNoDelay = true;
+    public boolean tcpQuickAck = true;
+    public int backlog = NetUtil.SOMAXCONN;
+    public boolean keepAlive = true;
+    public int soTimeout = 0;
 }
