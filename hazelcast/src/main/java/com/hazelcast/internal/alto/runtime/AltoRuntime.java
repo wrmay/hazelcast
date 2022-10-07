@@ -63,7 +63,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 
 
 /**
- * The RequestService is an application of the TpcEngine.
+ * The AltoRuntime is an application of the TpcEngine.
  * <p>
  * The Reactor is very specific to requests/responses. It isn't a flexible framework unlike Seastar.
  * <p>
@@ -88,7 +88,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
  * <p>
  * So how do we go from partition to a channel?
  */
-public class RequestService {
+public class AltoRuntime {
 
     public final NodeEngineImpl nodeEngine;
     public final InternalSerializationService ss;
@@ -111,9 +111,9 @@ public class RequestService {
     private final Map<Eventloop, Supplier<? extends ReadHandler>> readHandlerSuppliers = new HashMap<>();
     private PartitionActorRef[] partitionActorRefs;
 
-    public RequestService(NodeEngineImpl nodeEngine) {
+    public AltoRuntime(NodeEngineImpl nodeEngine) {
         this.nodeEngine = nodeEngine;
-        this.logger = nodeEngine.getLogger(RequestService.class);
+        this.logger = nodeEngine.getLogger(AltoRuntime.class);
         this.ss = (InternalSerializationService) nodeEngine.getSerializationService();
         int responseThreadCount = Integer.parseInt(System.getProperty("reactor.responsethread.count", "1"));
         boolean responseThreadSpin = Boolean.parseBoolean(System.getProperty("reactor.responsethread.spin", "false"));
@@ -181,7 +181,7 @@ public class RequestService {
     }
 
     public void start() {
-        logger.info("Starting RequestService");
+        logger.info("Starting AltoRuntime");
         engine.start();
 
         Eventloop.Type eventloopType = engine.eventloopType();
@@ -345,7 +345,7 @@ public class RequestService {
     }
 
     public void shutdown() {
-        logger.info("RequestService shutdown");
+        logger.info("AltoRuntime shutdown");
 
         shuttingdown = true;
 
@@ -362,7 +362,7 @@ public class RequestService {
             Thread.currentThread().interrupt();
         }
 
-        logger.info("RequestService terminated");
+        logger.info("AltoRuntime terminated");
     }
 
     public RequestFuture invoke(IOBuffer request, AsyncSocket socket) {

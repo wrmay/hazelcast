@@ -25,7 +25,7 @@ import com.hazelcast.internal.tpc.iobuffer.IOBuffer;
 import com.hazelcast.internal.tpc.iobuffer.IOBufferAllocator;
 import com.hazelcast.internal.alto.runtime.FrameCodec;
 import com.hazelcast.internal.alto.runtime.PartitionActorRef;
-import com.hazelcast.internal.alto.runtime.RequestService;
+import com.hazelcast.internal.alto.runtime.AltoRuntime;
 import com.hazelcast.bulktransport.impl.BulkTransportImpl;
 import com.hazelcast.table.impl.PipelineImpl;
 import com.hazelcast.table.impl.TableService;
@@ -46,7 +46,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class TableProxy<K, V> extends AbstractDistributedObject implements Table<K, V> {
 
-    private final RequestService requestService;
+    private final AltoRuntime altoRuntime;
     private final String name;
     private final int partitionCount;
     private final IOBufferAllocator requestAllocator;
@@ -55,17 +55,17 @@ public class TableProxy<K, V> extends AbstractDistributedObject implements Table
 
     public TableProxy(NodeEngineImpl nodeEngine, TableService tableService, String name) {
         super(nodeEngine, tableService);
-        this.requestService = nodeEngine.getRequestService();
+        this.altoRuntime = nodeEngine.getRequestService();
         this.name = name;
         this.partitionCount = nodeEngine.getPartitionService().getPartitionCount();
         this.requestAllocator = new ConcurrentIOBufferAllocator(128, true);
-        this.requestTimeoutMs = requestService.getRequestTimeoutMs();
-        this.partitionActorRefs = requestService.partitionActorRefs();
+        this.requestTimeoutMs = altoRuntime.getRequestTimeoutMs();
+        this.partitionActorRefs = altoRuntime.partitionActorRefs();
     }
 
     @Override
     public Pipeline newPipeline() {
-        return new PipelineImpl(requestService, requestAllocator);
+        return new PipelineImpl(altoRuntime, requestAllocator);
     }
 
     @Override
@@ -182,7 +182,7 @@ public class TableProxy<K, V> extends AbstractDistributedObject implements Table
 
     @Override
     public BulkTransport newBulkTransport(Address address, int parallelism) {
-        return new BulkTransportImpl(requestService, address, parallelism);
+        return new BulkTransportImpl(altoRuntime, address, parallelism);
     }
 
     @Override

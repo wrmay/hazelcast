@@ -1,7 +1,7 @@
 package com.hazelcast.internal.alto.bootstrap;
 
 import com.hazelcast.cluster.Address;
-import com.hazelcast.internal.alto.runtime.RequestService;
+import com.hazelcast.internal.alto.runtime.AltoRuntime;
 import com.hazelcast.internal.serialization.InternalSerializationService;
 import com.hazelcast.internal.tpc.TpcEngine;
 import com.hazelcast.logging.ILogger;
@@ -45,7 +45,7 @@ public class TpcBootstrap {
 
     public TpcBootstrap(NodeEngineImpl nodeEngine) {
         this.nodeEngine = nodeEngine;
-        this.logger = nodeEngine.getLogger(RequestService.class);
+        this.logger = nodeEngine.getLogger(AltoRuntime.class);
         this.ss = (InternalSerializationService) nodeEngine.getSerializationService();
         this.enabled = Boolean.parseBoolean(getProperty("reactor.enabled", "false"));
         logger.info("TPC: " + (enabled ? "enabled" : "disabled"));

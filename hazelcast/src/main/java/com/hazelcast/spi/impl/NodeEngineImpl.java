@@ -24,6 +24,7 @@ import com.hazelcast.config.WanReplicationRef;
 import com.hazelcast.core.HazelcastException;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.instance.impl.Node;
+import com.hazelcast.internal.alto.runtime.AltoRuntime;
 import com.hazelcast.internal.cluster.ClusterService;
 import com.hazelcast.internal.diagnostics.Diagnostics;
 import com.hazelcast.internal.dynamicconfig.ClusterWideConfigurationService;
@@ -67,7 +68,6 @@ import com.hazelcast.spi.impl.operationservice.impl.OperationServiceImpl;
 import com.hazelcast.spi.impl.proxyservice.InternalProxyService;
 import com.hazelcast.spi.impl.proxyservice.impl.ProxyServiceImpl;
 import com.hazelcast.internal.alto.bootstrap.TpcBootstrap;
-import com.hazelcast.internal.alto.runtime.RequestService;
 import com.hazelcast.spi.impl.servicemanager.ServiceInfo;
 import com.hazelcast.spi.impl.servicemanager.ServiceManager;
 import com.hazelcast.spi.impl.servicemanager.impl.ServiceManagerImpl;
@@ -133,7 +133,7 @@ public class NodeEngineImpl implements NodeEngine {
     private final ConcurrencyDetection concurrencyDetection;
     private final TenantControlServiceImpl tenantControlService;
     private final TpcBootstrap tpcBootstrap;
-    private final RequestService requestService;
+    private final AltoRuntime altoRuntime;
 
     @SuppressWarnings("checkstyle:executablestatementcount")
     public NodeEngineImpl(Node node) {
@@ -149,9 +149,9 @@ public class NodeEngineImpl implements NodeEngine {
             this.serviceManager = new ServiceManagerImpl(this);
             this.executionService = new ExecutionServiceImpl(this);
             if (System.getProperty("alto.enabled", "false").equals("true")) {
-                this.requestService = new RequestService(this);
+                this.altoRuntime = new AltoRuntime(this);
             } else {
-                this.requestService = null;
+                this.altoRuntime = null;
             }
 
             this.tpcBootstrap = new TpcBootstrap(this);
@@ -204,8 +204,8 @@ public class NodeEngineImpl implements NodeEngine {
     }
 
 
-    public RequestService getRequestService() {
-        return requestService;
+    public AltoRuntime getRequestService() {
+        return altoRuntime;
     }
 
     private void checkMapMergePolicies(Node node) {
@@ -274,8 +274,8 @@ public class NodeEngineImpl implements NodeEngine {
         splitBrainProtectionService.start();
         sqlService.start();
         tpcBootstrap.start();
-        if (requestService != null) {
-            requestService.start();
+        if (altoRuntime != null) {
+            altoRuntime.start();
         }
         diagnostics.start();
         node.getNodeExtension().registerPlugins(diagnostics);
@@ -593,8 +593,8 @@ public class NodeEngineImpl implements NodeEngine {
         if (tpcBootstrap != null) {
             tpcBootstrap.shutdown();
         }
-        if (requestService != null) {
-            requestService.shutdown();
+        if (altoRuntime != null) {
+            altoRuntime.shutdown();
         }
     }
 

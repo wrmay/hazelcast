@@ -16,12 +16,12 @@
 
 package com.hazelcast.table.impl;
 
+import com.hazelcast.internal.alto.runtime.AltoRuntime;
 import com.hazelcast.internal.util.collection.Long2ObjectHashMap;
 import com.hazelcast.internal.tpc.SyncSocket;
 import com.hazelcast.internal.tpc.iobuffer.IOBuffer;
 import com.hazelcast.internal.tpc.iobuffer.IOBufferAllocator;
 import com.hazelcast.internal.alto.runtime.FrameCodec;
-import com.hazelcast.internal.alto.runtime.RequestService;
 import com.hazelcast.table.Pipeline;
 
 import java.util.List;
@@ -32,14 +32,14 @@ import static com.hazelcast.internal.alto.runtime.OpCodes.NOOP;
 // todo: we don't need a IOBuffer for all the requests. We should just add to an existing IOBuffer.
 public final class PipelineImpl implements Pipeline {
 
-    private final RequestService requestService;
+    private final AltoRuntime altoRuntime;
     private final IOBufferAllocator requestAllocator;
     private final Long2ObjectHashMap longToObjectHashMap = new Long2ObjectHashMap();
     private int partitionId = -1;
     private SyncSocket syncSocket;
 
-    public PipelineImpl(RequestService requestService, IOBufferAllocator requestAllocator) {
-        this.requestService = requestService;
+    public PipelineImpl(AltoRuntime altoRuntime, IOBufferAllocator requestAllocator) {
+        this.altoRuntime = altoRuntime;
         this.requestAllocator = requestAllocator;
     }
 
@@ -59,18 +59,18 @@ public final class PipelineImpl implements Pipeline {
         FrameCodec.constructComplete(request);
 
 
-        //requestService.invokeOnPartition();
+        //altoRuntime.invokeOnPartition();
     }
 
     @Override
     public void execute() {
-        //requestService.invokeOnPartition(this);
+        //altoRuntime.invokeOnPartition(this);
     }
 
     public void await(){
 //        for(Future<IOBuffer> f: futures){
 //            try {
-//                IOBuffer buf = f.get(requestService.getRequestTimeoutMs(), MILLISECONDS);
+//                IOBuffer buf = f.get(altoRuntime.getRequestTimeoutMs(), MILLISECONDS);
 //                buf.release();
 //            } catch (Exception e) {
 //                throw new RuntimeException(e);

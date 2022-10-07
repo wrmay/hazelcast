@@ -39,20 +39,20 @@ public final class PartitionActorRef extends ActorRef<IOBuffer> {
     private final InternalPartitionService partitionService;
     private final Address thisAddress;
     private final Requests requests;
-    private final RequestService requestService;
+    private final AltoRuntime altoRuntime;
     private final Eventloop eventloop;
 
     public PartitionActorRef(int partitionId,
                              InternalPartitionService partitionService,
                              TpcEngine engine,
-                             RequestService requestService,
+                             AltoRuntime altoRuntime,
                              Address thisAddress,
                              Requests requests) {
         this.partitionId = partitionId;
         this.partitionService = partitionService;
         this.thisAddress = thisAddress;
         this.requests = requests;
-        this.requestService = requestService;
+        this.altoRuntime = altoRuntime;
         this.eventloop = engine.eventloop(hashToIndex(partitionId, engine.eventloopCount()));
     }
 
@@ -70,7 +70,7 @@ public final class PartitionActorRef extends ActorRef<IOBuffer> {
         } else {
             // todo: this should in theory not be needed. We could use the last
             // address and only in case of a redirect, we update.
-            TcpServerConnection connection = requestService.getConnection(address);
+            TcpServerConnection connection = altoRuntime.getConnection(address);
 
             AsyncSocket socket = connection.sockets[hashToIndex(partitionId, connection.sockets.length)];
 

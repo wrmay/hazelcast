@@ -4,7 +4,7 @@ import com.hazelcast.bulktransport.BulkTransport;
 import com.hazelcast.cluster.Address;
 import com.hazelcast.internal.tpc.AsyncSocket;
 import com.hazelcast.internal.tpc.iobuffer.IOBufferAllocator;
-import com.hazelcast.internal.alto.runtime.RequestService;
+import com.hazelcast.internal.alto.runtime.AltoRuntime;
 
 import java.io.File;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -12,15 +12,15 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class BulkTransportImpl implements BulkTransport {
 
     private final AtomicBoolean isClosed = new AtomicBoolean(false);
-    private final RequestService requestService;
+    private final AltoRuntime altoRuntime;
     private final Address address;
     private final int reactor;
     private final int receiveBufferSize;
     private AsyncSocket[] channels;
     private IOBufferAllocator frameAllocator;
 
-    public BulkTransportImpl(RequestService requestService, Address address, int reactor) {
-        this.requestService = requestService;
+    public BulkTransportImpl(AltoRuntime altoRuntime, Address address, int reactor) {
+        this.altoRuntime = altoRuntime;
         this.address = address;
         this.reactor = reactor;
         this.receiveBufferSize = 0;
@@ -35,7 +35,7 @@ public class BulkTransportImpl implements BulkTransport {
     public void connect() {
 //        CompletableFuture[] futures = new CompletableFuture[channels.length];
 //        for (int k = 0; k < futures.length; k++) {
-//            futures[k] = requestService.connect(null, 0);
+//            futures[k] = altoRuntime.connect(null, 0);
 //        }
 
         //CompletableFuture.allOf(futures);
@@ -61,11 +61,11 @@ public class BulkTransportImpl implements BulkTransport {
 //                    .writeRequestHeader(-1, INIT_BULK_TRANSPORT)
 //                    .constructComplete();
 //
-//            requestService.invoke(request, channel).thenAccept(o -> {
+//            altoRuntime.invoke(request, channel).thenAccept(o -> {
 //                IOBuffer request1 = frameAllocator.allocate()
 //                        .writeRequestHeader(-1, BULK_TRANSPORT)
 //                        .constructComplete();
-//                CompletableFuture future1 = requestService.invoke(request1, channel);
+//                CompletableFuture future1 = altoRuntime.invoke(request1, channel);
 //            });
 //        }
 
