@@ -189,7 +189,7 @@ public final class OperationServiceImpl implements StaticMetricsProvider, LiveOp
 
         if (nodeEngine.getTpcBootstrap().isEnabled()) {
             logger.info("Using TPCOperationExecutor");
-            TpcEngine engine = nodeEngine.getTpcBootstrap().getEngine();
+            TpcEngine engine = nodeEngine.getTpcBootstrap().getTpcEngine();
             this.operationExecutor = new TPCOperationExecutor(
                     properties, node.loggingService, engine, thisAddress, new OperationRunnerFactoryImpl(this),
                     node.getNodeExtension(), hzName, configClassLoader);

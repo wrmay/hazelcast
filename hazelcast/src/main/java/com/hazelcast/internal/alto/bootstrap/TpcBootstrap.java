@@ -38,7 +38,7 @@ public class TpcBootstrap {
     private final boolean writeThrough;
     private final boolean regularSchedule;
     public volatile boolean shuttingdown = false;
-    private TpcEngine engine;
+    private TpcEngine tpcEngine;
     private final Map<Eventloop, Supplier<? extends ReadHandler>> readHandlerSuppliers = new HashMap<>();
     private List<AsyncServerSocket> serverSockets = new ArrayList<>();
     private final boolean enabled;
@@ -53,7 +53,7 @@ public class TpcBootstrap {
         this.regularSchedule = Boolean.parseBoolean(getProperty("reactor.regular-schedule", "true"));
         this.socketCount = Integer.parseInt(getProperty("reactor.channels", "" + Runtime.getRuntime().availableProcessors()));
         this.thisAddress = nodeEngine.getThisAddress();
-        this.engine = newEngine();
+        this.tpcEngine = newTpcEngine();
         this.socketConfig = new SocketConfig();
     }
 
@@ -61,11 +61,11 @@ public class TpcBootstrap {
         return enabled;
     }
 
-    public TpcEngine getEngine() {
-        return engine;
+    public TpcEngine getTpcEngine() {
+        return tpcEngine;
     }
 
-    private TpcEngine newEngine() {
+    private TpcEngine newTpcEngine() {
         if (!enabled) {
             return null;
         }
@@ -89,9 +89,9 @@ public class TpcBootstrap {
         }
 
         logger.info("Starting TpcBootstrap");
-        engine.start();
+        tpcEngine.start();
 
-        Eventloop.Type eventloopType = engine.eventloopType();
+        Eventloop.Type eventloopType = tpcEngine.eventloopType();
         switch (eventloopType) {
             case NIO:
                 startNio();
@@ -102,8 +102,8 @@ public class TpcBootstrap {
     }
 
     private void startNio() {
-        for (int k = 0; k < engine.eventloopCount(); k++) {
-            NioEventloop eventloop = (NioEventloop) engine.eventloop(k);
+        for (int k = 0; k < tpcEngine.eventloopCount(); k++) {
+            NioEventloop eventloop = (NioEventloop) tpcEngine.eventloop(k);
 
             Supplier<NioAsyncReadHandler> readHandlerSupplier = () -> {
                 out.println("TPC Server: Making ClientNioAsyncReadHandler");
@@ -136,7 +136,7 @@ public class TpcBootstrap {
     }
 
     private int toPort(Address address, int socketId) {
-        return (address.getPort() - 5701) * 100 + 11000 + socketId % engine.eventloopCount();
+        return (address.getPort() - 5701) * 100 + 11000 + socketId % tpcEngine.eventloopCount();
     }
 
     public void shutdown() {
@@ -147,10 +147,10 @@ public class TpcBootstrap {
         logger.info("TcpBootstrap shutdown");
 
         shuttingdown = true;
-        engine.shutdown();
+        tpcEngine.shutdown();
 
         try {
-            engine.awaitTermination(5, SECONDS);
+            tpcEngine.awaitTermination(5, SECONDS);
         } catch (InterruptedException e) {
             logger.warning("TpcEngine failed to terminate.");
             Thread.currentThread().interrupt();
