@@ -106,7 +106,7 @@ public class AltoRuntime {
     public volatile boolean shuttingdown = false;
     public final Managers managers;
     private final RequestRegistry requestRegistry;
-    private TpcEngine engine;
+    private TpcEngine tpcEngine;
     private final int concurrentRequestLimit;
     private final Map<Eventloop, Supplier<? extends ReadHandler>> readHandlerSuppliers = new HashMap<>();
     private PartitionActorRef[] partitionActorRefs;
@@ -133,7 +133,7 @@ public class AltoRuntime {
                 responseThreadSpin,
                 requestRegistry);
         this.thisAddress = nodeEngine.getThisAddress();
-        this.engine = newEngine();
+        this.tpcEngine = newEngine();
 
         this.socketConfig = new SocketConfig();
         this.managers = new Managers();
@@ -141,8 +141,8 @@ public class AltoRuntime {
         managers.tableManager = new TableManager(partitionActorRefs.length);
     }
 
-    public TpcEngine getEngine() {
-        return engine;
+    public TpcEngine getTpcEngine() {
+        return tpcEngine;
     }
 
     public int getRequestTimeoutMs() {
@@ -181,10 +181,10 @@ public class AltoRuntime {
     }
 
     public void start() {
-        logger.info("Starting AltoRuntime");
-        engine.start();
+        logger.info("AltoRuntime starting");
+        tpcEngine.start();
 
-        Eventloop.Type eventloopType = engine.eventloopType();
+        Eventloop.Type eventloopType = tpcEngine.eventloopType();
         switch (eventloopType) {
             case NIO:
                 startNio();
@@ -205,16 +205,18 @@ public class AltoRuntime {
             partitionActorRefs[partitionId] = new PartitionActorRef(
                     partitionId,
                     nodeEngine.getPartitionService(),
-                    engine,
+                    tpcEngine,
                     this,
                     thisAddress,
                     requestRegistry.getByPartitionId(partitionId));
         }
+
+        logger.info("AltoRuntime started");
     }
 
     private void startNio() {
-        for (int k = 0; k < engine.eventloopCount(); k++) {
-            NioEventloop eventloop = (NioEventloop) engine.eventloop(k);
+        for (int k = 0; k < tpcEngine.eventloopCount(); k++) {
+            NioEventloop eventloop = (NioEventloop) tpcEngine.eventloop(k);
 
             Supplier<NioAsyncReadHandler> readHandlerSupplier = () -> {
                 RequestNioReadHandler readHandler = new RequestNioReadHandler();
@@ -257,8 +259,8 @@ public class AltoRuntime {
     }
 
     private void startIOUring() {
-        for (int k = 0; k < engine.eventloopCount(); k++) {
-            IOUringEventloop eventloop = (IOUringEventloop) engine.eventloop(k);
+        for (int k = 0; k < tpcEngine.eventloopCount(); k++) {
+            IOUringEventloop eventloop = (IOUringEventloop) tpcEngine.eventloop(k);
             try {
                 Supplier<IOUringAsyncReadHandler> readHandlerSupplier = () -> {
                     RequestIOUringReadHandler readHandler = new RequestIOUringReadHandler();
@@ -296,8 +298,8 @@ public class AltoRuntime {
     }
 
     private void startEpoll() {
-        for (int k = 0; k < engine.eventloopCount(); k++) {
-            EpollEventloop eventloop = (EpollEventloop) engine.eventloop(k);
+        for (int k = 0; k < tpcEngine.eventloopCount(); k++) {
+            EpollEventloop eventloop = (EpollEventloop) tpcEngine.eventloop(k);
             try {
                 Supplier<EpollReadHandler> readHandlerSupplier = () -> {
                     RequestEpollReadHandler readHandler = new RequestEpollReadHandler();
@@ -335,7 +337,7 @@ public class AltoRuntime {
     }
 
     public int toPort(Address address, int socketId) {
-        return (address.getPort() - 5701) * 100 + 11000 + socketId % engine.eventloopCount();
+        return (address.getPort() - 5701) * 100 + 11000 + socketId % tpcEngine.eventloopCount();
     }
 
     private void ensureActive() {
@@ -349,14 +351,14 @@ public class AltoRuntime {
 
         shuttingdown = true;
 
-        engine.shutdown();
+        tpcEngine.shutdown();
 
         requestRegistry.shutdown();
 
         responseHandler.shutdown();
 
         try {
-            engine.awaitTermination(5, SECONDS);
+            tpcEngine.awaitTermination(5, SECONDS);
         } catch (InterruptedException e) {
             logger.warning("TpcEngine failed to terminate.");
             Thread.currentThread().interrupt();
@@ -425,11 +427,11 @@ public class AltoRuntime {
     }
 
     public AsyncSocket connect(SocketAddress address, int channelIndex) {
-        int eventloopIndex = HashUtil.hashToIndex(channelIndex, engine.eventloopCount());
-        Eventloop eventloop = engine.eventloop(eventloopIndex);
+        int eventloopIndex = HashUtil.hashToIndex(channelIndex, tpcEngine.eventloopCount());
+        Eventloop eventloop = tpcEngine.eventloop(eventloopIndex);
 
         AsyncSocket socket;
-        switch (engine.eventloopType()) {
+        switch (tpcEngine.eventloopType()) {
             case NIO:
                 NioAsyncSocket nioSocket = NioAsyncSocket.open();
                 nioSocket.setWriteThrough(writeThrough);
