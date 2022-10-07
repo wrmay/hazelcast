@@ -27,6 +27,8 @@ import com.hazelcast.internal.tpc.nio.NioEventloop;
 import com.hazelcast.internal.tpc.epoll.EpollEventloop;
 import com.hazelcast.internal.tpc.iouring.IOUringEventloop;
 import com.hazelcast.internal.tpc.nio.NioEventloop.NioConfiguration;
+import com.hazelcast.logging.ILogger;
+import com.hazelcast.logging.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,6 +54,7 @@ import static java.lang.System.getProperty;
  */
 public final class TpcEngine {
 
+    private final ILogger logger = Logger.getLogger(getClass());
     private final boolean monitorSilent;
     private final Eventloop.Type eventloopType;
     private final int eventloopCount;
@@ -170,7 +173,7 @@ public final class TpcEngine {
      * @throws IllegalStateException if
      */
     public void start() {
-        System.out.println("Starting " + eventloopCount + " eventloops");
+        logger.info("Starting " + eventloopCount + " eventloops");
 
         for (; ; ) {
             State oldState = state.get();
@@ -293,7 +296,7 @@ public final class TpcEngine {
         TERMINATED
     }
 
-    private static final class MonitorThread extends Thread {
+    private final class MonitorThread extends Thread {
 
         private final Eventloop[] eventloops;
         private final boolean silent;
@@ -346,7 +349,7 @@ public final class TpcEngine {
                     }
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                logge.printStackTrace();
             }
         }
 
