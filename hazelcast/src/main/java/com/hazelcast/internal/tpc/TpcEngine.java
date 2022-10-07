@@ -296,7 +296,7 @@ public final class TpcEngine {
         TERMINATED
     }
 
-    private final class MonitorThread extends Thread {
+    static private final class MonitorThread extends Thread {
 
         private final Eventloop[] eventloops;
         private final boolean silent;
@@ -349,7 +349,7 @@ public final class TpcEngine {
                     }
                 }
             } catch (Exception e) {
-                logge.printStackTrace();
+                e.printStackTrace();
             }
         }
 
