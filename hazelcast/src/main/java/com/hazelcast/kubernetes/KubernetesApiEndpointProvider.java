@@ -90,12 +90,7 @@ class KubernetesApiEndpointProvider
             // Service must point to exactly one endpoint address, otherwise the public IP would be ambiguous.
             if (endpoints.size() == 1) {
                 EndpointAddress address = endpoints.get(0).getPrivateAddress();
-                System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-                System.out.println("Private addresses: " + privateAddresses);
-                System.out.println("Address: " + address);
                 for (EndpointAddress privateAddress : privateAddresses) {
-                    System.out.println(privateAddress.getIp() + "==" + address.getIp() + "="
-                            + privateAddress.getIp().equals(address.getIp()));
                     if (privateAddress.getIp().equals(address.getIp())) {
                         // If multiple services match the pod, then match service and pod names
                         if (!result.containsKey(address) || service.equals(extractTargetRefName(item))) {
