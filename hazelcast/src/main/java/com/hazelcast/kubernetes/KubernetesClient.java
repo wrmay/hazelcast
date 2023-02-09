@@ -453,6 +453,7 @@ class KubernetesClient {
             }
             // If expose-externally not set (exposeExternallyMode == ExposeExternallyMode.AUTO), silently ignore any exception
             LOGGER.finest(e);
+            e.printStackTrace();
             // Log warning only once.
             if (!isNoPublicIpAlreadyLogged) {
                 LOGGER.warning(

@@ -20,6 +20,8 @@ import com.hazelcast.internal.json.JsonArray;
 import com.hazelcast.internal.json.JsonObject;
 import com.hazelcast.internal.json.JsonValue;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -78,13 +80,13 @@ interface KubernetesApiProvider {
         return result;
     }
 
-    default KubernetesClientException noCorrespondingServicesException(Set<EndpointAddress> endpoints) {
+    default KubernetesClientException noCorrespondingServicesException(Set<String> endpoints) {
         return new KubernetesClientException(String.format("Cannot expose externally, the following Hazelcast"
                                    + " member pods do not have corresponding Kubernetes services: %s", endpoints));
     }
 
 
-    default KubernetesClientException noNodeNameAssignedException(Set<EndpointAddress> endpoints) {
+    default KubernetesClientException noNodeNameAssignedException(Set<String> endpoints) {
         return new KubernetesClientException(String.format("Cannot expose externally, the following Hazelcast"
                                    + " member pods do not have corresponding Endpoint.nodeName value assigned: %s", endpoints));
     }
