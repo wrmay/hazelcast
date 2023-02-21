@@ -63,6 +63,8 @@ public class KubernetesApiEndpointSlicesProvider
                                                         List<EndpointAddress> privateAddresses) {
         Map<EndpointAddress, String> result = new HashMap<>();
         Set<String> left = privateAddresses.stream().map(EndpointAddress::getIp).collect(Collectors.toSet());
+        Set<String> privateAddressesIp = privateAddresses.stream().map(EndpointAddress::getIp).collect(Collectors.toSet());
+        System.out.println("The list of addresses is: " + left);
         for (JsonValue item : toJsonArray(endpointsListJson.get("items"))) {
             JsonValue ownerRefsValue = item.asObject().get("metadata").asObject().get("ownerReferences");
             if (ownerRefsValue == null || ownerRefsValue.asArray().size() > 1
@@ -75,7 +77,8 @@ public class KubernetesApiEndpointSlicesProvider
             // Service must point to exactly one endpoint address, otherwise the public IP would be ambiguous.
             if (endpoints.size() == 1) {
                 EndpointAddress address = endpoints.get(0).getPrivateAddress();
-                if (privateAddresses.contains(address)) {
+                System.out.println("What to do with " + address.getIp() + "?");
+                if (privateAddressesIp.contains(address.getIp())) {
                     // If multiple services match the pod, then match service and pod names
                     if (!result.containsKey(address) || service.equals(extractTargetRefName(item))) {
                         result.put(address, service);

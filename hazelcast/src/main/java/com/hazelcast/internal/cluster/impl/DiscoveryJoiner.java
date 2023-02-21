@@ -82,13 +82,25 @@ public class DiscoveryJoiner
                 if (!usePublicAddress && discoveryNode.getPublicAddress() != null) {
                     // enrich member with client public address
                     localMember.getAddressMap().put(EndpointQualifier.resolve(ProtocolType.CLIENT, "public"),
-                            publicAddress(localMember, discoveryNode));
+                            publicAddressAndPort(localMember, discoveryNode));
                 }
                 continue;
             }
             possibleMembers.add(discoveredAddress);
         }
         return possibleMembers;
+    }
+
+    private Address publicAddressAndPort(MemberImpl localMember, DiscoveryNode discoveryNode) {
+        if (localMember.getAddressMap().containsKey(EndpointQualifier.CLIENT)) {
+            try {
+                return new Address(discoveryNode.getPublicAddress());
+            } catch (Exception e) {
+                logger.fine(e);
+                // Return default public address since public host with the (advanced network) client port cannot be resolved
+            }
+        }
+        return discoveryNode.getPublicAddress();
     }
 
     private Address publicAddress(MemberImpl localMember, DiscoveryNode discoveryNode) {

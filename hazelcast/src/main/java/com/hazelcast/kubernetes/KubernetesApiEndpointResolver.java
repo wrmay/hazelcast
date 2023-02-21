@@ -79,9 +79,11 @@ class KubernetesApiEndpointResolver
     }
 
     private void addAddress(List<DiscoveryNode> discoveredNodes, Endpoint endpoint) {
+        System.out.println("Adding address" + endpoint);
         if (Boolean.TRUE.equals(resolveNotReadyAddresses) || endpoint.isReady()) {
             Address privateAddress = createAddress(endpoint.getPrivateAddress());
-            Address publicAddress = createAddress(endpoint.getPublicAddress());
+            Address publicAddress = createAddress2(endpoint.getPublicAddress());
+            System.out.println("Added " + privateAddress + " to " + publicAddress);
             discoveredNodes
                     .add(new SimpleDiscoveryNode(privateAddress, publicAddress, endpoint.getAdditionalProperties()));
             if (logger.isFinestEnabled()) {
@@ -101,12 +103,36 @@ class KubernetesApiEndpointResolver
         return new Address(inetAddress, port);
     }
 
+    private Address createAddress2(KubernetesClient.EndpointAddress address) {
+        if (address == null) {
+            return null;
+        }
+        String ip = address.getIp();
+        InetAddress inetAddress = mapAddress(ip);
+        int port = port2(address);
+        return new Address(inetAddress, port);
+    }
+
     private int port(KubernetesClient.EndpointAddress address) {
         if (this.port > 0) {
             return this.port;
         }
         if (address.getPort() != null) {
             return address.getPort();
+        }
+        return NetworkConfig.DEFAULT_PORT;
+    }
+
+    private int port2(KubernetesClient.EndpointAddress address) {
+        // private:5701 -> public:30005
+        // private -> public
+        // private -> public
+        //
+        if (address.getPort() != null) {
+            return address.getPort();
+        }
+        if (this.port > 0) {
+            return this.port;
         }
         return NetworkConfig.DEFAULT_PORT;
     }

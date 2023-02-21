@@ -21,7 +21,6 @@ import com.hazelcast.internal.json.JsonValue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -29,8 +28,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.hazelcast.kubernetes.KubernetesApiProvider.toJsonArray;
 import static com.hazelcast.kubernetes.KubernetesApiProvider.convertToString;
+import static com.hazelcast.kubernetes.KubernetesApiProvider.toJsonArray;
 import static com.hazelcast.kubernetes.KubernetesClient.Endpoint;
 import static com.hazelcast.kubernetes.KubernetesClient.EndpointAddress;
 
@@ -138,6 +137,9 @@ class KubernetesApiEndpointProvider
                 Map<EndpointAddress, String> nodes = new HashMap<>();
                 nodes.putAll(extractNodes(subsetObject.get("addresses"), ports));
                 nodes.putAll(extractNodes(subsetObject.get("notReadyAddresses"), ports));
+                System.out.println("~~~~~~~~~~~~~~~");
+                System.out.println("Nodes: " + nodes);
+                System.out.println("PrivateAddresses: " + privateAddresses);
                 for (Map.Entry<EndpointAddress, String> nodeEntry : nodes.entrySet()) {
                     EndpointAddress address = nodeEntry.getKey();
                     if (privateAddresses.stream().map(EndpointAddress::getIp).anyMatch(ip -> address.getIp().equals(ip))) {

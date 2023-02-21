@@ -416,8 +416,8 @@ class KubernetesClient {
             Map<EndpointAddress, String> services = apiProvider.extractServices(endpointsJson, privateAddresses);
             Map<EndpointAddress, String> nodeAddresses = apiProvider.extractNodes(endpointsJson, privateAddresses);
 
-            Map<EndpointAddress, String> publicIps = new HashMap<>();
-            Map<EndpointAddress, Integer> publicPorts = new HashMap<>();
+            Map<String, String> publicIps = new HashMap<>();
+            Map<String, Integer> publicPorts = new HashMap<>();
             Map<String, String> cachedNodePublicIps = new HashMap<>();
 
             for (Map.Entry<EndpointAddress, String> serviceEntry : services.entrySet()) {
@@ -428,8 +428,8 @@ class KubernetesClient {
                 try {
                     String loadBalancerAddress = extractLoadBalancerAddress(serviceJson);
                     Integer servicePort = extractServicePort(serviceJson);
-                    publicIps.put(privateAddress, loadBalancerAddress);
-                    publicPorts.put(privateAddress, servicePort);
+                    publicIps.put(privateAddress.getIp(), loadBalancerAddress);
+                    publicPorts.put(privateAddress.getIp(), servicePort);
                 } catch (Exception e) {
                     // Load Balancer public IP cannot be found, try using NodePort.
                     Integer nodePort = extractNodePort(serviceJson);
@@ -441,12 +441,12 @@ class KubernetesClient {
                         nodePublicAddress = externalAddressForNode(node);
                         cachedNodePublicIps.put(node, nodePublicAddress);
                     }
-                    publicIps.put(privateAddress, nodePublicAddress);
-                    publicPorts.put(privateAddress, nodePort);
+                    publicIps.put(privateAddress.getIp(), nodePublicAddress);
+                    publicPorts.put(privateAddress.getIp(), nodePort);
                 }
             }
 
-            return createEndpoints(endpoints, publicIps, publicPorts);
+            return createEndpoints2(endpoints, publicIps, publicPorts);
         } catch (Exception e) {
             if (exposeExternallyMode == ExposeExternallyMode.ENABLED) {
                 throw e;
@@ -547,6 +547,20 @@ class KubernetesClient {
                     publicPorts.get(privateAddress), privateAddress.getTargetRefName());
             result.add(new Endpoint(privateAddress, publicAddress, endpoint.isReady(), endpoint.getAdditionalProperties()));
         }
+        System.out.println("Return these endpoints: " + result);
+        return result;
+    }
+
+    private static List<Endpoint> createEndpoints2(List<Endpoint> endpoints, Map<String, String> publicIps,
+                                                  Map<String, Integer> publicPorts) {
+        List<Endpoint> result = new ArrayList<>();
+        for (Endpoint endpoint : endpoints) {
+            EndpointAddress privateAddress = endpoint.getPrivateAddress();
+            EndpointAddress publicAddress = new EndpointAddress(publicIps.get(privateAddress.getIp()),
+                    publicPorts.get(privateAddress.getIp()), privateAddress.getTargetRefName());
+            result.add(new Endpoint(privateAddress, publicAddress, endpoint.isReady(), endpoint.getAdditionalProperties()));
+        }
+        System.out.println("Return these endpoints: " + result);
         return result;
     }
 
