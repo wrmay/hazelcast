@@ -46,6 +46,7 @@ import com.hazelcast.instance.BuildInfo;
 import com.hazelcast.instance.BuildInfoProvider;
 import com.hazelcast.instance.EndpointQualifier;
 import com.hazelcast.instance.ProtocolType;
+import com.hazelcast.internal.alto.AltoRuntime;
 import com.hazelcast.internal.ascii.TextCommandService;
 import com.hazelcast.internal.cluster.Joiner;
 import com.hazelcast.internal.cluster.impl.ClusterJoinManager;
@@ -188,6 +189,7 @@ public class Node {
     private final HealthMonitor healthMonitor;
     private final Joiner joiner;
     private final LocalAddressRegistry localAddressRegistry;
+    private final AltoRuntime altoRuntime;
     private ManagementCenterService managementCenterService;
 
     // it can be changed on cluster service reset see: ClusterServiceImpl#resetLocalMemberUuid
@@ -290,6 +292,12 @@ public class Node {
             textCommandService = nodeExtension.createTextCommandService();
             multicastService = createMulticastService(addressPicker.getBindAddress(MEMBER), this, config, logger);
             joiner = nodeContext.createJoiner(this);
+
+            if (System.getProperty("hazelcast.alto.enabled", "false").equals("true")) {
+                this.altoRuntime = new AltoRuntime(this);
+            } else {
+                this.altoRuntime = null;
+            }
         } catch (Throwable e) {
             try {
                 if (tmpLogger == null) {
@@ -308,6 +316,11 @@ public class Node {
             throw rethrow(e);
         }
     }
+
+    public AltoRuntime getAltoRuntime() {
+        return altoRuntime;
+    }
+
 
     private boolean hasClientServerSocket() {
         if (!config.getAdvancedNetworkConfig().isEnabled()) {
@@ -485,6 +498,11 @@ public class Node {
         hazelcastInstance.lifecycleService.fireLifecycleEvent(LifecycleState.STARTING);
         clusterService.sendLocalMembershipEvent();
         server.start();
+
+        if (altoRuntime != null) {
+            altoRuntime.start();
+        }
+
         JoinConfig join = getActiveMemberNetworkConfig(config).getJoin();
         if (shouldUseMulticastJoiner(join)) {
             final Thread multicastServiceThread = new Thread(multicastService,
@@ -521,6 +539,8 @@ public class Node {
         nodeExtension.afterStart();
         nodeExtension.sendPhoneHome();
         healthMonitor.start();
+
+
     }
 
     @SuppressWarnings("checkstyle:npathcomplexity")
@@ -571,9 +591,18 @@ public class Node {
                 shuttingDown.compareAndSet(true, false);
             }
         }
+
+        if (altoRuntime != null) {
+            altoRuntime.shutdown();
+        }
     }
 
     private void callGracefulShutdownAwareServices(final int maxWaitSeconds) {
+        if(true) {
+            return;
+        }
+
+
         ExecutorService executor = nodeEngine.getExecutionService().getExecutor(GRACEFUL_SHUTDOWN_EXECUTOR_NAME);
         Collection<GracefulShutdownAwareService> services = nodeEngine.getServices(GracefulShutdownAwareService.class);
         Collection<Future> futures = new ArrayList<Future>(services.size());

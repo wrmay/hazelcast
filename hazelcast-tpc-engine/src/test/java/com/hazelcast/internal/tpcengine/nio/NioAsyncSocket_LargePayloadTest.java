@@ -20,7 +20,6 @@ import com.hazelcast.internal.tpcengine.AsyncSocket_LargePayloadTest;
 import com.hazelcast.internal.tpcengine.ReactorBuilder;
 
 public class NioAsyncSocket_LargePayloadTest extends AsyncSocket_LargePayloadTest {
-
     @Override
     public ReactorBuilder newReactorBuilder() {
         return new NioReactorBuilder();

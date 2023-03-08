@@ -51,8 +51,12 @@ public abstract class AsyncSocket_LargePayloadTest {
 
     @Before
     public void before() {
-        clientReactor = newReactorBuilder().build().start();
-        serverReactor = newReactorBuilder().build().start();
+        clientReactor = newReactorBuilder()
+                .build()
+                .start();
+        serverReactor = newReactorBuilder()
+                .build()
+                .start();
     }
 
     @After
@@ -233,11 +237,11 @@ public abstract class AsyncSocket_LargePayloadTest {
         AsyncServerSocket serverSocket = serverReactor.newAsyncServerSocketBuilder()
                 .set(SO_RCVBUF, SOCKET_BUFFER_SIZE)
                 .setAcceptConsumer(acceptRequest -> {
-                    AsyncSocketBuilder channelBuilder = serverReactor.newAsyncSocketBuilder(acceptRequest);
-                    channelBuilder.set(TCP_NODELAY, true);
-                    channelBuilder.set(SO_SNDBUF, SOCKET_BUFFER_SIZE);
-                    channelBuilder.set(SO_RCVBUF, SOCKET_BUFFER_SIZE);
-                    channelBuilder.setReadHandler(new ServerReadHandler());
+                    AsyncSocketBuilder channelBuilder = serverReactor.newAsyncSocketBuilder(acceptRequest)
+                            .set(TCP_NODELAY, true)
+                            .set(SO_SNDBUF, SOCKET_BUFFER_SIZE)
+                            .set(SO_RCVBUF, SOCKET_BUFFER_SIZE)
+                            .setReadHandler(new ServerReadHandler());
                     AsyncSocket socket = channelBuilder.build();
                     socket.start();
                 })

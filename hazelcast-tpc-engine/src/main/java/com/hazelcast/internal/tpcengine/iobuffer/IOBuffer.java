@@ -57,8 +57,8 @@ import static com.hazelcast.internal.tpcengine.util.BufferUtil.upcast;
 @SuppressWarnings({"checkstyle:VisibilityModifier", "checkstyle:MethodCount", "java:S1149", "java:S1135"})
 public class IOBuffer {
 
-    IOBuffer next;
-    AsyncSocket socket;
+    public IOBuffer next;
+    public AsyncSocket socket;
 
     boolean trackRelease;
     IOBufferAllocator allocator;
@@ -170,6 +170,14 @@ public class IOBuffer {
 
     public int getInt(int index) {
         return buff.getInt(index);
+    }
+
+    public int capacity(){
+        return buff.capacity();
+    }
+
+    public byte read(){
+        return buff.get();
     }
 
     public int readInt() {

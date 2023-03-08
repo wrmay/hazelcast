@@ -58,7 +58,7 @@ public abstract class AsyncServerSocketOptionsTest {
     }
 
     @Test
-    public void set_nullOption() {
+    public void test_set_nullOption() {
         AsyncServerSocket serverSocket = newServerSocket();
         AsyncSocketOptions options = serverSocket.options();
         assertThrows(NullPointerException.class, () -> options.set(null, 1));
@@ -114,8 +114,18 @@ public abstract class AsyncServerSocketOptionsTest {
     public void test_SO_RCVBUF() {
         AsyncServerSocket serverSocket = newServerSocket();
         AsyncSocketOptions options = serverSocket.options();
-        options.set(SO_RCVBUF, 64 * 1024);
-        assertEquals(Integer.valueOf(64 * 1024), options.get(SO_RCVBUF));
+        int rcvBuf = 64 * 1024;
+        options.set(SO_RCVBUF, rcvBuf);
+
+        // On Linux the receive buffer can be doubled.
+        int found = options.get(SO_RCVBUF);
+        if (found == rcvBuf) {
+            assertTrue(true);
+        } else if (found == 2 * rcvBuf) {
+            assertTrue(true);
+        } else {
+            fail("unexpected SO_RCVBUF:" + found);
+        }
     }
 
     @Test
