@@ -19,6 +19,7 @@ package com.hazelcast.internal.tpcengine.actor;
 
 import com.hazelcast.internal.tpcengine.Reactor;
 import com.hazelcast.internal.tpcengine.nio.NioReactor;
+import com.hazelcast.internal.tpcengine.nio.NioReactorBuilder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,7 +38,7 @@ public class ActorTest {
 
     @Before
     public void before() {
-        reactor = new NioReactor();
+        reactor = new NioReactorBuilder().build();
         reactor.start();
     }
 

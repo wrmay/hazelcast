@@ -34,7 +34,30 @@ public class IOUringAsyncSocketOptions implements AsyncSocketOptions {
     }
 
     @Override
-    public <T> T get(Option<T> option) {
+    public boolean isSupported(Option option) {
+        if (TCP_NODELAY.equals(option)) {
+            return true;
+        } else if (SO_RCVBUF.equals(option)) {
+            return true;
+        } else if (SO_SNDBUF.equals(option)) {
+            return true;
+        } else if (SO_KEEPALIVE.equals(option)) {
+            return true;
+        } else if (SO_REUSEADDR.equals(option)) {
+            return true;
+        } else if (TCP_KEEPCOUNT.equals(option)) {
+            return true;
+        } else if (TCP_KEEPINTERVAL.equals(option)) {
+            return true;
+        } else if (TCP_KEEPIDLE.equals(option)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public <T> T getIfSupported(Option<T> option) {
         checkNotNull(option, "option");
 
         try {
@@ -55,7 +78,7 @@ public class IOUringAsyncSocketOptions implements AsyncSocketOptions {
             } else if (TCP_KEEPIDLE.equals(option)) {
                 return (T) (Integer) nativeSocket.getTcpKeepAliveTime();
             } else {
-                throw new UnsupportedOperationException("Unrecognized option:" + option);
+                return null;
             }
         } catch (IOException e) {
             throw new UncheckedIOException("Failed to getOption [" + option.name() + "]", e);
@@ -64,31 +87,39 @@ public class IOUringAsyncSocketOptions implements AsyncSocketOptions {
 
     @SuppressWarnings("checkstyle:CyclomaticComplexity")
     @Override
-    public <T> void set(Option<T> option, T value) {
+    public <T> boolean setIfSupported(Option<T> option, T value) {
         checkNotNull(option, "option");
         checkNotNull(value, "value");
 
         try {
             if (TCP_NODELAY.equals(option)) {
                 nativeSocket.setTcpNoDelay((Boolean) value);
+                return true;
             } else if (SO_RCVBUF.equals(option)) {
                 nativeSocket.setReceiveBufferSize((Integer) value);
+                return true;
             } else if (SO_SNDBUF.equals(option)) {
                 nativeSocket.setSendBufferSize((Integer) value);
+                return true;
             } else if (SO_KEEPALIVE.equals(option)) {
                 nativeSocket.setKeepAlive((Boolean) value);
+                return true;
             } else if (SO_REUSEADDR.equals(option)) {
                 nativeSocket.setReuseAddress((Boolean) value);
+                return true;
 //            } else if (SO_TIMEOUT.equals(option)) {
 //                nativeSocket.setSoTimeout((Integer) value);
             } else if (TCP_KEEPCOUNT.equals(option)) {
                 nativeSocket.setTcpKeepAliveProbes((Integer) value);
+                return true;
             } else if (TCP_KEEPIDLE.equals(option)) {
                 nativeSocket.setTcpKeepAliveTime((Integer) value);
+                return true;
             } else if (TCP_KEEPINTERVAL.equals(option)) {
                 nativeSocket.setTcpKeepaliveIntvl((Integer) value);
+                return true;
             } else {
-                throw new UnsupportedOperationException("Unrecognized option:" + option);
+                return false;
             }
         } catch (IOException e) {
             throw new UncheckedIOException("Failed to setOption [" + option.name() + "] with value [" + value + "]", e);

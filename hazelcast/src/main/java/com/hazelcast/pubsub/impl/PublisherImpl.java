@@ -2,8 +2,8 @@ package com.hazelcast.pubsub.impl;
 
 import com.hazelcast.internal.alto.FrameCodec;
 import com.hazelcast.internal.alto.PartitionActorRef;
-import com.hazelcast.internal.tpc.iobuffer.ConcurrentIOBufferAllocator;
-import com.hazelcast.internal.tpc.iobuffer.IOBuffer;
+import com.hazelcast.internal.tpcengine.iobuffer.ConcurrentIOBufferAllocator;
+import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
 import com.hazelcast.pubsub.Publisher;
 
 import java.util.concurrent.CompletableFuture;

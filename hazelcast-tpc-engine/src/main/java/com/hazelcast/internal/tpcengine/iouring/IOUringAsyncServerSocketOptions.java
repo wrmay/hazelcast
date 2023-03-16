@@ -33,19 +33,37 @@ public class IOUringAsyncServerSocketOptions implements AsyncSocketOptions {
     }
 
     @Override
-    public <T> void set(Option<T> option, T value) {
+    public boolean isSupported(Option option) {
+        checkNotNull(option, "option");
+
+        if (SO_RCVBUF.equals(option)) {
+            return true;
+        } else if (SO_REUSEADDR.equals(option)) {
+            return true;
+        } else if (SO_REUSEPORT.equals(option)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public <T> boolean setIfSupported(Option<T> option, T value) {
         checkNotNull(option, "option");
         checkNotNull(value, "value");
 
         try {
             if (SO_RCVBUF.equals(option)) {
                 nativeSocket.setReceiveBufferSize((Integer) value);
+                return true;
             } else if (SO_REUSEADDR.equals(option)) {
                 nativeSocket.setReuseAddress((Boolean) value);
+                return true;
             } else if (SO_REUSEPORT.equals(option)) {
                 nativeSocket.setReusePort((Boolean) value);
+                return true;
             } else {
-                throw new UnsupportedOperationException("Unrecognized option " + option);
+                return false;
             }
         } catch (IOException e) {
             throw new UncheckedIOException("Failed to set " + option.name() + " with value [" + value + "]", e);
@@ -53,7 +71,7 @@ public class IOUringAsyncServerSocketOptions implements AsyncSocketOptions {
     }
 
     @Override
-    public <T> T get(Option<T> option) {
+    public <T> T getIfSupported(Option<T> option) {
         checkNotNull(option, "option");
 
         try {
@@ -64,11 +82,10 @@ public class IOUringAsyncServerSocketOptions implements AsyncSocketOptions {
             } else if (SO_REUSEPORT.equals(option)) {
                 return (T) (Boolean) nativeSocket.isReusePort();
             } else {
-                throw new UnsupportedOperationException("Unrecognized option:" + option);
+                return null;
             }
         } catch (IOException e) {
             throw new UncheckedIOException("Failed to get option " + option.name(), e);
         }
     }
-
 }

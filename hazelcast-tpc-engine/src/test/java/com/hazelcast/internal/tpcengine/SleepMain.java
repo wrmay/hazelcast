@@ -17,13 +17,14 @@
 package com.hazelcast.internal.tpcengine;
 
 import com.hazelcast.internal.tpcengine.nio.NioReactor;
+import com.hazelcast.internal.tpcengine.nio.NioReactorBuilder;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class SleepMain {
 
     public static void main(String[] args) {
-        NioReactor reactor = new NioReactor();
+        Reactor reactor = new NioReactorBuilder().build();
         reactor.start();
 
         reactor.offer(() -> {

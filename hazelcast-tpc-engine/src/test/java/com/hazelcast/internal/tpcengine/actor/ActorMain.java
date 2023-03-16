@@ -18,11 +18,12 @@ package com.hazelcast.internal.tpcengine.actor;
 
 import com.hazelcast.internal.tpcengine.Reactor;
 import com.hazelcast.internal.tpcengine.nio.NioReactor;
+import com.hazelcast.internal.tpcengine.nio.NioReactorBuilder;
 
 public class ActorMain {
 
     public static void main(String[] args) {
-        Reactor reactor = new NioReactor();
+        Reactor reactor = new NioReactorBuilder().build();
         reactor.start();
 
         Actor actor = new EchoActor();

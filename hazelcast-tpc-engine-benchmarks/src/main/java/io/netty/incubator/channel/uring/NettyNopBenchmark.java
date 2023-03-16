@@ -1,7 +1,7 @@
 package io.netty.incubator.channel.uring;
 
-import com.hazelcast.internal.tpc.iouring.IOUring;
-import com.hazelcast.internal.tpc.iouring.Linux;
+import com.hazelcast.internal.tpcengine.iouring.IOUring;
+import com.hazelcast.internal.tpcengine.iouring.Linux;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;

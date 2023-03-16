@@ -16,8 +16,8 @@
 
 package com.hazelcast.internal.alto.offheapmap;
 
-import com.hazelcast.internal.tpc.iobuffer.IOBuffer;
-import com.hazelcast.internal.tpc.util.BufferUtil;
+import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
+import com.hazelcast.internal.tpcengine.util.BufferUtil;
 import sun.misc.Unsafe;
 
 import java.nio.ByteBuffer;

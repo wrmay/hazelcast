@@ -8,8 +8,8 @@ import com.hazelcast.internal.alto.OpCodes;
 import com.hazelcast.internal.alto.PartitionActorRef;
 import com.hazelcast.internal.alto.RequestFuture;
 import com.hazelcast.internal.partition.impl.InternalPartitionServiceImpl;
-import com.hazelcast.internal.tpc.iobuffer.IOBuffer;
-import com.hazelcast.internal.tpc.iobuffer.IOBufferAllocator;
+import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
+import com.hazelcast.internal.tpcengine.iobuffer.IOBufferAllocator;
 import com.hazelcast.table.Pipeline;
 
 import java.util.Arrays;

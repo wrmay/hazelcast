@@ -16,8 +16,8 @@
 
 package com.hazelcast.internal.alto;
 
-import com.hazelcast.internal.tpc.actor.Actor;
-import com.hazelcast.internal.tpc.iobuffer.IOBuffer;
+import com.hazelcast.internal.tpcengine.actor.Actor;
+import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
 
 
 /**

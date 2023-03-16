@@ -1,8 +1,8 @@
 package com.hazelcast.pubsub.impl;
 
-import com.hazelcast.internal.tpc.AsyncFile;
-import com.hazelcast.internal.tpc.iobuffer.IOBuffer;
-import com.hazelcast.internal.tpc.util.OS;
+import com.hazelcast.internal.tpcengine.AsyncFile;
+import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
+import com.hazelcast.internal.tpcengine.util.OS;
 
 import java.io.File;
 

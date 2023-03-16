@@ -17,11 +17,11 @@
 
 package com.hazelcast.internal.alto;
 
-import com.hazelcast.internal.tpc.Eventloop;
-import com.hazelcast.internal.tpc.Scheduler;
-import com.hazelcast.internal.tpc.iobuffer.IOBuffer;
-import com.hazelcast.internal.tpc.iobuffer.IOBufferAllocator;
-import com.hazelcast.internal.tpc.util.CircularQueue;
+import com.hazelcast.internal.tpcengine.Eventloop;
+import com.hazelcast.internal.tpcengine.Scheduler;
+import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
+import com.hazelcast.internal.tpcengine.iobuffer.IOBufferAllocator;
+import com.hazelcast.internal.tpcengine.util.CircularQueue;
 import com.hazelcast.internal.util.counters.SwCounter;
 
 import static com.hazelcast.internal.alto.FrameCodec.FLAG_OP_RESPONSE_CONTROL;
@@ -35,7 +35,7 @@ import static com.hazelcast.internal.alto.Op.BLOCKED;
 import static com.hazelcast.internal.alto.Op.COMPLETED;
 import static com.hazelcast.internal.alto.Op.EXCEPTION;
 import static com.hazelcast.internal.alto.OpCodes.PIPELINE;
-import static com.hazelcast.internal.tpc.util.BitUtil.SIZEOF_INT;
+import static com.hazelcast.internal.tpcengine.util.BitUtil.SIZEOF_INT;
 import static com.hazelcast.internal.util.counters.SwCounter.newSwCounter;
 
 /**

@@ -16,9 +16,9 @@
 
 package com.hazelcast.internal.alto;
 
-import com.hazelcast.internal.tpc.ReadHandler;
-import com.hazelcast.internal.tpc.iobuffer.IOBuffer;
-import com.hazelcast.internal.tpc.iobuffer.IOBufferAllocator;
+import com.hazelcast.internal.tpcengine.ReadHandler;
+import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
+import com.hazelcast.internal.tpcengine.iobuffer.IOBufferAllocator;
 
 import java.nio.ByteBuffer;
 import java.util.function.Consumer;

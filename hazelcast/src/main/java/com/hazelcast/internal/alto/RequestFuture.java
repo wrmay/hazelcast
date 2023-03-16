@@ -16,7 +16,7 @@
 
 package com.hazelcast.internal.alto;
 
-import com.hazelcast.internal.tpc.iobuffer.IOBuffer;
+import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
 
 import java.util.concurrent.CompletableFuture;
 

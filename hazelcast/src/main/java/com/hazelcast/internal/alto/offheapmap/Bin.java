@@ -16,14 +16,14 @@
 
 package com.hazelcast.internal.alto.offheapmap;
 
-import com.hazelcast.internal.tpc.iobuffer.IOBuffer;
+import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
 import sun.misc.Unsafe;
 
 import java.nio.ByteBuffer;
 
 import static com.hazelcast.internal.nio.Bits.BYTES_INT;
 import static com.hazelcast.internal.nio.Bits.INT_SIZE_IN_BYTES;
-import static com.hazelcast.internal.tpc.util.BufferUtil.addressOf;
+import static com.hazelcast.internal.tpcengine.util.BufferUtil.addressOf;
 import static sun.misc.Unsafe.ARRAY_BYTE_BASE_OFFSET;
 
 public final class Bin {

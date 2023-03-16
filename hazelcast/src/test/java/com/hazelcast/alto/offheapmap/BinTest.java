@@ -1,7 +1,7 @@
 package com.hazelcast.alto.offheapmap;
 
 import com.hazelcast.internal.alto.offheapmap.Bin;
-import com.hazelcast.internal.tpc.iobuffer.IOBuffer;
+import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
 import com.hazelcast.test.HazelcastParallelClassRunner;
 import com.hazelcast.test.annotation.ParallelJVMTest;
 import com.hazelcast.test.annotation.QuickTest;
