@@ -6,7 +6,6 @@ import com.hazelcast.core.Pipelining;
 import com.hazelcast.map.IMap;
 import com.hazelcast.partition.Partition;
 
-import java.net.SocketAddress;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.hazelcast.internal.alto.apps.MainUtil.findPartition;

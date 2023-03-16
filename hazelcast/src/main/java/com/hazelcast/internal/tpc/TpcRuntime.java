@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hazelcast.internal.alto;
+package com.hazelcast.internal.tpc;
 
 import com.hazelcast.cluster.Address;
 import com.hazelcast.instance.EndpointQualifier;
@@ -58,7 +58,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 
-import static com.hazelcast.internal.alto.FrameCodec.OFFSET_REQ_CALL_ID;
+import static com.hazelcast.internal.tpc.FrameCodec.OFFSET_REQ_CALL_ID;
 import static com.hazelcast.internal.tpcengine.AsyncSocketOptions.SO_KEEPALIVE;
 import static com.hazelcast.internal.tpcengine.AsyncSocketOptions.SO_RCVBUF;
 import static com.hazelcast.internal.tpcengine.AsyncSocketOptions.SO_REUSEADDR;

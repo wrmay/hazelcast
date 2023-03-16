@@ -7,9 +7,6 @@ import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.table.Pipeline;
 import com.hazelcast.table.Table;
 
-import java.util.Arrays;
-import java.util.concurrent.ThreadLocalRandom;
-
 import static com.hazelcast.internal.util.HashUtil.hashToIndex;
 
 public class PipelineNoopMain {

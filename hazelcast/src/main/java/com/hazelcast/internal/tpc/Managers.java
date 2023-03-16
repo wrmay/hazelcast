@@ -14,20 +14,18 @@
  * limitations under the License.
  */
 
-package com.hazelcast.internal.alto;
+package com.hazelcast.internal.tpc;
 
-public class OpCodes {
+import com.hazelcast.bulktransport.impl.BulkTransportService;
+import com.hazelcast.table.impl.TableManager;
+import com.hazelcast.table.impl.TopicManager;
 
-    public final static byte TABLE_UPSERT = 0;
-    public final static byte TABLE_SELECT_BY_KEY = 1;
-    public final static byte NOOP = 2;
-    public final static byte GET = 3;
-    public final static byte SET = 4;
-    public final static byte QUERY = 5;
-    public final static byte INIT_BULK_TRANSPORT = 6;
-    public final static byte BULK_TRANSPORT = 7;
-    public final static byte TOPIC_PUBLISH = 8;
-    public final static byte PIPELINE = 9;
+// Very ugly way to get the dependencies.
+public class Managers {
 
-    public final static byte MAX_OPCODE = PIPELINE;
+    public TableManager tableManager;
+
+    public TopicManager topicManager;
+
+    public BulkTransportService bulkTransportService;
 }
