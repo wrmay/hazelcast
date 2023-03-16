@@ -1,6 +1,6 @@
 package com.hazelcast;
 
-import com.hazelcast.internal.tpc.Reactor;
+import com.hazelcast.internal.tpcengine.Reactor;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 

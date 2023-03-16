@@ -24,7 +24,7 @@ import java.io.OutputStream;
 import java.nio.file.FileSystems;
 import java.util.UUID;
 
-import static com.hazelcast.internal.tpc.util.OS.pageSize;
+import static com.hazelcast.internal.tpcengine.util.OS.pageSize;
 
 public class FileBenchmarkUtils {
 

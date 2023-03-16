@@ -16,20 +16,20 @@
 
 package com.hazelcast.echo;
 
-import com.hazelcast.internal.tpc.AsyncServerSocket;
-import com.hazelcast.internal.tpc.AsyncSocket;
-import com.hazelcast.internal.tpc.AsyncSocketBuilder;
-import com.hazelcast.internal.tpc.AsyncSocketOptions;
-import com.hazelcast.internal.tpc.Reactor;
-import com.hazelcast.internal.tpc.ReactorBuilder;
-import com.hazelcast.internal.tpc.ReactorType;
-import com.hazelcast.internal.tpc.ReadHandler;
-import com.hazelcast.internal.tpc.iobuffer.IOBuffer;
-import com.hazelcast.internal.tpc.iobuffer.IOBufferAllocator;
-import com.hazelcast.internal.tpc.iobuffer.NonConcurrentIOBufferAllocator;
-import com.hazelcast.internal.tpc.iouring.IOUringReactorBuilder;
-import com.hazelcast.internal.tpc.nio.NioAsyncSocketBuilder;
-import com.hazelcast.internal.tpc.nio.NioReactorBuilder;
+import com.hazelcast.internal.tpcengine.AsyncServerSocket;
+import com.hazelcast.internal.tpcengine.AsyncSocket;
+import com.hazelcast.internal.tpcengine.AsyncSocketBuilder;
+import com.hazelcast.internal.tpcengine.AsyncSocketOptions;
+import com.hazelcast.internal.tpcengine.Reactor;
+import com.hazelcast.internal.tpcengine.ReactorBuilder;
+import com.hazelcast.internal.tpcengine.ReactorType;
+import com.hazelcast.internal.tpcengine.ReadHandler;
+import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
+import com.hazelcast.internal.tpcengine.iobuffer.IOBufferAllocator;
+import com.hazelcast.internal.tpcengine.iobuffer.NonConcurrentIOBufferAllocator;
+import com.hazelcast.internal.tpcengine.iouring.IOUringReactorBuilder;
+import com.hazelcast.internal.tpcengine.nio.NioAsyncSocketBuilder;
+import com.hazelcast.internal.tpcengine.nio.NioReactorBuilder;
 import com.hazelcast.internal.util.ThreadAffinity;
 import org.jetbrains.annotations.NotNull;
 
@@ -38,13 +38,13 @@ import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.util.concurrent.CountDownLatch;
 
-import static com.hazelcast.internal.tpc.AsyncSocketOptions.SO_RCVBUF;
-import static com.hazelcast.internal.tpc.AsyncSocketOptions.SO_REUSEPORT;
-import static com.hazelcast.internal.tpc.AsyncSocketOptions.SO_SNDBUF;
-import static com.hazelcast.internal.tpc.AsyncSocketOptions.TCP_NODELAY;
-import static com.hazelcast.internal.tpc.util.BitUtil.SIZEOF_INT;
-import static com.hazelcast.internal.tpc.util.BitUtil.SIZEOF_LONG;
-import static com.hazelcast.internal.tpc.util.BufferUtil.put;
+import static com.hazelcast.internal.tpcengine.AsyncSocketOptions.SO_RCVBUF;
+import static com.hazelcast.internal.tpcengine.AsyncSocketOptions.SO_REUSEPORT;
+import static com.hazelcast.internal.tpcengine.AsyncSocketOptions.SO_SNDBUF;
+import static com.hazelcast.internal.tpcengine.AsyncSocketOptions.TCP_NODELAY;
+import static com.hazelcast.internal.tpcengine.util.BitUtil.SIZEOF_INT;
+import static com.hazelcast.internal.tpcengine.util.BitUtil.SIZEOF_LONG;
+import static com.hazelcast.internal.tpcengine.util.BufferUtil.put;
 
 /**
  * A benchmarks that test the throughput of 2 sockets that are bouncing packets

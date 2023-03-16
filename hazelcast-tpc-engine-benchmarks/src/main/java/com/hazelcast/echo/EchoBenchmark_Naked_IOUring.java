@@ -1,11 +1,11 @@
 package com.hazelcast.echo;
 
-import com.hazelcast.internal.tpc.iouring.AcceptMemory;
-import com.hazelcast.internal.tpc.iouring.CompletionQueue;
-import com.hazelcast.internal.tpc.iouring.IOCompletionHandler;
-import com.hazelcast.internal.tpc.iouring.IOUring;
-import com.hazelcast.internal.tpc.iouring.NativeSocket;
-import com.hazelcast.internal.tpc.iouring.SubmissionQueue;
+import com.hazelcast.internal.tpcengine.iouring.AcceptMemory;
+import com.hazelcast.internal.tpcengine.iouring.CompletionQueue;
+import com.hazelcast.internal.tpcengine.iouring.IOCompletionHandler;
+import com.hazelcast.internal.tpcengine.iouring.IOUring;
+import com.hazelcast.internal.tpcengine.iouring.NativeSocket;
+import com.hazelcast.internal.tpcengine.iouring.SubmissionQueue;
 import com.hazelcast.internal.util.ThreadAffinity;
 import com.hazelcast.internal.util.ThreadAffinityHelper;
 
@@ -15,14 +15,14 @@ import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.util.concurrent.CountDownLatch;
 
-import static com.hazelcast.internal.tpc.iouring.IOUring.IORING_OP_ACCEPT;
-import static com.hazelcast.internal.tpc.iouring.IOUring.IORING_OP_RECV;
-import static com.hazelcast.internal.tpc.iouring.IOUring.IORING_OP_SEND;
-import static com.hazelcast.internal.tpc.iouring.Linux.SOCK_CLOEXEC;
-import static com.hazelcast.internal.tpc.iouring.Linux.SOCK_NONBLOCK;
-import static com.hazelcast.internal.tpc.iouring.Linux.strerror;
-import static com.hazelcast.internal.tpc.iouring.NativeSocket.AF_INET;
-import static com.hazelcast.internal.tpc.util.BufferUtil.addressOf;
+import static com.hazelcast.internal.tpcengine.iouring.IOUring.IORING_OP_ACCEPT;
+import static com.hazelcast.internal.tpcengine.iouring.IOUring.IORING_OP_RECV;
+import static com.hazelcast.internal.tpcengine.iouring.IOUring.IORING_OP_SEND;
+import static com.hazelcast.internal.tpcengine.iouring.Linux.SOCK_CLOEXEC;
+import static com.hazelcast.internal.tpcengine.iouring.Linux.SOCK_NONBLOCK;
+import static com.hazelcast.internal.tpcengine.iouring.Linux.strerror;
+import static com.hazelcast.internal.tpcengine.iouring.NativeSocket.AF_INET;
+import static com.hazelcast.internal.tpcengine.util.BufferUtil.addressOf;
 
 /**
  * Tests the lower level IOUring API. So without all the TPC functionality on top.

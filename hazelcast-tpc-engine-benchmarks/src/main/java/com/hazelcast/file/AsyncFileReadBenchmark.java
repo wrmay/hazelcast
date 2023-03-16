@@ -16,9 +16,9 @@
 
 package com.hazelcast.file;
 
-import com.hazelcast.internal.tpc.AsyncFile;
-import com.hazelcast.internal.tpc.Reactor;
-import com.hazelcast.internal.tpc.iouring.IOUringReactorBuilder;
+import com.hazelcast.internal.tpcengine.AsyncFile;
+import com.hazelcast.internal.tpcengine.Reactor;
+import com.hazelcast.internal.tpcengine.iouring.IOUringReactorBuilder;
 import com.hazelcast.internal.util.ThreadAffinity;
 
 import java.nio.ByteBuffer;
@@ -32,14 +32,14 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.BiConsumer;
 
-import static com.hazelcast.internal.tpc.AsyncFile.O_CREAT;
-import static com.hazelcast.internal.tpc.AsyncFile.O_DIRECT;
-import static com.hazelcast.internal.tpc.AsyncFile.O_NOATIME;
-import static com.hazelcast.internal.tpc.AsyncFile.O_RDONLY;
-import static com.hazelcast.internal.tpc.AsyncFile.PERMISSIONS_ALL;
-import static com.hazelcast.internal.tpc.util.BufferUtil.addressOf;
-import static com.hazelcast.internal.tpc.util.BufferUtil.toPageAlignedAddress;
-import static com.hazelcast.internal.tpc.util.OS.pageSize;
+import static com.hazelcast.internal.tpcengine.AsyncFile.O_CREAT;
+import static com.hazelcast.internal.tpcengine.AsyncFile.O_DIRECT;
+import static com.hazelcast.internal.tpcengine.AsyncFile.O_NOATIME;
+import static com.hazelcast.internal.tpcengine.AsyncFile.O_RDONLY;
+import static com.hazelcast.internal.tpcengine.AsyncFile.PERMISSIONS_ALL;
+import static com.hazelcast.internal.tpcengine.util.BufferUtil.addressOf;
+import static com.hazelcast.internal.tpcengine.util.BufferUtil.toPageAlignedAddress;
+import static com.hazelcast.internal.tpcengine.util.OS.pageSize;
 
 // todo: should create a file with real content to prevent being optimized due to fallocate
 public class AsyncFileReadBenchmark {

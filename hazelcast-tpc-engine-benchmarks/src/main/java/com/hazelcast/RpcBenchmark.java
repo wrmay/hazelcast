@@ -17,32 +17,28 @@
 package com.hazelcast;
 
 
-import com.hazelcast.internal.tpc.AcceptRequest;
-import com.hazelcast.internal.tpc.AsyncServerSocket;
-import com.hazelcast.internal.tpc.AsyncSocket;
-import com.hazelcast.internal.tpc.Reactor;
-import com.hazelcast.internal.tpc.ReactorBuilder;
-import com.hazelcast.internal.tpc.ReactorType;
-import com.hazelcast.internal.tpc.ReadHandler;
-import com.hazelcast.internal.tpc.iobuffer.IOBuffer;
-import com.hazelcast.internal.tpc.iobuffer.IOBufferAllocator;
-import com.hazelcast.internal.tpc.iobuffer.NonConcurrentIOBufferAllocator;
-import com.hazelcast.internal.tpc.iouring.IOUringReactorBuilder;
-import com.hazelcast.internal.tpc.nio.NioReactorBuilder;
-import com.hazelcast.internal.tpc.util.BitUtil;
+import com.hazelcast.internal.tpcengine.AsyncServerSocket;
+import com.hazelcast.internal.tpcengine.AsyncSocket;
+import com.hazelcast.internal.tpcengine.Reactor;
+import com.hazelcast.internal.tpcengine.ReactorBuilder;
+import com.hazelcast.internal.tpcengine.ReactorType;
+import com.hazelcast.internal.tpcengine.ReadHandler;
+import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
+import com.hazelcast.internal.tpcengine.iobuffer.IOBufferAllocator;
+import com.hazelcast.internal.tpcengine.iobuffer.NonConcurrentIOBufferAllocator;
+import com.hazelcast.internal.tpcengine.iouring.IOUringReactorBuilder;
+import com.hazelcast.internal.tpcengine.nio.NioReactorBuilder;
 import com.hazelcast.internal.util.ThreadAffinity;
-import org.jetbrains.annotations.NotNull;
 
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.util.concurrent.CountDownLatch;
-import java.util.function.Consumer;
 
 import static com.hazelcast.Util.constructComplete;
-import static com.hazelcast.internal.tpc.AsyncSocketOptions.TCP_NODELAY;
-import static com.hazelcast.internal.tpc.util.BitUtil.SIZEOF_INT;
-import static com.hazelcast.internal.tpc.util.BitUtil.SIZEOF_LONG;
+import static com.hazelcast.internal.tpcengine.AsyncSocketOptions.TCP_NODELAY;
+import static com.hazelcast.internal.tpcengine.util.BitUtil.SIZEOF_INT;
+import static com.hazelcast.internal.tpcengine.util.BitUtil.SIZEOF_LONG;
 
 /**
  * A very trivial benchmark to measure the throughput we can get with a RPC system.
@@ -108,7 +104,7 @@ public class RpcBenchmark {
     }
 
     private static ReactorBuilder newReactorBuilder() {
-        switch (reactorType){
+        switch (reactorType) {
             case NIO:
                 return new NioReactorBuilder();
             case IOURING:

@@ -1,10 +1,10 @@
 package com.hazelcast;
 
 
-import com.hazelcast.internal.tpc.Eventloop;
-import com.hazelcast.internal.tpc.Reactor;
-import com.hazelcast.internal.tpc.ReactorBuilder;
-import com.hazelcast.internal.tpc.nio.NioReactorBuilder;
+import com.hazelcast.internal.tpcengine.Eventloop;
+import com.hazelcast.internal.tpcengine.Reactor;
+import com.hazelcast.internal.tpcengine.ReactorBuilder;
+import com.hazelcast.internal.tpcengine.nio.NioReactorBuilder;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;

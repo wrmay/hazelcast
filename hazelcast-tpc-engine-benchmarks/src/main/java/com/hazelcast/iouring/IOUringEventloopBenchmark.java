@@ -1,9 +1,9 @@
 package com.hazelcast.iouring;
 
 
-import com.hazelcast.internal.tpc.Reactor;
-import com.hazelcast.internal.tpc.iouring.IOUringReactorBuilder;
-import com.hazelcast.internal.tpc.util.CircularQueue;
+import com.hazelcast.internal.tpcengine.Reactor;
+import com.hazelcast.internal.tpcengine.iouring.IOUringReactorBuilder;
+import com.hazelcast.internal.tpcengine.util.CircularQueue;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;

@@ -1,6 +1,6 @@
 package com.hazelcast;
 
-import com.hazelcast.internal.tpc.iobuffer.IOBuffer;
+import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
 
 public class Util {
 

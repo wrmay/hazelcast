@@ -16,11 +16,11 @@
 
 package com.hazelcast;
 
-import com.hazelcast.internal.tpc.Reactor;
-import com.hazelcast.internal.tpc.ReactorBuilder;
-import com.hazelcast.internal.tpc.actor.Actor;
-import com.hazelcast.internal.tpc.actor.LocalActorRef;
-import com.hazelcast.internal.tpc.iouring.IOUringReactorBuilder;
+import com.hazelcast.internal.tpcengine.Reactor;
+import com.hazelcast.internal.tpcengine.ReactorBuilder;
+import com.hazelcast.internal.tpcengine.actor.Actor;
+import com.hazelcast.internal.tpcengine.actor.LocalActorRef;
+import com.hazelcast.internal.tpcengine.iouring.IOUringReactorBuilder;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;

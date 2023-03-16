@@ -16,11 +16,11 @@
 
 package com.hazelcast.file;
 
-import com.hazelcast.internal.tpc.AsyncFile;
-import com.hazelcast.internal.tpc.Reactor;
-import com.hazelcast.internal.tpc.StorageDeviceRegistry;
-import com.hazelcast.internal.tpc.iouring.IOUringReactor;
-import com.hazelcast.internal.tpc.iouring.IOUringReactorBuilder;
+import com.hazelcast.internal.tpcengine.AsyncFile;
+import com.hazelcast.internal.tpcengine.Reactor;
+import com.hazelcast.internal.tpcengine.StorageDeviceRegistry;
+import com.hazelcast.internal.tpcengine.iouring.IOUringReactor;
+import com.hazelcast.internal.tpcengine.iouring.IOUringReactorBuilder;
 import com.hazelcast.internal.util.ThreadAffinity;
 
 import java.nio.file.FileSystems;
@@ -32,8 +32,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.function.BiConsumer;
 
-import static com.hazelcast.internal.tpc.AsyncFile.PERMISSIONS_ALL;
-import static com.hazelcast.internal.tpc.util.OS.pageSize;
+import static com.hazelcast.internal.tpcengine.AsyncFile.PERMISSIONS_ALL;
+import static com.hazelcast.internal.tpcengine.util.OS.pageSize;
 
 public class AsyncFileNopBenchmark {
     private static String path = System.getProperty("user.home");

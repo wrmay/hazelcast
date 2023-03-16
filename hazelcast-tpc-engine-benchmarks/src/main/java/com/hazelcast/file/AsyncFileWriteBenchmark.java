@@ -17,10 +17,10 @@
 package com.hazelcast.file;
 
 
-import com.hazelcast.internal.tpc.AsyncFile;
-import com.hazelcast.internal.tpc.Reactor;
-import com.hazelcast.internal.tpc.StorageDeviceRegistry;
-import com.hazelcast.internal.tpc.iouring.IOUringReactorBuilder;
+import com.hazelcast.internal.tpcengine.AsyncFile;
+import com.hazelcast.internal.tpcengine.Reactor;
+import com.hazelcast.internal.tpcengine.StorageDeviceRegistry;
+import com.hazelcast.internal.tpcengine.iouring.IOUringReactorBuilder;
 import com.hazelcast.internal.util.ThreadAffinity;
 
 import java.nio.ByteBuffer;
@@ -32,13 +32,13 @@ import java.util.function.BiConsumer;
 
 import static com.hazelcast.file.FileBenchmarkUtils.initFile;
 import static com.hazelcast.file.FileBenchmarkUtils.randomTmpFile;
-import static com.hazelcast.internal.tpc.AsyncFile.O_DIRECT;
-import static com.hazelcast.internal.tpc.AsyncFile.O_NOATIME;
-import static com.hazelcast.internal.tpc.AsyncFile.O_RDWR;
-import static com.hazelcast.internal.tpc.AsyncFile.PERMISSIONS_ALL;
-import static com.hazelcast.internal.tpc.util.BufferUtil.addressOf;
-import static com.hazelcast.internal.tpc.util.BufferUtil.toPageAlignedAddress;
-import static com.hazelcast.internal.tpc.util.OS.pageSize;
+import static com.hazelcast.internal.tpcengine.AsyncFile.O_DIRECT;
+import static com.hazelcast.internal.tpcengine.AsyncFile.O_NOATIME;
+import static com.hazelcast.internal.tpcengine.AsyncFile.O_RDWR;
+import static com.hazelcast.internal.tpcengine.AsyncFile.PERMISSIONS_ALL;
+import static com.hazelcast.internal.tpcengine.util.BufferUtil.addressOf;
+import static com.hazelcast.internal.tpcengine.util.BufferUtil.toPageAlignedAddress;
+import static com.hazelcast.internal.tpcengine.util.OS.pageSize;
 
 /**
  * For a FIO based benchmark so you can compare

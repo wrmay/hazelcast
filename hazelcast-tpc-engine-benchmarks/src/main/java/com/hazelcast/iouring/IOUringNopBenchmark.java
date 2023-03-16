@@ -1,10 +1,10 @@
 package com.hazelcast.iouring;
 
-import com.hazelcast.internal.tpc.iouring.CompletionQueue;
-import com.hazelcast.internal.tpc.iouring.IOCompletionHandler;
-import com.hazelcast.internal.tpc.iouring.IOUring;
-import com.hazelcast.internal.tpc.iouring.Linux;
-import com.hazelcast.internal.tpc.iouring.SubmissionQueue;
+import com.hazelcast.internal.tpcengine.iouring.CompletionQueue;
+import com.hazelcast.internal.tpcengine.iouring.IOCompletionHandler;
+import com.hazelcast.internal.tpcengine.iouring.IOUring;
+import com.hazelcast.internal.tpcengine.iouring.Linux;
+import com.hazelcast.internal.tpcengine.iouring.SubmissionQueue;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
