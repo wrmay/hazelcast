@@ -1,4 +1,4 @@
-package com.hazelcast.alto.requestservice;
+package com.hazelcast.tpc;
 
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;

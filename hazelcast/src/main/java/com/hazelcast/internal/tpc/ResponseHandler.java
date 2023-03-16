@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hazelcast.internal.alto;
+package com.hazelcast.internal.tpc;
 /*
  * Copyright (c) 2008-2023, Hazelcast, Inc. All Rights Reserved.
  *
@@ -37,12 +37,12 @@ import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
 import java.util.function.Consumer;
 
 import static com.hazelcast.internal.util.HashUtil.hashToIndex;
-import static com.hazelcast.internal.alto.FrameCodec.FLAG_OP_RESPONSE_CONTROL;
-import static com.hazelcast.internal.alto.FrameCodec.OFFSET_PARTITION_ID;
-import static com.hazelcast.internal.alto.FrameCodec.OFFSET_RES_CALL_ID;
-import static com.hazelcast.internal.alto.FrameCodec.OFFSET_RES_PAYLOAD;
-import static com.hazelcast.internal.alto.FrameCodec.RESPONSE_TYPE_EXCEPTION;
-import static com.hazelcast.internal.alto.FrameCodec.RESPONSE_TYPE_OVERLOAD;
+import static com.hazelcast.internal.tpc.FrameCodec.FLAG_OP_RESPONSE_CONTROL;
+import static com.hazelcast.internal.tpc.FrameCodec.OFFSET_PARTITION_ID;
+import static com.hazelcast.internal.tpc.FrameCodec.OFFSET_RES_CALL_ID;
+import static com.hazelcast.internal.tpc.FrameCodec.OFFSET_RES_PAYLOAD;
+import static com.hazelcast.internal.tpc.FrameCodec.RESPONSE_TYPE_EXCEPTION;
+import static com.hazelcast.internal.tpc.FrameCodec.RESPONSE_TYPE_OVERLOAD;
 
 
 class ResponseHandler implements Consumer<IOBuffer> {
@@ -80,7 +80,7 @@ class ResponseHandler implements Consumer<IOBuffer> {
     public void accept(IOBuffer response) {
         try {
             if (response.next != null && threadCount > 0) {
-                int index = hashToIndex(response.getLong(OFFSET_RES_CALL_ID), threadCount);
+                int index = hashToIndex(response.getLong(FrameCodec.OFFSET_RES_CALL_ID), threadCount);
                 threads[index].queue.add(response);
             } else {
                 process(response);
@@ -91,7 +91,7 @@ class ResponseHandler implements Consumer<IOBuffer> {
     }
 
     private void process(IOBuffer response) {
-        int partitionId = response.getInt(OFFSET_PARTITION_ID);
+        int partitionId = response.getInt(FrameCodec.OFFSET_PARTITION_ID);
 
         Requests requests;
         if (partitionId >= 0) {
@@ -105,7 +105,7 @@ class ResponseHandler implements Consumer<IOBuffer> {
             }
         }
 
-        long callId = response.getLong(OFFSET_RES_CALL_ID);
+        long callId = response.getLong(FrameCodec.OFFSET_RES_CALL_ID);
 
         RequestFuture future = requests.slots.remove(callId);
         if (future == null) {
@@ -116,21 +116,21 @@ class ResponseHandler implements Consumer<IOBuffer> {
 
         requests.complete();
 
-        response.position(OFFSET_RES_PAYLOAD);
+        response.position(FrameCodec.OFFSET_RES_PAYLOAD);
         IOBuffer request = future.request;
         future.request = null;
         int flags = FrameCodec.flags(request);
-        if ((flags & FLAG_OP_RESPONSE_CONTROL) == 0) {
+        if ((flags & FrameCodec.FLAG_OP_RESPONSE_CONTROL) == 0) {
             future.complete(response);
         } else {
             int type = request.readInt();
             switch (type) {
-                case RESPONSE_TYPE_OVERLOAD:
+                case FrameCodec.RESPONSE_TYPE_OVERLOAD:
                     // we need to find better solution
                     future.completeExceptionally(new RuntimeException("Server is overloaded"));
                     response.release();
                     break;
-                case RESPONSE_TYPE_EXCEPTION:
+                case FrameCodec.RESPONSE_TYPE_EXCEPTION:
                     future.completeExceptionally(new RuntimeException(response.readString()));
                     response.release();
                     break;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hazelcast.internal.alto.offheapmap;
+package com.hazelcast.internal.tpc.offheapmap;
 
 import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
 import sun.misc.Unsafe;

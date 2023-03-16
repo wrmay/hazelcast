@@ -1,11 +1,11 @@
-package com.hazelcast.alto.offheapmap;
+package com.hazelcast.tpc.offheapmap;
 
-import com.hazelcast.internal.alto.offheapmap.Bin;
+import com.hazelcast.internal.tpc.offheapmap.Bin;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
 import com.hazelcast.test.HazelcastParallelClassRunner;
 import com.hazelcast.test.annotation.ParallelJVMTest;
 import com.hazelcast.test.annotation.QuickTest;
-import com.hazelcast.internal.alto.FrameCodec;
+import com.hazelcast.internal.tpc.FrameCodec;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;

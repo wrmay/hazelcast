@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.hazelcast.internal.alto;
+package com.hazelcast.internal.tpc;
 
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReferenceArray;
 
 import static com.hazelcast.internal.util.QuickMath.nextPowerOfTwo;
-import static com.hazelcast.internal.alto.FrameCodec.OFFSET_REQ_CALL_ID;
+import static com.hazelcast.internal.tpc.FrameCodec.OFFSET_REQ_CALL_ID;
 
 /**
  * Slots for RequestFutures. Instead of using a ConcurrentHashMap and causing litter, there is an array with
@@ -87,7 +87,7 @@ public class RequestSlots {
         for (; ; ) {
             long callId = callIdGenerator.getAndIncrement();
             f.callId = callId;
-            f.request.putLong(OFFSET_REQ_CALL_ID, callId);
+            f.request.putLong(FrameCodec.OFFSET_REQ_CALL_ID, callId);
             int index = (int) (callId & mask);
             if (array.compareAndSet(index, null, f)) {
                 return callId;

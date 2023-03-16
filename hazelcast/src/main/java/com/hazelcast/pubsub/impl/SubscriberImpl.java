@@ -1,6 +1,6 @@
 package com.hazelcast.pubsub.impl;
 
-import com.hazelcast.internal.alto.PartitionActorRef;
+import com.hazelcast.internal.tpc.PartitionActorRef;
 import com.hazelcast.pubsub.Subscriber;
 
 public class SubscriberImpl implements Subscriber {

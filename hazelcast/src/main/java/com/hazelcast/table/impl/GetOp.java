@@ -16,12 +16,12 @@
 
 package com.hazelcast.table.impl;
 
-import com.hazelcast.internal.alto.offheapmap.Bin;
-import com.hazelcast.internal.alto.offheapmap.Bout;
-import com.hazelcast.internal.alto.offheapmap.OffheapMap;
-import com.hazelcast.internal.alto.FrameCodec;
-import com.hazelcast.internal.alto.Op;
-import com.hazelcast.internal.alto.OpCodes;
+import com.hazelcast.internal.tpc.offheapmap.Bin;
+import com.hazelcast.internal.tpc.offheapmap.Bout;
+import com.hazelcast.internal.tpc.offheapmap.OffheapMap;
+import com.hazelcast.internal.tpc.FrameCodec;
+import com.hazelcast.internal.tpc.Op;
+import com.hazelcast.internal.tpc.OpCodes;
 
 public final class GetOp extends Op {
 

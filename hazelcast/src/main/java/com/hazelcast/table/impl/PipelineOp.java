@@ -1,7 +1,7 @@
 package com.hazelcast.table.impl;
 
-import com.hazelcast.internal.alto.Op;
-import com.hazelcast.internal.alto.OpCodes;
+import com.hazelcast.internal.tpc.Op;
+import com.hazelcast.internal.tpc.OpCodes;
 
 public class PipelineOp extends Op {
 

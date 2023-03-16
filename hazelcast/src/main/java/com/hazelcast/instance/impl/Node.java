@@ -46,7 +46,7 @@ import com.hazelcast.instance.BuildInfo;
 import com.hazelcast.instance.BuildInfoProvider;
 import com.hazelcast.instance.EndpointQualifier;
 import com.hazelcast.instance.ProtocolType;
-import com.hazelcast.internal.alto.AltoRuntime;
+import com.hazelcast.internal.tpc.TpcRuntime;
 import com.hazelcast.internal.ascii.TextCommandService;
 import com.hazelcast.internal.cluster.Joiner;
 import com.hazelcast.internal.cluster.impl.ClusterJoinManager;
@@ -189,7 +189,7 @@ public class Node {
     private final HealthMonitor healthMonitor;
     private final Joiner joiner;
     private final LocalAddressRegistry localAddressRegistry;
-    private final AltoRuntime altoRuntime;
+    private final TpcRuntime tpcRuntime;
     private ManagementCenterService managementCenterService;
 
     // it can be changed on cluster service reset see: ClusterServiceImpl#resetLocalMemberUuid
@@ -294,9 +294,9 @@ public class Node {
             joiner = nodeContext.createJoiner(this);
 
             if (System.getProperty("hazelcast.alto.enabled", "false").equals("true")) {
-                this.altoRuntime = new AltoRuntime(this);
+                this.tpcRuntime = new TpcRuntime(this);
             } else {
-                this.altoRuntime = null;
+                this.tpcRuntime = null;
             }
         } catch (Throwable e) {
             try {
@@ -317,8 +317,8 @@ public class Node {
         }
     }
 
-    public AltoRuntime getAltoRuntime() {
-        return altoRuntime;
+    public TpcRuntime getTpcRuntime() {
+        return tpcRuntime;
     }
 
 
@@ -499,8 +499,8 @@ public class Node {
         clusterService.sendLocalMembershipEvent();
         server.start();
 
-        if (altoRuntime != null) {
-            altoRuntime.start();
+        if (tpcRuntime != null) {
+            tpcRuntime.start();
         }
 
         JoinConfig join = getActiveMemberNetworkConfig(config).getJoin();
@@ -592,8 +592,8 @@ public class Node {
             }
         }
 
-        if (altoRuntime != null) {
-            altoRuntime.shutdown();
+        if (tpcRuntime != null) {
+            tpcRuntime.shutdown();
         }
     }
 

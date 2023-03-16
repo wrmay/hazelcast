@@ -29,17 +29,17 @@ import com.hazelcast.table.impl.UpsertOp;
 
 import java.util.function.Supplier;
 
-import static com.hazelcast.internal.alto.OpCodes.BULK_TRANSPORT;
-import static com.hazelcast.internal.alto.OpCodes.GET;
-import static com.hazelcast.internal.alto.OpCodes.INIT_BULK_TRANSPORT;
-import static com.hazelcast.internal.alto.OpCodes.MAX_OPCODE;
-import static com.hazelcast.internal.alto.OpCodes.NOOP;
-import static com.hazelcast.internal.alto.OpCodes.PIPELINE;
-import static com.hazelcast.internal.alto.OpCodes.QUERY;
-import static com.hazelcast.internal.alto.OpCodes.SET;
-import static com.hazelcast.internal.alto.OpCodes.TABLE_SELECT_BY_KEY;
-import static com.hazelcast.internal.alto.OpCodes.TABLE_UPSERT;
-import static com.hazelcast.internal.alto.OpCodes.TOPIC_PUBLISH;
+import static com.hazelcast.internal.tpc.OpCodes.BULK_TRANSPORT;
+import static com.hazelcast.internal.tpc.OpCodes.GET;
+import static com.hazelcast.internal.tpc.OpCodes.INIT_BULK_TRANSPORT;
+import static com.hazelcast.internal.tpc.OpCodes.MAX_OPCODE;
+import static com.hazelcast.internal.tpc.OpCodes.NOOP;
+import static com.hazelcast.internal.tpc.OpCodes.PIPELINE;
+import static com.hazelcast.internal.tpc.OpCodes.QUERY;
+import static com.hazelcast.internal.tpc.OpCodes.SET;
+import static com.hazelcast.internal.tpc.OpCodes.TABLE_SELECT_BY_KEY;
+import static com.hazelcast.internal.tpc.OpCodes.TABLE_UPSERT;
+import static com.hazelcast.internal.tpc.OpCodes.TOPIC_PUBLISH;
 
 public final class OpAllocator {
 

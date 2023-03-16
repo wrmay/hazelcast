@@ -71,7 +71,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 
 
 /**
- * The AltoRuntime is runtime that provides the infrastructure to build next generation data-structures.
+ * The TpcRuntime is runtime that provides the infrastructure to build next generation data-structures.
  * For more information see:
  * https://www.micahlerner.com/2022/06/04/data-parallel-actors-a-programming-model-for-scalable-query-serving-systems.html
  * = * <p>
@@ -96,7 +96,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
  * <p>
  * So how do we go from partition to a channel?
  */
-public class AltoRuntime {
+public class TpcRuntime {
 
     public final Node node;
     public final InternalSerializationService ss;
@@ -119,9 +119,9 @@ public class AltoRuntime {
     private PartitionActorRef[] partitionActorRefs;
     private ArrayList<OpScheduler> schedulers = new ArrayList<>();
 
-    public AltoRuntime(Node node) {
+    public TpcRuntime(Node node) {
         this.node = node;
-        this.logger = node.getLogger(AltoRuntime.class);
+        this.logger = node.getLogger(TpcRuntime.class);
         this.ss = (InternalSerializationService) node.nodeEngine.getSerializationService();
         this.writeThrough = parseBoolean(getProperty("hazelcast.tpc.write-through", "false"));
         this.regularSchedule = parseBoolean(getProperty("hazelcast.tpc.regular-schedule", "true"));
@@ -147,7 +147,7 @@ public class AltoRuntime {
     }
 
     public void start() {
-        logger.info("AltoRuntime starting");
+        logger.info("TpcRuntime starting");
 
         this.managers = new Managers();
         InternalPartitionService partitionService = node.nodeEngine.getPartitionService();
@@ -215,7 +215,7 @@ public class AltoRuntime {
                     requestRegistry.getByPartitionId(partitionId));
         }
 
-        logger.info("AltoRuntime started");
+        logger.info("TpcRuntime started");
     }
 
     private void startNetworking() {
@@ -280,7 +280,7 @@ public class AltoRuntime {
     }
 
     public void shutdown() {
-        logger.info("AltoRuntime shutdown");
+        logger.info("TpcRuntime shutdown");
 
         shuttingdown = true;
 
@@ -305,7 +305,7 @@ public class AltoRuntime {
             Thread.currentThread().interrupt();
         }
 
-        logger.info("AltoRuntime terminated");
+        logger.info("TpcRuntime terminated");
 
         long totalScheduled = 0;
         for (OpScheduler scheduler : schedulers) {

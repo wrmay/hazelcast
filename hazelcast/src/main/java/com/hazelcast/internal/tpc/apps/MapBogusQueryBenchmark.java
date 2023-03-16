@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hazelcast.internal.alto.apps;
+package com.hazelcast.internal.tpc.apps;
 
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;

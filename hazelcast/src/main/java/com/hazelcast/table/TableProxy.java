@@ -19,9 +19,9 @@ package com.hazelcast.table;
 import com.hazelcast.bulktransport.BulkTransport;
 import com.hazelcast.bulktransport.impl.BulkTransportImpl;
 import com.hazelcast.cluster.Address;
-import com.hazelcast.internal.alto.AltoRuntime;
-import com.hazelcast.internal.alto.FrameCodec;
-import com.hazelcast.internal.alto.PartitionActorRef;
+import com.hazelcast.internal.tpc.TpcRuntime;
+import com.hazelcast.internal.tpc.FrameCodec;
+import com.hazelcast.internal.tpc.PartitionActorRef;
 import com.hazelcast.internal.tpcengine.iobuffer.ConcurrentIOBufferAllocator;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBufferAllocator;
@@ -38,11 +38,11 @@ import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static com.hazelcast.internal.alto.OpCodes.GET;
-import static com.hazelcast.internal.alto.OpCodes.NOOP;
-import static com.hazelcast.internal.alto.OpCodes.QUERY;
-import static com.hazelcast.internal.alto.OpCodes.SET;
-import static com.hazelcast.internal.alto.OpCodes.TABLE_UPSERT;
+import static com.hazelcast.internal.tpc.OpCodes.GET;
+import static com.hazelcast.internal.tpc.OpCodes.NOOP;
+import static com.hazelcast.internal.tpc.OpCodes.QUERY;
+import static com.hazelcast.internal.tpc.OpCodes.SET;
+import static com.hazelcast.internal.tpc.OpCodes.TABLE_UPSERT;
 import static com.hazelcast.internal.util.HashUtil.hashToIndex;
 import static com.hazelcast.internal.util.Preconditions.checkPositive;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
@@ -50,7 +50,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class TableProxy<K, V> extends AbstractDistributedObject implements Table<K, V> {
 
-    private final AltoRuntime altoRuntime;
+    private final TpcRuntime tpcRuntime;
     private final String name;
     private final int partitionCount;
     private final IOBufferAllocator requestAllocator;
@@ -59,17 +59,17 @@ public class TableProxy<K, V> extends AbstractDistributedObject implements Table
 
     public TableProxy(NodeEngineImpl nodeEngine, TableService tableService, String name) {
         super(nodeEngine, tableService);
-        this.altoRuntime = nodeEngine.getNode().getAltoRuntime();
+        this.tpcRuntime = nodeEngine.getNode().getTpcRuntime();
         this.name = name;
         this.partitionCount = nodeEngine.getPartitionService().getPartitionCount();
         this.requestAllocator = new ConcurrentIOBufferAllocator(128, true);
-        this.requestTimeoutMs = altoRuntime.getRequestTimeoutMs();
-        this.partitionActorRefs = altoRuntime.partitionActorRefs();
+        this.requestTimeoutMs = tpcRuntime.getRequestTimeoutMs();
+        this.partitionActorRefs = tpcRuntime.partitionActorRefs();
     }
 
     @Override
     public Pipeline newPipeline() {
-        return new PipelineImpl(altoRuntime, requestAllocator);
+        return new PipelineImpl(tpcRuntime, requestAllocator);
     }
 
     @Override
@@ -198,7 +198,7 @@ public class TableProxy<K, V> extends AbstractDistributedObject implements Table
 
     @Override
     public BulkTransport newBulkTransport(Address address, int parallelism) {
-        return new BulkTransportImpl(altoRuntime, address, parallelism);
+        return new BulkTransportImpl(tpcRuntime, address, parallelism);
     }
 
     @Override

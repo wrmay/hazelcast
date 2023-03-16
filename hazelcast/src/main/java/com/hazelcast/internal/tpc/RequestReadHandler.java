@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hazelcast.internal.alto;
+package com.hazelcast.internal.tpc;
 
 import com.hazelcast.internal.tpcengine.ReadHandler;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
@@ -24,7 +24,7 @@ import java.nio.ByteBuffer;
 import java.util.function.Consumer;
 
 import static com.hazelcast.internal.nio.Bits.INT_SIZE_IN_BYTES;
-import static com.hazelcast.internal.alto.FrameCodec.FLAG_OP_RESPONSE;
+import static com.hazelcast.internal.tpc.FrameCodec.FLAG_OP_RESPONSE;
 
 public class RequestReadHandler extends ReadHandler {
 
@@ -45,7 +45,7 @@ public class RequestReadHandler extends ReadHandler {
 
                 int size = receiveBuffer.getInt();
                 int flags = receiveBuffer.getInt();
-                if ((flags & FLAG_OP_RESPONSE) == 0) {
+                if ((flags & FrameCodec.FLAG_OP_RESPONSE) == 0) {
                     inboundFrame = requestIOBufferAllocator.allocate(size);
                 } else {
                     inboundFrame = remoteResponseIOBufferAllocator.allocate(size);
@@ -67,7 +67,7 @@ public class RequestReadHandler extends ReadHandler {
             inboundFrame.flip();
             //framesRead.inc();
 
-            if (FrameCodec.isFlagRaised(inboundFrame, FLAG_OP_RESPONSE)) {
+            if (FrameCodec.isFlagRaised(inboundFrame, FrameCodec.FLAG_OP_RESPONSE)) {
                 inboundFrame.next = responseChain;
                 responseChain = inboundFrame;
             } else {

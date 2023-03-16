@@ -1,5 +1,5 @@
 
-package com.hazelcast.internal.alto.apps;
+package com.hazelcast.internal.tpc.apps;
 
 import com.hazelcast.config.Config;
 import com.hazelcast.core.Hazelcast;

@@ -2,9 +2,10 @@ package com.hazelcast.bulktransport.impl;
 
 import com.hazelcast.bulktransport.BulkTransport;
 import com.hazelcast.cluster.Address;
+import com.hazelcast.internal.tpc.TpcRuntime;
 import com.hazelcast.internal.tpcengine.AsyncSocket;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBufferAllocator;
-import com.hazelcast.internal.alto.AltoRuntime;
+import com.hazelcast.internal.tpc.TpcRuntime;
 
 import java.io.File;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -12,15 +13,15 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class BulkTransportImpl implements BulkTransport {
 
     private final AtomicBoolean isClosed = new AtomicBoolean(false);
-    private final AltoRuntime altoRuntime;
+    private final TpcRuntime tpcRuntime;
     private final Address address;
     private final int reactor;
     private final int receiveBufferSize;
     private AsyncSocket[] channels;
     private IOBufferAllocator frameAllocator;
 
-    public BulkTransportImpl(AltoRuntime altoRuntime, Address address, int reactor) {
-        this.altoRuntime = altoRuntime;
+    public BulkTransportImpl(TpcRuntime tpcRuntime, Address address, int reactor) {
+        this.tpcRuntime = tpcRuntime;
         this.address = address;
         this.reactor = reactor;
         this.receiveBufferSize = 0;

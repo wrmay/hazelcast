@@ -1,13 +1,14 @@
 package com.hazelcast.table.impl;
 // todo: we don't need a IOBuffer for all the requests. We should just add to an existing IOBuffer.
 
+
 import com.hazelcast.cluster.Address;
-import com.hazelcast.internal.alto.AltoRuntime;
-import com.hazelcast.internal.alto.FrameCodec;
-import com.hazelcast.internal.alto.OpCodes;
-import com.hazelcast.internal.alto.PartitionActorRef;
-import com.hazelcast.internal.alto.RequestFuture;
 import com.hazelcast.internal.partition.impl.InternalPartitionServiceImpl;
+import com.hazelcast.internal.tpc.FrameCodec;
+import com.hazelcast.internal.tpc.OpCodes;
+import com.hazelcast.internal.tpc.PartitionActorRef;
+import com.hazelcast.internal.tpc.RequestFuture;
+import com.hazelcast.internal.tpc.TpcRuntime;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBufferAllocator;
 import com.hazelcast.table.Pipeline;
@@ -26,7 +27,7 @@ import static com.hazelcast.internal.util.HashUtil.hashToIndex;
  */
 public final class PipelineImpl implements Pipeline {
 
-    private final AltoRuntime altoRuntime;
+    private final TpcRuntime tpcRuntime;
     private final IOBufferAllocator requestAllocator;
     private final int partitionCount;
     private PartitionActorRef actorRef;
@@ -36,11 +37,11 @@ public final class PipelineImpl implements Pipeline {
     private int countPos;
     private int count;
 
-    public PipelineImpl(AltoRuntime altoRuntime, IOBufferAllocator requestAllocator) {
-        this.altoRuntime = altoRuntime;
+    public PipelineImpl(TpcRuntime tpcRuntime, IOBufferAllocator requestAllocator) {
+        this.tpcRuntime = tpcRuntime;
         this.requestAllocator = requestAllocator;
-        this.partitionService = altoRuntime.node.partitionService;
-        this.partitionCount = altoRuntime.node.nodeEngine.getPartitionService().getPartitionCount();
+        this.partitionService = tpcRuntime.node.partitionService;
+        this.partitionCount = tpcRuntime.node.nodeEngine.getPartitionService().getPartitionCount();
         this.request = new IOBuffer(64 * 1024);//requestAllocator.allocate();
     }
 
@@ -110,7 +111,7 @@ public final class PipelineImpl implements Pipeline {
             }
 
             this.partitionId = partitionId;
-            this.actorRef = altoRuntime.partitionActorRefs()[partitionId];
+            this.actorRef = tpcRuntime.partitionActorRefs()[partitionId];
             FrameCodec.writeRequestHeader(request, partitionId, OpCodes.PIPELINE);
             countPos = request.position();
             request.writeInt(0);

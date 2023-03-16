@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hazelcast.internal.alto.offheapmap;
+package com.hazelcast.internal.tpc.offheapmap;
 
 public interface Query {
     void process(long address);

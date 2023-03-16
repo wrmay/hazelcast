@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hazelcast.internal.alto;
+package com.hazelcast.internal.tpc;
 
 import java.net.SocketAddress;
 import java.util.concurrent.ConcurrentHashMap;

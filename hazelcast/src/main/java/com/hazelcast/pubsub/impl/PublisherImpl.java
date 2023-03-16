@@ -1,14 +1,14 @@
 package com.hazelcast.pubsub.impl;
 
-import com.hazelcast.internal.alto.FrameCodec;
-import com.hazelcast.internal.alto.PartitionActorRef;
+import com.hazelcast.internal.tpc.FrameCodec;
+import com.hazelcast.internal.tpc.PartitionActorRef;
 import com.hazelcast.internal.tpcengine.iobuffer.ConcurrentIOBufferAllocator;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
 import com.hazelcast.pubsub.Publisher;
 
 import java.util.concurrent.CompletableFuture;
 
-import static com.hazelcast.internal.alto.OpCodes.TOPIC_PUBLISH;
+import static com.hazelcast.internal.tpc.OpCodes.TOPIC_PUBLISH;
 
 public class PublisherImpl implements Publisher {
 

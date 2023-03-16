@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hazelcast.internal.alto;
+package com.hazelcast.internal.tpc;
 
 import com.hazelcast.cluster.Address;
 import com.hazelcast.internal.partition.InternalPartitionService;
@@ -39,20 +39,20 @@ public final class PartitionActorRef extends ActorRef<IOBuffer> {
     private final InternalPartitionService partitionService;
     private final Address thisAddress;
     private final Requests requests;
-    private final AltoRuntime altoRuntime;
+    private final TpcRuntime tpcRuntime;
     private final Reactor reactor;
 
     public PartitionActorRef(int partitionId,
                              InternalPartitionService partitionService,
                              TpcEngine engine,
-                             AltoRuntime altoRuntime,
+                             TpcRuntime tpcRuntime,
                              Address thisAddress,
                              Requests requests) {
         this.partitionId = partitionId;
         this.partitionService = partitionService;
         this.thisAddress = thisAddress;
         this.requests = requests;
-        this.altoRuntime = altoRuntime;
+        this.tpcRuntime = tpcRuntime;
         this.reactor = engine.reactor(hashToIndex(partitionId, engine.reactorCount()));
     }
 
@@ -75,7 +75,7 @@ public final class PartitionActorRef extends ActorRef<IOBuffer> {
             //  System.out.println("remote request");
             // todo: this should in theory not be needed. We could use the last
             // address and only in case of a redirect, we update.
-            TcpServerConnection connection = altoRuntime.getConnection(address);
+            TcpServerConnection connection = tpcRuntime.getConnection(address);
             AsyncSocket[] sockets = connection.getSockets();
             AsyncSocket socket = sockets[hashToIndex(partitionId, sockets.length)];
 

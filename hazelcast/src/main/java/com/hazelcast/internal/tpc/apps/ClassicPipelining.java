@@ -1,4 +1,4 @@
-package com.hazelcast.internal.alto.apps;
+package com.hazelcast.internal.tpc.apps;
 
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
@@ -8,7 +8,7 @@ import com.hazelcast.partition.Partition;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-import static com.hazelcast.internal.alto.apps.MainUtil.findPartition;
+import static com.hazelcast.internal.tpc.apps.MainUtil.findPartition;
 
 public class ClassicPipelining {
 

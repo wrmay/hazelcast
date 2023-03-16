@@ -24,17 +24,17 @@ import com.hazelcast.internal.tpcengine.iobuffer.IOBufferAllocator;
 import com.hazelcast.internal.tpcengine.util.CircularQueue;
 import com.hazelcast.internal.util.counters.SwCounter;
 
-import static com.hazelcast.internal.alto.FrameCodec.FLAG_OP_RESPONSE_CONTROL;
-import static com.hazelcast.internal.alto.FrameCodec.OFFSET_PARTITION_ID;
-import static com.hazelcast.internal.alto.FrameCodec.OFFSET_REQ_CALL_ID;
-import static com.hazelcast.internal.alto.FrameCodec.OFFSET_REQ_PAYLOAD;
-import static com.hazelcast.internal.alto.FrameCodec.OFFSET_RES_PAYLOAD;
-import static com.hazelcast.internal.alto.FrameCodec.RESPONSE_TYPE_EXCEPTION;
-import static com.hazelcast.internal.alto.FrameCodec.RESPONSE_TYPE_OVERLOAD;
-import static com.hazelcast.internal.alto.Op.BLOCKED;
-import static com.hazelcast.internal.alto.Op.COMPLETED;
-import static com.hazelcast.internal.alto.Op.EXCEPTION;
-import static com.hazelcast.internal.alto.OpCodes.PIPELINE;
+import static com.hazelcast.internal.tpc.FrameCodec.FLAG_OP_RESPONSE_CONTROL;
+import static com.hazelcast.internal.tpc.FrameCodec.OFFSET_PARTITION_ID;
+import static com.hazelcast.internal.tpc.FrameCodec.OFFSET_REQ_CALL_ID;
+import static com.hazelcast.internal.tpc.FrameCodec.OFFSET_REQ_PAYLOAD;
+import static com.hazelcast.internal.tpc.FrameCodec.OFFSET_RES_PAYLOAD;
+import static com.hazelcast.internal.tpc.FrameCodec.RESPONSE_TYPE_EXCEPTION;
+import static com.hazelcast.internal.tpc.FrameCodec.RESPONSE_TYPE_OVERLOAD;
+import static com.hazelcast.internal.tpc.Op.BLOCKED;
+import static com.hazelcast.internal.tpc.Op.COMPLETED;
+import static com.hazelcast.internal.tpc.Op.EXCEPTION;
+import static com.hazelcast.internal.tpc.OpCodes.PIPELINE;
 import static com.hazelcast.internal.tpcengine.util.BitUtil.SIZEOF_INT;
 import static com.hazelcast.internal.util.counters.SwCounter.newSwCounter;
 

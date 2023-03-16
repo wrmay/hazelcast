@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.hazelcast.internal.alto.offheapmap;
+package com.hazelcast.internal.tpc.offheapmap;
 
 import com.hazelcast.internal.memory.impl.UnsafeUtil;
-import com.hazelcast.internal.alto.util.Allocator;
+import com.hazelcast.internal.tpc.util.Allocator;
 import sun.misc.Unsafe;
 
 import static com.hazelcast.internal.nio.Bits.BYTES_INT;

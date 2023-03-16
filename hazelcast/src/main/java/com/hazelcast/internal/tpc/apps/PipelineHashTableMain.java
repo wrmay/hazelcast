@@ -1,5 +1,5 @@
 
-package com.hazelcast.internal.alto.apps;
+package com.hazelcast.internal.tpc.apps;
 
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
@@ -9,7 +9,7 @@ import com.hazelcast.table.Table;
 import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static com.hazelcast.internal.alto.apps.MainUtil.findPartition;
+import static com.hazelcast.internal.tpc.apps.MainUtil.findPartition;
 import static com.hazelcast.internal.util.HashUtil.hashToIndex;
 
 public class PipelineHashTableMain {

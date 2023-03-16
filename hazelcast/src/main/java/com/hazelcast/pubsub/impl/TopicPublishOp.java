@@ -1,7 +1,7 @@
 package com.hazelcast.pubsub.impl;
 
-import com.hazelcast.internal.alto.FrameCodec;
-import com.hazelcast.internal.alto.Op;
+import com.hazelcast.internal.tpc.FrameCodec;
+import com.hazelcast.internal.tpc.Op;
 import com.hazelcast.internal.tpcengine.AsyncFile;
 import com.hazelcast.internal.tpcengine.Promise;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
@@ -9,7 +9,7 @@ import com.hazelcast.table.impl.TopicManager;
 
 import java.io.File;
 
-import static com.hazelcast.internal.alto.OpCodes.TOPIC_PUBLISH;
+import static com.hazelcast.internal.tpc.OpCodes.TOPIC_PUBLISH;
 import static com.hazelcast.internal.nio.Bits.INT_SIZE_IN_BYTES;
 import static com.hazelcast.internal.tpcengine.AsyncFile.O_CREAT;
 import static com.hazelcast.internal.tpcengine.AsyncFile.O_DIRECT;

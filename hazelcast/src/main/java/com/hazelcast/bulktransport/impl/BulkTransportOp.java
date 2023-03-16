@@ -1,8 +1,8 @@
 package com.hazelcast.bulktransport.impl;
 
-import com.hazelcast.internal.alto.Op;
-import com.hazelcast.internal.alto.OpCodes;
-import com.hazelcast.internal.alto.offheapmap.OffheapMap;
+import com.hazelcast.internal.tpc.Op;
+import com.hazelcast.internal.tpc.OpCodes;
+import com.hazelcast.internal.tpc.offheapmap.OffheapMap;
 import com.hazelcast.table.impl.TableManager;
 
 public class BulkTransportOp extends Op {
