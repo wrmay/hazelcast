@@ -46,6 +46,7 @@ import com.hazelcast.internal.util.ServiceLoader;
 import com.hazelcast.logging.ILogger;
 import com.hazelcast.map.impl.MapService;
 import com.hazelcast.multimap.impl.MultiMapService;
+import com.hazelcast.nop.impl.NoopService;
 import com.hazelcast.pubsub.impl.PublisherService;
 import com.hazelcast.replicatedmap.impl.ReplicatedMapService;
 import com.hazelcast.ringbuffer.impl.RingbufferService;
@@ -150,6 +151,7 @@ public final class ServiceManagerImpl implements ServiceManager {
         registerService(LockSupportService.SERVICE_NAME, new LockSupportServiceImpl(nodeEngine));
         registerService(TableService.SERVICE_NAME, new TableService(nodeEngine));
         registerService(PublisherService.SERVICE_NAME, new PublisherService(nodeEngine));
+        registerService(NoopService.SERVICE_NAME, new NoopService(nodeEngine));
         registerService(QueueService.SERVICE_NAME, new QueueService(nodeEngine));
         registerService(TopicService.SERVICE_NAME, new TopicService());
         registerService(ReliableTopicService.SERVICE_NAME, new ReliableTopicService(nodeEngine));

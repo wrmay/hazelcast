@@ -18,7 +18,7 @@ package com.hazelcast.internal.tpc.apps;
 
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.table.Table;
+import com.hazelcast.nop.Noop;
 
 public class NoopBenchmark {
     public static long operations = 5_000_000;
@@ -32,7 +32,7 @@ public class NoopBenchmark {
         HazelcastInstance node2 = Hazelcast.newHazelcastInstance();
        // HazelcastInstance node2 = Hazelcast.newHazelcastInstance();
 
-        Table table = node1.getProxy(Table.class, "sometable");
+        Noop nop = node1.getProxy(Noop.class, "sometable");
 
         long iterations = operations / concurrency;
 
@@ -44,7 +44,7 @@ public class NoopBenchmark {
                 System.out.println("at k:" + count);
             }
 
-            table.concurrentNoop(concurrency);
+            nop.concurrentNoop(concurrency, 0);
             count += concurrency;
         }
 

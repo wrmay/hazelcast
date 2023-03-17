@@ -2,7 +2,7 @@ package com.hazelcast.internal.tpc.apps;
 
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.table.Table;
+import com.hazelcast.nop.Noop;
 
 /**
  * There is great variability between the runs. I believe this is related to the amount of batching that happens at the
@@ -23,9 +23,9 @@ public class RemoteNoopBenchmark {
         System.out.println("Waiting for partition tables to settle: done");
         int partitionId = remoteNode.getPartitionService().getPartitions().iterator().next().getPartitionId();
 
-        Table table = localNode.getProxy(Table.class, "sometable");
+        Noop table = localNode.getProxy(Noop.class, "sometable");
 
-         long iterations = operations / concurrency;
+        long iterations = operations / concurrency;
 
         long startMs = System.currentTimeMillis();
         long count = 0;

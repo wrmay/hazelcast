@@ -38,13 +38,11 @@ import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBufferAllocator;
 import com.hazelcast.internal.tpcengine.iobuffer.NonConcurrentIOBufferAllocator;
 import com.hazelcast.internal.tpcengine.iobuffer.UnpooledIOBufferAllocator;
-import com.hazelcast.internal.tpcengine.iouring.IOUringReactorBuilder;
 import com.hazelcast.internal.tpcengine.nio.NioAsyncSocketBuilder;
-import com.hazelcast.internal.tpcengine.nio.NioReactorBuilder;
 import com.hazelcast.internal.util.HashUtil;
 import com.hazelcast.logging.ILogger;
 import com.hazelcast.table.impl.TableManager;
-import com.hazelcast.table.impl.TopicManager;
+import com.hazelcast.pubsub.impl.TopicManager;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;

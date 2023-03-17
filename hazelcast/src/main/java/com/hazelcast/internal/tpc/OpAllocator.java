@@ -20,7 +20,7 @@ import com.hazelcast.bulktransport.impl.BulkTransportOp;
 import com.hazelcast.bulktransport.impl.InitBulkTransportOp;
 import com.hazelcast.pubsub.impl.TopicPublishOp;
 import com.hazelcast.table.impl.GetOp;
-import com.hazelcast.table.impl.NoOp;
+import com.hazelcast.nop.impl.NoOp;
 import com.hazelcast.table.impl.PipelineOp;
 import com.hazelcast.table.impl.QueryOp;
 import com.hazelcast.table.impl.SelectByKeyOp;

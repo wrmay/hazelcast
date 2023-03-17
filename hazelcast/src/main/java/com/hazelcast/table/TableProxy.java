@@ -19,9 +19,9 @@ package com.hazelcast.table;
 import com.hazelcast.bulktransport.BulkTransport;
 import com.hazelcast.bulktransport.impl.BulkTransportImpl;
 import com.hazelcast.cluster.Address;
-import com.hazelcast.internal.tpc.TpcRuntime;
 import com.hazelcast.internal.tpc.FrameCodec;
 import com.hazelcast.internal.tpc.PartitionActorRef;
+import com.hazelcast.internal.tpc.TpcRuntime;
 import com.hazelcast.internal.tpcengine.iobuffer.ConcurrentIOBufferAllocator;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBufferAllocator;
@@ -32,15 +32,12 @@ import com.hazelcast.table.impl.TableService;
 
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ThreadLocalRandom;
 
 import static com.hazelcast.internal.tpc.OpCodes.GET;
-import static com.hazelcast.internal.tpc.OpCodes.NOOP;
 import static com.hazelcast.internal.tpc.OpCodes.QUERY;
 import static com.hazelcast.internal.tpc.OpCodes.SET;
 import static com.hazelcast.internal.tpc.OpCodes.TABLE_UPSERT;
 import static com.hazelcast.internal.util.HashUtil.hashToIndex;
-import static com.hazelcast.internal.util.Preconditions.checkPositive;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
@@ -55,7 +52,7 @@ public class TableProxy<K, V> extends AbstractDistributedObject implements Table
 
     public TableProxy(NodeEngineImpl nodeEngine, TableService tableService, String name) {
         super(nodeEngine, tableService);
-         this.name = name;
+        this.name = name;
         this.partitionCount = nodeEngine.getPartitionService().getPartitionCount();
         this.requestAllocator = new ConcurrentIOBufferAllocator(128, true);
         this.tpcRuntime = nodeEngine.getNode().getTpcRuntime();
@@ -93,76 +90,6 @@ public class TableProxy<K, V> extends AbstractDistributedObject implements Table
         return partitionActorRefs[partitionId].submit(request);
     }
 
-    @Override
-    public void concurrentNoop(int concurrency, int partitionId) {
-        checkPositive("concurrency", concurrency);
-
-        if (concurrency == 1) {
-            try {
-                IOBuffer response = asyncNoop(partitionId).get(23, SECONDS);
-                response.release();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        } else {
-            CompletableFuture[] futures = new CompletableFuture[concurrency];
-            for (int k = 0; k < futures.length; k++) {
-                futures[k] = asyncNoop(partitionId);
-            }
-
-            for (CompletableFuture<IOBuffer> f : futures) {
-                try {
-                    IOBuffer response = f.get(requestTimeoutMs, MILLISECONDS);
-                    response.release();
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-    }
-
-    @Override
-    public void concurrentNoop(int concurrency) {
-        int partitionId = ThreadLocalRandom.current().nextInt(partitionCount);
-        concurrentNoop(concurrency, partitionId);
-    }
-
-    @Override
-    public void noop(int partitionId) {
-        CompletableFuture<IOBuffer> f = asyncNoop(partitionId);
-        try {
-            IOBuffer response = f.get(requestTimeoutMs, MILLISECONDS);
-            response.release();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void noop() {
-        int partitionId = ThreadLocalRandom.current().nextInt(partitionCount);
-
-        CompletableFuture<IOBuffer> f = asyncNoop(partitionId);
-        try {
-            IOBuffer response = f.get(requestTimeoutMs, MILLISECONDS);
-            response.release();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private CompletableFuture<IOBuffer> asyncNoop() {
-        return asyncNoop(ThreadLocalRandom.current().nextInt(partitionCount));
-    }
-
-    private CompletableFuture<IOBuffer> asyncNoop(int partitionId) {
-      //  ConcurrentIOBufferAllocator allocator = new ConcurrentIOBufferAllocator(1,true);
-        IOBuffer request = requestAllocator.allocate(32);
-     //   request.trackRelease=true;
-        FrameCodec.writeRequestHeader(request, partitionId, NOOP);
-        FrameCodec.setSize(request);
-        return partitionActorRefs[partitionId].submit(request);
-    }
 
     // better pipelining support
     @Override

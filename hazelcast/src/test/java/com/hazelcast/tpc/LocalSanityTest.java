@@ -2,6 +2,7 @@ package com.hazelcast.tpc;
 
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.nop.Noop;
 import com.hazelcast.table.Table;
 import com.hazelcast.test.HazelcastSerialClassRunner;
 import com.hazelcast.test.annotation.QuickTest;
@@ -31,10 +32,10 @@ public class LocalSanityTest {
 
     @Test
     public void test() {
-        Table table = node.getProxy(Table.class, "foo");
+        Noop noop = node.getProxy(Noop.class, "foo");
 
         for (int k = 0; k < 10000; k++) {
-            table.noop();
+            noop.noop(0);
         }
     }
 }

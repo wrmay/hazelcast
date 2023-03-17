@@ -56,6 +56,8 @@ import com.hazelcast.map.IMap;
 import com.hazelcast.map.impl.MapService;
 import com.hazelcast.multimap.MultiMap;
 import com.hazelcast.multimap.impl.MultiMapService;
+import com.hazelcast.nop.Noop;
+import com.hazelcast.nop.impl.NoopService;
 import com.hazelcast.partition.PartitionService;
 import com.hazelcast.pubsub.Publisher;
 import com.hazelcast.pubsub.impl.PublisherService;
@@ -158,6 +160,8 @@ public class HazelcastInstanceImpl implements HazelcastInstance, SerializationSe
             return getDistributedObject(TableService.SERVICE_NAME, name);
         } else if (type.isAssignableFrom(Publisher.class)) {
             return getDistributedObject(PublisherService.SERVICE_NAME, name);
+        } else if (type.isAssignableFrom(Noop.class)) {
+            return getDistributedObject(NoopService.SERVICE_NAME, name);
         } else {
             throw new RuntimeException("Unhandled type " + name);
         }

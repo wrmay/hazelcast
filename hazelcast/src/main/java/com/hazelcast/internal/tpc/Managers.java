@@ -18,7 +18,7 @@ package com.hazelcast.internal.tpc;
 
 import com.hazelcast.bulktransport.impl.BulkTransportService;
 import com.hazelcast.table.impl.TableManager;
-import com.hazelcast.table.impl.TopicManager;
+import com.hazelcast.pubsub.impl.TopicManager;
 
 // Very ugly way to get the dependencies.
 public class Managers {

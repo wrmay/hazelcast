@@ -1,4 +1,4 @@
-package com.hazelcast.table.impl;
+package com.hazelcast.pubsub.impl;
 
 import com.hazelcast.pubsub.impl.TopicLog;
 
