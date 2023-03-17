@@ -16,6 +16,9 @@
 
 package com.hazelcast.internal.tpcengine;
 
+import com.hazelcast.internal.tpcengine.iouring.IOUringReactorBuilder;
+import com.hazelcast.internal.tpcengine.nio.NioReactorBuilder;
+import com.hazelcast.internal.tpcengine.util.Preconditions;
 import com.hazelcast.internal.util.ThreadAffinity;
 
 import java.util.concurrent.ThreadFactory;
@@ -80,6 +83,18 @@ public abstract class ReactorBuilder {
         this.batchSize = Integer.getInteger(NAME_BATCH_SIZE, DEFAULT_BATCH_SIZE);
         this.clockRefreshPeriod = Integer.getInteger(NAME_CLOCK_REFRESH_PERIOD, DEFAULT_CLOCK_REFRESH_INTERVAL);
         this.spin = Boolean.parseBoolean(getProperty(NAME_REACTOR_SPIN, Boolean.toString(DEFAULT_SPIN)));
+    }
+
+    public static ReactorBuilder newReactorBuilder(ReactorType type) {
+        Preconditions.checkNotNull(type, "type");
+        switch (type) {
+            case NIO:
+                return new NioReactorBuilder();
+            case IOURING:
+                return new IOUringReactorBuilder();
+            default:
+                throw new IllegalStateException("Unhandeled reactorType: " + type);
+        }
     }
 
     /**

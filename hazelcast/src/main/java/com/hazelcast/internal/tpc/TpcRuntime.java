@@ -165,17 +165,7 @@ public class TpcRuntime {
         responseHandler.start();
 
         ReactorType eventloopType = ReactorType.fromString(getProperty("hazelcast.alto.eventloop.type", "nio"));
-        ReactorBuilder reactorBuilder;
-        switch (eventloopType) {
-            case NIO:
-                reactorBuilder = new NioReactorBuilder();
-                break;
-            case IOURING:
-                reactorBuilder = new IOUringReactorBuilder();
-                break;
-            default:
-                throw new IllegalStateException("Unhandeled eventlooptype: " + eventloopType);
-        }
+        ReactorBuilder reactorBuilder = ReactorBuilder.newReactorBuilder(eventloopType);
         reactorBuilder.setThreadFactory(Thread::new);
         AtomicInteger threadId = new AtomicInteger();
         reactorBuilder.setThreadNameSupplier(() -> "alto-thread-" + threadId.getAndIncrement());
@@ -198,10 +188,11 @@ public class TpcRuntime {
             schedulers.add(scheduler);
             return scheduler;
         });
-        TpcEngineBuilder engineBuilder = new TpcEngineBuilder();
-        engineBuilder.setReactorBuilder(reactorBuilder);
-        tpcEngine = engineBuilder.build();
-        tpcEngine.start();
+
+        TpcEngine tpcEngine = new TpcEngineBuilder()
+                .setReactorBuilder(reactorBuilder)
+                .build()
+                .start();
 
         startNetworking();
 
