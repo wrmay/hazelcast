@@ -71,8 +71,8 @@ import com.hazelcast.spi.impl.SerializationServiceSupport;
 import com.hazelcast.spi.impl.proxyservice.ProxyService;
 import com.hazelcast.splitbrainprotection.SplitBrainProtectionService;
 import com.hazelcast.sql.SqlService;
-import com.hazelcast.table.Table;
-import com.hazelcast.table.impl.TableService;
+import com.hazelcast.htable.HTable;
+import com.hazelcast.htable.impl.HTableService;
 import com.hazelcast.topic.ITopic;
 import com.hazelcast.topic.impl.TopicService;
 import com.hazelcast.topic.impl.reliable.ReliableTopicService;
@@ -156,8 +156,8 @@ public class HazelcastInstanceImpl implements HazelcastInstance, SerializationSe
         checkNotNull(type, "type");
         checkNotNull(name, "name");
 
-        if (type.isAssignableFrom(Table.class)) {
-            return getDistributedObject(TableService.SERVICE_NAME, name);
+        if (type.isAssignableFrom(HTable.class)) {
+            return getDistributedObject(HTableService.SERVICE_NAME, name);
         } else if (type.isAssignableFrom(Publisher.class)) {
             return getDistributedObject(PublisherService.SERVICE_NAME, name);
         } else if (type.isAssignableFrom(Noop.class)) {

@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package com.hazelcast.table.impl;
+package com.hazelcast.htable.impl;
 
 import com.hazelcast.internal.tpc.offheapmap.Bin;
 import com.hazelcast.internal.tpc.offheapmap.OffheapMap;
-import com.hazelcast.internal.tpc.FrameCodec;
 import com.hazelcast.internal.tpc.Op;
 import com.hazelcast.internal.tpc.OpCodes;
 
@@ -39,7 +38,7 @@ public final class SetOp extends Op {
 
     @Override
     public int run() throws Exception {
-        TableManager tableManager = managers.tableManager;
+        HTableManager tableManager = managers.tableManager;
         OffheapMap map = tableManager.getOffheapMap(partitionId, null);
 
         key.init(request);

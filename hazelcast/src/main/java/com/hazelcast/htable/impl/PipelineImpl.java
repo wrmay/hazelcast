@@ -1,4 +1,4 @@
-package com.hazelcast.table.impl;
+package com.hazelcast.htable.impl;
 // todo: we don't need a IOBuffer for all the requests. We should just add to an existing IOBuffer.
 
 
@@ -11,7 +11,7 @@ import com.hazelcast.internal.tpc.RequestFuture;
 import com.hazelcast.internal.tpc.TpcRuntime;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBufferAllocator;
-import com.hazelcast.table.Pipeline;
+import com.hazelcast.htable.Pipeline;
 
 import java.util.Arrays;
 

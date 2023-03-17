@@ -14,10 +14,29 @@
  * limitations under the License.
  */
 
-package com.hazelcast.table;
+package com.hazelcast.htable;
 
-public class Item {
-    public long key;
-    public int a;
-    public int b;
+import com.hazelcast.bulktransport.BulkTransport;
+import com.hazelcast.cluster.Address;
+import com.hazelcast.core.TpcProxy;
+
+
+/**
+ * This API contains a lot of functionality that normally would be placed
+ * over different APIs. But I don't want to jump to a more appropriate solution
+ * yet.
+ *
+ * @param <K>
+ * @param <E>
+ */
+public interface HTable<K,E> extends TpcProxy {
+
+    Pipeline newPipeline();
+
+    void set(byte[] key, byte[] value);
+
+    byte[] get(byte[] key);
+
+    void bogusQuery();
+
 }

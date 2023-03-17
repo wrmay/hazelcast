@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hazelcast.table;
+package com.hazelcast.htable.impl;
 
 import com.hazelcast.bulktransport.BulkTransport;
 import com.hazelcast.bulktransport.impl.BulkTransportImpl;
@@ -27,8 +27,8 @@ import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBufferAllocator;
 import com.hazelcast.spi.impl.AbstractDistributedObject;
 import com.hazelcast.spi.impl.NodeEngineImpl;
-import com.hazelcast.table.impl.PipelineImpl;
-import com.hazelcast.table.impl.TableService;
+import com.hazelcast.htable.HTable;
+import com.hazelcast.htable.Pipeline;
 
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
@@ -41,7 +41,7 @@ import static com.hazelcast.internal.util.HashUtil.hashToIndex;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
-public class TableProxy<K, V> extends AbstractDistributedObject implements Table<K, V> {
+public class HTableProxy<K, V> extends AbstractDistributedObject implements HTable<K, V> {
 
     private final TpcRuntime tpcRuntime;
     private final String name;
@@ -50,7 +50,7 @@ public class TableProxy<K, V> extends AbstractDistributedObject implements Table
     private final int requestTimeoutMs;
     private final PartitionActorRef[] partitionActorRefs;
 
-    public TableProxy(NodeEngineImpl nodeEngine, TableService tableService, String name) {
+    public HTableProxy(NodeEngineImpl nodeEngine, HTableService tableService, String name) {
         super(nodeEngine, tableService);
         this.name = name;
         this.partitionCount = nodeEngine.getPartitionService().getPartitionCount();
@@ -63,55 +63,6 @@ public class TableProxy<K, V> extends AbstractDistributedObject implements Table
     @Override
     public Pipeline newPipeline() {
         return new PipelineImpl(tpcRuntime, requestAllocator);
-    }
-
-    @Override
-    public void upsert(V v) {
-        CompletableFuture<IOBuffer> f = asyncUpsert(v);
-        try {
-            IOBuffer response = f.get(23, SECONDS);
-            response.release();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private CompletableFuture asyncUpsert(V v) {
-        Item item = (Item) v;
-
-        int partitionId = hashToIndex(Long.hashCode(item.key), partitionCount);
-        IOBuffer request = requestAllocator.allocate(60);
-        FrameCodec.writeRequestHeader(request, partitionId, TABLE_UPSERT);
-        request.writeString(name);
-        request.writeLong(item.key);
-        request.writeInt(item.a);
-        request.writeInt(item.b);
-        FrameCodec.setSize(request);
-        return partitionActorRefs[partitionId].submit(request);
-    }
-
-
-    // better pipelining support
-    @Override
-    public void upsertAll(V[] values) {
-        CompletableFuture[] futures = new CompletableFuture[values.length];
-        for (int k = 0; k < futures.length; k++) {
-            futures[k] = asyncUpsert(values[k]);
-        }
-
-        for (CompletableFuture<IOBuffer> f : futures) {
-            try {
-                IOBuffer response = f.get(requestTimeoutMs, MILLISECONDS);
-                response.release();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
-
-    @Override
-    public BulkTransport newBulkTransport(Address address, int parallelism) {
-        return new BulkTransportImpl(tpcRuntime, address, parallelism);
     }
 
     @Override
@@ -187,6 +138,6 @@ public class TableProxy<K, V> extends AbstractDistributedObject implements Table
 
     @Override
     public String getServiceName() {
-        return TableService.SERVICE_NAME;
+        return HTableService.SERVICE_NAME;
     }
 }

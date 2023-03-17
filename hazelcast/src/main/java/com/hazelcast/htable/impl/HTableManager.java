@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hazelcast.table.impl;
+package com.hazelcast.htable.impl;
 
 
 import com.hazelcast.internal.tpc.OffheapAllocator;
@@ -23,12 +23,12 @@ import com.hazelcast.internal.tpc.offheapmap.OffheapMap;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TableManager {
+public class HTableManager {
 
     private final HashMap[] partitionMaps;
     private final OffheapMap[] offheapMaps;
 
-    public TableManager(int partitions) {
+    public HTableManager(int partitions) {
         this.partitionMaps = new HashMap[partitions];
         for (int k = 0; k < partitions; k++) {
             partitionMaps[k] = new HashMap();

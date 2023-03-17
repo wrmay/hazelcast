@@ -18,7 +18,7 @@ package com.hazelcast.internal.tpc.apps;
 
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.table.Table;
+import com.hazelcast.htable.HTable;
 
 public class TableGetBenchmark {
 
@@ -28,7 +28,7 @@ public class TableGetBenchmark {
         HazelcastInstance node1 = Hazelcast.newHazelcastInstance();
         HazelcastInstance node2 = Hazelcast.newHazelcastInstance();
 
-        Table table = node1.getProxy(Table.class, "sometable");
+        HTable table = node1.getProxy(HTable.class, "sometable");
 
         int items = 1_000_000;
 

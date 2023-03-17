@@ -17,13 +17,13 @@
 package com.hazelcast.internal.tpc;
 
 import com.hazelcast.bulktransport.impl.BulkTransportService;
-import com.hazelcast.table.impl.TableManager;
+import com.hazelcast.htable.impl.HTableManager;
 import com.hazelcast.pubsub.impl.TopicManager;
 
 // Very ugly way to get the dependencies.
 public class Managers {
 
-    public TableManager tableManager;
+    public HTableManager tableManager;
 
     public TopicManager topicManager;
 

@@ -41,7 +41,7 @@ import com.hazelcast.internal.tpcengine.iobuffer.UnpooledIOBufferAllocator;
 import com.hazelcast.internal.tpcengine.nio.NioAsyncSocketBuilder;
 import com.hazelcast.internal.util.HashUtil;
 import com.hazelcast.logging.ILogger;
-import com.hazelcast.table.impl.TableManager;
+import com.hazelcast.htable.impl.HTableManager;
 import com.hazelcast.pubsub.impl.TopicManager;
 
 import java.io.IOException;
@@ -149,7 +149,7 @@ public class TpcRuntime {
 
         this.managers = new Managers();
         InternalPartitionService partitionService = node.nodeEngine.getPartitionService();
-        managers.tableManager = new TableManager(partitionService.getPartitionCount());
+        managers.tableManager = new HTableManager(partitionService.getPartitionCount());
         managers.topicManager = new TopicManager(partitionService.getPartitionCount());
 
         this.partitionActorRefs = new PartitionActorRef[partitionService.getPartitionCount()];

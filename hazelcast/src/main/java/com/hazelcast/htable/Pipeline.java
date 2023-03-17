@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hazelcast.table;
+package com.hazelcast.htable;
 
 public interface Pipeline {
 

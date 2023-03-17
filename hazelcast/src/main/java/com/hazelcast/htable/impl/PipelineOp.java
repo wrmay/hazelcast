@@ -1,4 +1,4 @@
-package com.hazelcast.table.impl;
+package com.hazelcast.htable.impl;
 
 import com.hazelcast.internal.tpc.Op;
 import com.hazelcast.internal.tpc.OpCodes;

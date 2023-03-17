@@ -1,12 +1,9 @@
 package com.hazelcast.bulktransport.impl;
 
 import com.hazelcast.internal.tpc.offheapmap.OffheapMap;
-import com.hazelcast.internal.tpc.FrameCodec;
 import com.hazelcast.internal.tpc.Op;
 import com.hazelcast.internal.tpc.OpCodes;
-import com.hazelcast.table.impl.TableManager;
-
-import static com.hazelcast.internal.tpc.FrameCodec.OFFSET_REQ_CALL_ID;
+import com.hazelcast.htable.impl.HTableManager;
 
 public class InitBulkTransportOp extends Op {
 
@@ -16,7 +13,7 @@ public class InitBulkTransportOp extends Op {
 
     @Override
     public int run() throws Exception {
-        TableManager tableManager = managers.tableManager;
+        HTableManager tableManager = managers.tableManager;
         OffheapMap map = tableManager.getOffheapMap(partitionId, null);
 
         return COMPLETED;

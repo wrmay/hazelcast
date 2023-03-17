@@ -19,13 +19,12 @@ package com.hazelcast.internal.tpc;
 import com.hazelcast.bulktransport.impl.BulkTransportOp;
 import com.hazelcast.bulktransport.impl.InitBulkTransportOp;
 import com.hazelcast.pubsub.impl.TopicPublishOp;
-import com.hazelcast.table.impl.GetOp;
+import com.hazelcast.htable.impl.GetOp;
 import com.hazelcast.nop.impl.NoOp;
-import com.hazelcast.table.impl.PipelineOp;
-import com.hazelcast.table.impl.QueryOp;
-import com.hazelcast.table.impl.SelectByKeyOp;
-import com.hazelcast.table.impl.SetOp;
-import com.hazelcast.table.impl.UpsertOp;
+import com.hazelcast.htable.impl.PipelineOp;
+import com.hazelcast.htable.impl.QueryOp;
+import com.hazelcast.htable.impl.SelectByKeyOp;
+import com.hazelcast.htable.impl.SetOp;
 
 import java.util.function.Supplier;
 
@@ -38,7 +37,6 @@ import static com.hazelcast.internal.tpc.OpCodes.PIPELINE;
 import static com.hazelcast.internal.tpc.OpCodes.QUERY;
 import static com.hazelcast.internal.tpc.OpCodes.SET;
 import static com.hazelcast.internal.tpc.OpCodes.TABLE_SELECT_BY_KEY;
-import static com.hazelcast.internal.tpc.OpCodes.TABLE_UPSERT;
 import static com.hazelcast.internal.tpc.OpCodes.TOPIC_PUBLISH;
 
 public final class OpAllocator {
@@ -51,7 +49,6 @@ public final class OpAllocator {
         this.scheduler = scheduler;
         this.manager = managers;
         this.pools = new Pool[MAX_OPCODE + 1];
-        pools[TABLE_UPSERT] = new Pool(UpsertOp::new);
         pools[TABLE_SELECT_BY_KEY] = new Pool(SelectByKeyOp::new);
         pools[NOOP] = new Pool(NoOp::new);
         pools[GET] = new Pool(GetOp::new);

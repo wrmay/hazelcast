@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hazelcast.table.impl;
+package com.hazelcast.htable.impl;
 
 import com.hazelcast.core.DistributedObject;
 import com.hazelcast.internal.services.ManagedService;
@@ -22,17 +22,16 @@ import com.hazelcast.internal.services.RemoteService;
 import com.hazelcast.spi.impl.NodeEngine;
 import com.hazelcast.spi.impl.NodeEngineImpl;
 import com.hazelcast.spi.impl.operationservice.PartitionAwareOperation;
-import com.hazelcast.table.TableProxy;
 
 import java.util.Properties;
 import java.util.UUID;
 
-public class TableService implements PartitionAwareOperation, ManagedService, RemoteService {
+public class HTableService implements PartitionAwareOperation, ManagedService, RemoteService {
 
-    public static final String SERVICE_NAME = "hz:impl:tableService";
+    public static final String SERVICE_NAME = "hz:impl:htableService";
     private final NodeEngineImpl nodeEngine;
 
-    public TableService(NodeEngineImpl nodeEngine) {
+    public HTableService(NodeEngineImpl nodeEngine) {
         this.nodeEngine = nodeEngine;
     }
 
@@ -43,7 +42,7 @@ public class TableService implements PartitionAwareOperation, ManagedService, Re
 
     @Override
     public DistributedObject createDistributedObject(String objectName, UUID source, boolean local) {
-        return new TableProxy(nodeEngine, this, objectName);
+        return new HTableProxy(nodeEngine, this, objectName);
     }
 
     @Override

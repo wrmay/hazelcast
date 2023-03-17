@@ -60,7 +60,7 @@ import com.hazelcast.spi.impl.servicemanager.ServiceDescriptorProvider;
 import com.hazelcast.spi.impl.servicemanager.ServiceInfo;
 import com.hazelcast.spi.impl.servicemanager.ServiceManager;
 import com.hazelcast.splitbrainprotection.impl.SplitBrainProtectionServiceImpl;
-import com.hazelcast.table.impl.TableService;
+import com.hazelcast.htable.impl.HTableService;
 import com.hazelcast.topic.impl.TopicService;
 import com.hazelcast.topic.impl.reliable.ReliableTopicService;
 import com.hazelcast.transaction.impl.TransactionManagerServiceImpl;
@@ -149,7 +149,7 @@ public final class ServiceManagerImpl implements ServiceManager {
         logger.finest("Registering default services...");
         registerService(MapService.SERVICE_NAME, createService(MapService.class));
         registerService(LockSupportService.SERVICE_NAME, new LockSupportServiceImpl(nodeEngine));
-        registerService(TableService.SERVICE_NAME, new TableService(nodeEngine));
+        registerService(HTableService.SERVICE_NAME, new HTableService(nodeEngine));
         registerService(PublisherService.SERVICE_NAME, new PublisherService(nodeEngine));
         registerService(NoopService.SERVICE_NAME, new NoopService(nodeEngine));
         registerService(QueueService.SERVICE_NAME, new QueueService(nodeEngine));

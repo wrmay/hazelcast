@@ -4,8 +4,8 @@ package com.hazelcast.internal.tpc.apps;
 import com.hazelcast.config.Config;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.table.Pipeline;
-import com.hazelcast.table.Table;
+import com.hazelcast.htable.Pipeline;
+import com.hazelcast.htable.HTable;
 
 import static com.hazelcast.internal.util.HashUtil.hashToIndex;
 
@@ -30,7 +30,7 @@ public class PipelineNoopMain {
         System.out.println("Waiting for partition tables to settle: done");
         int targetPartitionId = remoteNode.getPartitionService().getPartitions().iterator().next().getPartitionId();
 
-        Table table = localNode.getProxy(Table.class, "sometable");
+        HTable table = localNode.getProxy(HTable.class, "sometable");
 
         long startMs = System.currentTimeMillis();
         Pipeline pipeline = table.newPipeline();

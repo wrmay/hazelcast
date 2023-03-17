@@ -3,8 +3,8 @@ package com.hazelcast.internal.tpc.apps;
 
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.table.Pipeline;
-import com.hazelcast.table.Table;
+import com.hazelcast.htable.Pipeline;
+import com.hazelcast.htable.HTable;
 
 import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
@@ -33,7 +33,7 @@ public class PipelineHashTableMain {
         int targetPartitionId = findPartition(remoteNode);
 
 
-        Table table = localNode.getProxy(Table.class, "sometable");
+        HTable table = localNode.getProxy(HTable.class, "sometable");
 
         generateData(targetPartitionId, table);
 
@@ -44,7 +44,7 @@ public class PipelineHashTableMain {
         System.exit(0);
     }
 
-    private static void runBenchmark(Table table) {
+    private static void runBenchmark(HTable table) {
         long startMs = System.currentTimeMillis();
         Pipeline pipeline = table.newPipeline();
         ThreadLocalRandom random = ThreadLocalRandom.current();
@@ -67,7 +67,7 @@ public class PipelineHashTableMain {
         System.out.println("Pipelined operations: " + (rounds * pipelineSize * 1000.0f / duration) + " op/s");
     }
 
-    private static void generateData(int targetPartitionId, Table table) {
+    private static void generateData(int targetPartitionId, HTable table) {
         System.out.println("Generating data");
 
         for (int k = 0; k < hashtableSize; k++) {

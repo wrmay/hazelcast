@@ -14,34 +14,38 @@
  * limitations under the License.
  */
 
-package com.hazelcast.table.impl;
+package com.hazelcast.htable.impl;
 
-import com.hazelcast.internal.tpc.FrameCodec;
+import com.hazelcast.internal.tpc.offheapmap.Bin;
+import com.hazelcast.internal.tpc.offheapmap.Bout;
+import com.hazelcast.internal.tpc.offheapmap.OffheapMap;
 import com.hazelcast.internal.tpc.Op;
 import com.hazelcast.internal.tpc.OpCodes;
-import com.hazelcast.table.Item;
 
-import java.util.Map;
+public final class GetOp extends Op {
 
-public final class UpsertOp extends Op {
+    private final Bin key = new Bin();
+    private final Bout value = new Bout();
 
-    public UpsertOp() {
-        super(OpCodes.TABLE_UPSERT);
+    public GetOp() {
+        super(OpCodes.GET);
+    }
+
+    @Override
+    public void clear() {
+        key.clear();
+        value.clear();
     }
 
     @Override
     public int run() throws Exception {
-        readName();
+        HTableManager tableManager = managers.tableManager;
+        OffheapMap map = tableManager.getOffheapMap(partitionId, null);
 
-        TableManager tableManager = managers.tableManager;
-        Map map = tableManager.get(partitionId, name);
+        key.init(request);
 
-        Item item = new Item();
-        item.key = request.readLong();
-        item.a = request.readInt();
-        item.b = request.readInt();
-        map.put(item.key, item);
-
-        return Op.COMPLETED;
+        value.init(response);
+        map.get(key, value);
+        return COMPLETED;
     }
 }

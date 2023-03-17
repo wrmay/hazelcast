@@ -2,7 +2,7 @@ package com.hazelcast.bulktransport;
 
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.table.Table;
+import com.hazelcast.htable.HTable;
 
 
 public class BulkTransportMain {
@@ -11,7 +11,7 @@ public class BulkTransportMain {
         HazelcastInstance node1 = Hazelcast.newHazelcastInstance();
         HazelcastInstance node2 = Hazelcast.newHazelcastInstance();
 
-        Table table = node1.getProxy(Table.class , "table");
+        HTable table = node1.getProxy(HTable.class , "table");
 
         BulkTransport bulkTransport = table.newBulkTransport(node2.getCluster().getLocalMember().getAddress(), 10);
         bulkTransport.copyFile(null);
