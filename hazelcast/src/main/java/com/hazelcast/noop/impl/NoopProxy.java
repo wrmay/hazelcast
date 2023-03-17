@@ -1,16 +1,15 @@
-package com.hazelcast.nop.impl;
+package com.hazelcast.noop.impl;
 
 import com.hazelcast.internal.tpc.FrameCodec;
 import com.hazelcast.internal.tpc.PartitionActorRef;
 import com.hazelcast.internal.tpc.TpcRuntime;
 import com.hazelcast.internal.tpcengine.iobuffer.ConcurrentIOBufferAllocator;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
-import com.hazelcast.nop.Noop;
+import com.hazelcast.noop.Noop;
 import com.hazelcast.spi.impl.AbstractDistributedObject;
 import com.hazelcast.spi.impl.NodeEngineImpl;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ThreadLocalRandom;
 
 import static com.hazelcast.internal.tpc.OpCodes.NOOP;
 import static com.hazelcast.internal.util.Preconditions.checkPositive;

@@ -16,8 +16,6 @@
 
 package com.hazelcast.htable;
 
-import com.hazelcast.bulktransport.BulkTransport;
-import com.hazelcast.cluster.Address;
 import com.hazelcast.core.TpcProxy;
 
 
@@ -25,11 +23,8 @@ import com.hazelcast.core.TpcProxy;
  * This API contains a lot of functionality that normally would be placed
  * over different APIs. But I don't want to jump to a more appropriate solution
  * yet.
- *
- * @param <K>
- * @param <E>
  */
-public interface HTable<K,E> extends TpcProxy {
+public interface HTable extends TpcProxy {
 
     Pipeline newPipeline();
 

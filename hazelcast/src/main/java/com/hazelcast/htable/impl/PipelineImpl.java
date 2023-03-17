@@ -33,9 +33,9 @@ public final class PipelineImpl implements Pipeline {
     private PartitionActorRef actorRef;
     private final InternalPartitionServiceImpl partitionService;
     private int partitionId = -1;
-    private IOBuffer request;
+    public IOBuffer request;
     private int countPos;
-    private int count;
+    public int count;
 
     public PipelineImpl(TpcRuntime tpcRuntime, IOBufferAllocator requestAllocator) {
         this.tpcRuntime = tpcRuntime;
@@ -95,7 +95,7 @@ public final class PipelineImpl implements Pipeline {
         count++;
     }
 
-    private void init(int partitionId) {
+    public void init(int partitionId) {
         if (partitionId < 0) {
             throw new IllegalArgumentException("PartitionId can't be smaller than 0");
         }

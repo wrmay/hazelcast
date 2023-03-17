@@ -2,7 +2,7 @@ package com.hazelcast.internal.tpc.apps;
 
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.nop.Noop;
+import com.hazelcast.noop.Noop;
 
 /**
  * There is great variability between the runs. I believe this is related to the amount of batching that happens at the

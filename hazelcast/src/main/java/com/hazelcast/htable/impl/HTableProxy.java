@@ -16,9 +16,8 @@
 
 package com.hazelcast.htable.impl;
 
-import com.hazelcast.bulktransport.BulkTransport;
-import com.hazelcast.bulktransport.impl.BulkTransportImpl;
-import com.hazelcast.cluster.Address;
+import com.hazelcast.htable.HTable;
+import com.hazelcast.htable.Pipeline;
 import com.hazelcast.internal.tpc.FrameCodec;
 import com.hazelcast.internal.tpc.PartitionActorRef;
 import com.hazelcast.internal.tpc.TpcRuntime;
@@ -27,8 +26,6 @@ import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBufferAllocator;
 import com.hazelcast.spi.impl.AbstractDistributedObject;
 import com.hazelcast.spi.impl.NodeEngineImpl;
-import com.hazelcast.htable.HTable;
-import com.hazelcast.htable.Pipeline;
 
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
@@ -36,12 +33,10 @@ import java.util.concurrent.CompletableFuture;
 import static com.hazelcast.internal.tpc.OpCodes.GET;
 import static com.hazelcast.internal.tpc.OpCodes.QUERY;
 import static com.hazelcast.internal.tpc.OpCodes.SET;
-import static com.hazelcast.internal.tpc.OpCodes.TABLE_UPSERT;
 import static com.hazelcast.internal.util.HashUtil.hashToIndex;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import static java.util.concurrent.TimeUnit.SECONDS;
 
-public class HTableProxy<K, V> extends AbstractDistributedObject implements HTable<K, V> {
+public class HTableProxy extends AbstractDistributedObject implements HTable {
 
     private final TpcRuntime tpcRuntime;
     private final String name;

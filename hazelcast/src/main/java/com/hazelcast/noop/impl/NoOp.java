@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hazelcast.nop.impl;
+package com.hazelcast.noop.impl;
 
 
 import com.hazelcast.internal.tpc.Op;

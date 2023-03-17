@@ -1,4 +1,4 @@
-package com.hazelcast.nop;
+package com.hazelcast.noop;
 
 import com.hazelcast.core.TpcProxy;
 

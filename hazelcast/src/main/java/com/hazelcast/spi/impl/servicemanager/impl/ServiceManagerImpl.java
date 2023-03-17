@@ -46,7 +46,7 @@ import com.hazelcast.internal.util.ServiceLoader;
 import com.hazelcast.logging.ILogger;
 import com.hazelcast.map.impl.MapService;
 import com.hazelcast.multimap.impl.MultiMapService;
-import com.hazelcast.nop.impl.NoopService;
+import com.hazelcast.noop.impl.NoopService;
 import com.hazelcast.pubsub.impl.PublisherService;
 import com.hazelcast.replicatedmap.impl.ReplicatedMapService;
 import com.hazelcast.ringbuffer.impl.RingbufferService;

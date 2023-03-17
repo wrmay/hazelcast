@@ -13,7 +13,8 @@ public class BulkTransportMain {
 
         HTable table = node1.getProxy(HTable.class , "table");
 
-        BulkTransport bulkTransport = table.newBulkTransport(node2.getCluster().getLocalMember().getAddress(), 10);
+        BulkTransport bulkTransport = null;
+        //table.newBulkTransport(node2.getCluster().getLocalMember().getAddress(), 10);
         bulkTransport.copyFile(null);
         bulkTransport.close();
     }

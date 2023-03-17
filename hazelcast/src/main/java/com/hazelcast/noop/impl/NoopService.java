@@ -1,4 +1,4 @@
-package com.hazelcast.nop.impl;
+package com.hazelcast.noop.impl;
 
 import com.hazelcast.core.DistributedObject;
 import com.hazelcast.internal.services.ManagedService;

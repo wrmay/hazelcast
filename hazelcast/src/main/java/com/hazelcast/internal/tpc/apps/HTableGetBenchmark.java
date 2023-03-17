@@ -20,7 +20,7 @@ import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.htable.HTable;
 
-public class TableGetBenchmark {
+public class HTableGetBenchmark {
 
     public static void main(String[] args) throws Exception {
         System.setProperty("hazelcast.alto.enabled","true");

@@ -18,7 +18,7 @@ package com.hazelcast.internal.tpc.apps;
 
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.nop.Noop;
+import com.hazelcast.noop.Noop;
 
 public class NoopBenchmark {
     public static long operations = 5_000_000;
