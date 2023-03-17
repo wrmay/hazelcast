@@ -26,7 +26,7 @@ public class LocalNoopBenchmark {
         System.setProperty("hazelcast.alto.enabled","true");
         HazelcastInstance node1 = Hazelcast.newHazelcastInstance();
 
-        Table table = node1.getTable("sometable");
+        Table table = node1.getProxy(Table.class, "sometable");
 
         long operations = 25_000_000;
         int concurrency = 200;

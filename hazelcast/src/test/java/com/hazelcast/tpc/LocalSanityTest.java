@@ -31,7 +31,7 @@ public class LocalSanityTest {
 
     @Test
     public void test() {
-        Table table = node.getTable("foo");
+        Table table = node.getProxy(Table.class, "foo");
 
         for (int k = 0; k < 10000; k++) {
             table.noop();

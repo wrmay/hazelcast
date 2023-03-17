@@ -1,6 +1,8 @@
 package com.hazelcast.pubsub;
 
-public interface Publisher {
+import com.hazelcast.core.TpcProxy;
+
+public interface Publisher extends TpcProxy {
 
     byte SYNC_NONE = 0;
     byte SYNC_FSYNC = 1;

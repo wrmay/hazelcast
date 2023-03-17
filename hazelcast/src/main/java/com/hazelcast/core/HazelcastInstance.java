@@ -41,7 +41,6 @@ import com.hazelcast.ringbuffer.Ringbuffer;
 import com.hazelcast.scheduledexecutor.IScheduledExecutorService;
 import com.hazelcast.splitbrainprotection.SplitBrainProtectionService;
 import com.hazelcast.sql.SqlService;
-import com.hazelcast.table.Table;
 import com.hazelcast.topic.ITopic;
 import com.hazelcast.transaction.HazelcastXAResource;
 import com.hazelcast.transaction.TransactionContext;
@@ -69,7 +68,7 @@ import java.util.concurrent.ConcurrentMap;
  */
 public interface HazelcastInstance {
 
-    Table getTable(String name);
+    <T extends TpcProxy> T getProxy(Class<T> type, String name);
 
     /**
      * Returns the name of this Hazelcast instance.

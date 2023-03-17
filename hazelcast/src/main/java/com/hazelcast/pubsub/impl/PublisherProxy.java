@@ -2,24 +2,44 @@ package com.hazelcast.pubsub.impl;
 
 import com.hazelcast.internal.tpc.FrameCodec;
 import com.hazelcast.internal.tpc.PartitionActorRef;
+import com.hazelcast.internal.tpc.TpcRuntime;
 import com.hazelcast.internal.tpcengine.iobuffer.ConcurrentIOBufferAllocator;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
 import com.hazelcast.pubsub.Publisher;
+import com.hazelcast.spi.impl.AbstractDistributedObject;
+import com.hazelcast.spi.impl.NodeEngineImpl;
 
 import java.util.concurrent.CompletableFuture;
 
 import static com.hazelcast.internal.tpc.OpCodes.TOPIC_PUBLISH;
 
-public class PublisherImpl implements Publisher {
+public class PublisherProxy extends AbstractDistributedObject implements Publisher  {
 
     private final PartitionActorRef[] partitionActorRefs;
     private final ConcurrentIOBufferAllocator requestAllocator;
     private final byte[] topicIdBytes;
+    private final TpcRuntime tpcRuntime;
+    private final int requestTimeoutMs;
+    private final String name;
 
-    public PublisherImpl(String topicId, PartitionActorRef[] partitionActorRefs) {
-        this.partitionActorRefs = partitionActorRefs;
+    public PublisherProxy(NodeEngineImpl nodeEngine, PublisherService publisherService, String name) {
+        super(nodeEngine, publisherService);
+        this.name = name;
+        this.tpcRuntime = nodeEngine.getNode().getTpcRuntime();
+        this.requestTimeoutMs = tpcRuntime.getRequestTimeoutMs();
+        this.partitionActorRefs = tpcRuntime.partitionActorRefs();
         this.requestAllocator = new ConcurrentIOBufferAllocator(128, true);
-        this.topicIdBytes = topicId.getBytes();
+        this.topicIdBytes = name.getBytes();
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String getServiceName() {
+        return PublisherService.SERVICE_NAME;
     }
 
     @Override

@@ -26,6 +26,7 @@ import com.hazelcast.collection.IList;
 import com.hazelcast.collection.IQueue;
 import com.hazelcast.collection.ISet;
 import com.hazelcast.config.Config;
+import com.hazelcast.core.TpcProxy;
 import com.hazelcast.core.DistributedObject;
 import com.hazelcast.core.DistributedObjectListener;
 import com.hazelcast.core.HazelcastInstance;
@@ -49,7 +50,6 @@ import com.hazelcast.scheduledexecutor.IScheduledExecutorService;
 import com.hazelcast.spi.impl.SerializationServiceSupport;
 import com.hazelcast.splitbrainprotection.SplitBrainProtectionService;
 import com.hazelcast.sql.SqlService;
-import com.hazelcast.table.Table;
 import com.hazelcast.topic.ITopic;
 import com.hazelcast.transaction.HazelcastXAResource;
 import com.hazelcast.transaction.TransactionContext;
@@ -75,8 +75,8 @@ public class HazelcastClientProxy implements HazelcastInstance, SerializationSer
     }
 
     @Override
-    public Table getTable(String name) {
-        return getClient().getTable(name);
+    public <T extends TpcProxy> T getProxy(Class<T> type, String name) {
+        return getClient().getProxy(type, name);
     }
 
     @Nonnull

@@ -189,7 +189,7 @@ public class TpcRuntime {
             return scheduler;
         });
 
-        TpcEngine tpcEngine = new TpcEngineBuilder()
+        this.tpcEngine = new TpcEngineBuilder()
                 .setReactorBuilder(reactorBuilder)
                 .build()
                 .start();

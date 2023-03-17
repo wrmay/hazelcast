@@ -33,7 +33,7 @@ public class PipelineHashTableMain {
         int targetPartitionId = findPartition(remoteNode);
 
 
-        Table table = localNode.getTable("sometable");
+        Table table = localNode.getProxy(Table.class, "sometable");
 
         generateData(targetPartitionId, table);
 

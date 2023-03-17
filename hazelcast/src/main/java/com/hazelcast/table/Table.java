@@ -18,8 +18,7 @@ package com.hazelcast.table;
 
 import com.hazelcast.bulktransport.BulkTransport;
 import com.hazelcast.cluster.Address;
-import com.hazelcast.pubsub.Publisher;
-import com.hazelcast.pubsub.Subscriber;
+import com.hazelcast.core.TpcProxy;
 
 
 /**
@@ -30,11 +29,7 @@ import com.hazelcast.pubsub.Subscriber;
  * @param <K>
  * @param <E>
  */
-public interface Table<K,E> {
-
-    Publisher createPublisher(String topic);
-
-    Subscriber createSubsriber(String topic);
+public interface Table<K,E> extends TpcProxy {
 
     Pipeline newPipeline();
 

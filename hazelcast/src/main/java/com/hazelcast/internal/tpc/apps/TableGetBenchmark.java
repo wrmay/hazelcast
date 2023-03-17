@@ -28,7 +28,7 @@ public class TableGetBenchmark {
         HazelcastInstance node1 = Hazelcast.newHazelcastInstance();
         HazelcastInstance node2 = Hazelcast.newHazelcastInstance();
 
-        Table table = node1.getTable("sometable");
+        Table table = node1.getProxy(Table.class, "sometable");
 
         int items = 1_000_000;
 

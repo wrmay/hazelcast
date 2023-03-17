@@ -36,6 +36,7 @@ import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.HazelcastInstanceAware;
 import com.hazelcast.core.IExecutorService;
 import com.hazelcast.core.ManagedContext;
+import com.hazelcast.core.TpcProxy;
 import com.hazelcast.cp.CPSubsystem;
 import com.hazelcast.cp.internal.CPSubsystemImpl;
 import com.hazelcast.crdt.pncounter.PNCounter;
@@ -56,6 +57,8 @@ import com.hazelcast.map.impl.MapService;
 import com.hazelcast.multimap.MultiMap;
 import com.hazelcast.multimap.impl.MultiMapService;
 import com.hazelcast.partition.PartitionService;
+import com.hazelcast.pubsub.Publisher;
+import com.hazelcast.pubsub.impl.PublisherService;
 import com.hazelcast.replicatedmap.ReplicatedMap;
 import com.hazelcast.replicatedmap.impl.ReplicatedMapService;
 import com.hazelcast.ringbuffer.Ringbuffer;
@@ -147,9 +150,17 @@ public class HazelcastInstanceImpl implements HazelcastInstance, SerializationSe
     }
 
     @Override
-    public Table getTable(String name) {
-        checkNotNull(name, "Retrieving a table instance with a null name is not allowed!");
-        return getDistributedObject(TableService.SERVICE_NAME, name);
+    public <T extends TpcProxy> T getProxy(Class<T> type, String name) {
+        checkNotNull(type, "type");
+        checkNotNull(name, "name");
+
+        if (type.isAssignableFrom(Table.class)) {
+            return getDistributedObject(TableService.SERVICE_NAME, name);
+        } else if (type.isAssignableFrom(Publisher.class)) {
+            return getDistributedObject(PublisherService.SERVICE_NAME, name);
+        } else {
+            throw new RuntimeException("Unhandled type " + name);
+        }
     }
 
     private Node createNode(Config config, NodeContext nodeContext) {

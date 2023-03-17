@@ -23,7 +23,7 @@ public class RemoteNoopBenchmark {
         System.out.println("Waiting for partition tables to settle: done");
         int partitionId = remoteNode.getPartitionService().getPartitions().iterator().next().getPartitionId();
 
-        Table table = localNode.getTable("sometable");
+        Table table = localNode.getProxy(Table.class, "sometable");
 
          long iterations = operations / concurrency;
 

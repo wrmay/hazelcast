@@ -68,6 +68,7 @@ import com.hazelcast.collection.impl.list.ListService;
 import com.hazelcast.collection.impl.queue.QueueService;
 import com.hazelcast.collection.impl.set.SetService;
 import com.hazelcast.config.Config;
+import com.hazelcast.core.TpcProxy;
 import com.hazelcast.core.DistributedObject;
 import com.hazelcast.core.DistributedObjectListener;
 import com.hazelcast.core.HazelcastInstance;
@@ -278,7 +279,7 @@ public class HazelcastClientInstanceImpl implements HazelcastInstance, Serializa
     }
 
     @Override
-    public Table getTable(String name) {
+    public <T extends TpcProxy> T getProxy(Class<T> type, String name) {
         throw new RuntimeException();
     }
 

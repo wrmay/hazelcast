@@ -29,7 +29,7 @@ public class MapBogusQueryBenchmark {
         HazelcastInstance node1 = Hazelcast.newHazelcastInstance();
         HazelcastInstance node2 = Hazelcast.newHazelcastInstance();
 
-        Table table = node1.getTable("sometable");
+        Table table = node1.getProxy(Table.class, "sometable");
 
         for (int k = 0; k < items; k++) {
             if (k % 100000 == 0) {

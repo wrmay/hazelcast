@@ -37,7 +37,7 @@ public class SanityTest {
 
     @Test
     public void test() {
-        Table table = node1.getTable("foo");
+        Table table = node1.getProxy(Table.class, "foo");
 
         for (int k = 0; k < 10000; k++) {
             table.noop();

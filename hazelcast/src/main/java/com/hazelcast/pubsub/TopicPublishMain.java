@@ -14,12 +14,12 @@ public class TopicPublishMain {
         HazelcastInstance node1 = Hazelcast.newHazelcastInstance();
         // HazelcastInstance node2 = Hazelcast.newHazelcastInstance();
 
-        Table table = node1.getTable("sometable");
+        Table table = node1.getProxy(Table.class,"sometable");
 
         long start = System.currentTimeMillis();
         int publishCount = 10 * 1000 * 1000;
         byte[] message = "foobardvdsgdsgfdsgfdsfsfdsfsdfdsfdsfsdfdsfaf".getBytes();
-        Publisher publisher = table.createPublisher("sometopic");
+        Publisher publisher = node1.getProxy(Publisher.class, "sometopic");
         for (int k = 0; k < publishCount; k++) {
             if (k % 100000 == 0) {
                 System.out.println("Getting at: " + k);

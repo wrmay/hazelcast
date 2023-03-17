@@ -25,10 +25,6 @@ import com.hazelcast.internal.tpc.PartitionActorRef;
 import com.hazelcast.internal.tpcengine.iobuffer.ConcurrentIOBufferAllocator;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBufferAllocator;
-import com.hazelcast.pubsub.Publisher;
-import com.hazelcast.pubsub.Subscriber;
-import com.hazelcast.pubsub.impl.PublisherImpl;
-import com.hazelcast.pubsub.impl.SubscriberImpl;
 import com.hazelcast.spi.impl.AbstractDistributedObject;
 import com.hazelcast.spi.impl.NodeEngineImpl;
 import com.hazelcast.table.impl.PipelineImpl;
@@ -59,10 +55,10 @@ public class TableProxy<K, V> extends AbstractDistributedObject implements Table
 
     public TableProxy(NodeEngineImpl nodeEngine, TableService tableService, String name) {
         super(nodeEngine, tableService);
-        this.tpcRuntime = nodeEngine.getNode().getTpcRuntime();
-        this.name = name;
+         this.name = name;
         this.partitionCount = nodeEngine.getPartitionService().getPartitionCount();
         this.requestAllocator = new ConcurrentIOBufferAllocator(128, true);
+        this.tpcRuntime = nodeEngine.getNode().getTpcRuntime();
         this.requestTimeoutMs = tpcRuntime.getRequestTimeoutMs();
         this.partitionActorRefs = tpcRuntime.partitionActorRefs();
     }
@@ -70,16 +66,6 @@ public class TableProxy<K, V> extends AbstractDistributedObject implements Table
     @Override
     public Pipeline newPipeline() {
         return new PipelineImpl(tpcRuntime, requestAllocator);
-    }
-
-    @Override
-    public Publisher createPublisher(String topic) {
-        return new PublisherImpl(topic, partitionActorRefs);
-    }
-
-    @Override
-    public Subscriber createSubsriber(String topic) {
-        return new SubscriberImpl(topic, partitionActorRefs);
     }
 
     @Override

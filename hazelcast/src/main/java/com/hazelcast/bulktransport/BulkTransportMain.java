@@ -11,7 +11,7 @@ public class BulkTransportMain {
         HazelcastInstance node1 = Hazelcast.newHazelcastInstance();
         HazelcastInstance node2 = Hazelcast.newHazelcastInstance();
 
-        Table table = node1.getTable("table");
+        Table table = node1.getProxy(Table.class , "table");
 
         BulkTransport bulkTransport = table.newBulkTransport(node2.getCluster().getLocalMember().getAddress(), 10);
         bulkTransport.copyFile(null);

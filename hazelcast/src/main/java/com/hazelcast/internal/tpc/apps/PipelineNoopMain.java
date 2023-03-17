@@ -30,7 +30,7 @@ public class PipelineNoopMain {
         System.out.println("Waiting for partition tables to settle: done");
         int targetPartitionId = remoteNode.getPartitionService().getPartitions().iterator().next().getPartitionId();
 
-        Table table = localNode.getTable("sometable");
+        Table table = localNode.getProxy(Table.class, "sometable");
 
         long startMs = System.currentTimeMillis();
         Pipeline pipeline = table.newPipeline();

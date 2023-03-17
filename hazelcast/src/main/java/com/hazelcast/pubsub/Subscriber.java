@@ -1,4 +1,6 @@
 package com.hazelcast.pubsub;
 
-public interface Subscriber {
+import com.hazelcast.core.TpcProxy;
+
+public interface Subscriber extends TpcProxy {
 }
