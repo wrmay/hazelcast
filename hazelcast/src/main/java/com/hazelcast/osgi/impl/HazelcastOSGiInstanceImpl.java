@@ -24,6 +24,7 @@ import com.hazelcast.collection.IList;
 import com.hazelcast.collection.IQueue;
 import com.hazelcast.collection.ISet;
 import com.hazelcast.config.Config;
+import com.hazelcast.core.Command;
 import com.hazelcast.core.TpcProxy;
 import com.hazelcast.core.DistributedObject;
 import com.hazelcast.core.DistributedObjectListener;
@@ -75,6 +76,11 @@ class HazelcastOSGiInstanceImpl
                               HazelcastOSGiService ownerService) {
         this.delegatedInstance = delegatedInstance;
         this.ownerService = ownerService;
+    }
+
+    @Override
+    public <C extends Command> C newCommand(Class<C> type) {
+        return delegatedInstance.newCommand(type);
     }
 
     @Override

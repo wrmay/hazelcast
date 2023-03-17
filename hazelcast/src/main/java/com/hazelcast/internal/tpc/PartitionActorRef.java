@@ -39,13 +39,13 @@ public final class PartitionActorRef extends ActorRef<IOBuffer> {
     private final InternalPartitionService partitionService;
     private final Address thisAddress;
     private final Requests requests;
-    private final TpcRuntime tpcRuntime;
+    private final MemberTpcRuntime tpcRuntime;
     private final Reactor reactor;
 
     public PartitionActorRef(int partitionId,
                              InternalPartitionService partitionService,
                              TpcEngine engine,
-                             TpcRuntime tpcRuntime,
+                             MemberTpcRuntime tpcRuntime,
                              Address thisAddress,
                              Requests requests) {
         this.partitionId = partitionId;

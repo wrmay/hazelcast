@@ -1,5 +1,6 @@
 package com.hazelcast.htable;
 
+import com.hazelcast.core.Command;
 import com.hazelcast.internal.tpc.FrameCodec;
 import com.hazelcast.internal.tpc.PartitionActorRef;
 import com.hazelcast.internal.tpc.TpcRuntime;
@@ -15,7 +16,7 @@ import static com.hazelcast.internal.tpc.OpCodes.SET;
 import static com.hazelcast.internal.util.HashUtil.hashToIndex;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
-public class HSetCommand {
+public class HSet implements Command {
 
     private final TpcRuntime tpcRuntime;
     private final String name;
@@ -24,16 +25,16 @@ public class HSetCommand {
     private final int requestTimeoutMs;
     private final PartitionActorRef[] partitionActorRefs;
 
-    public HSetCommand(NodeEngineImpl nodeEngine, String name) {
+    public HSet(TpcRuntime tpcRuntime, String name) {
         this.name = name;
-        this.partitionCount = nodeEngine.getPartitionService().getPartitionCount();
+        this.tpcRuntime = tpcRuntime;
+        this.partitionCount = tpcRuntime.getPartitionCount();
         this.requestAllocator = new ConcurrentIOBufferAllocator(128, true);
-        this.tpcRuntime = nodeEngine.getNode().getTpcRuntime();
         this.requestTimeoutMs = tpcRuntime.getRequestTimeoutMs();
         this.partitionActorRefs = tpcRuntime.partitionActorRefs();
     }
 
-    public void execute(byte[] key, byte[] value){
+    public void sync(byte[] key, byte[] value){
         int partitionId = hashToIndex(Arrays.hashCode(key), partitionCount);
 
         IOBuffer request = requestAllocator.allocate(60);

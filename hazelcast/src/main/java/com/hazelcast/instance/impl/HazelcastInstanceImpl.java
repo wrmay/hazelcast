@@ -30,6 +30,7 @@ import com.hazelcast.collection.impl.list.ListService;
 import com.hazelcast.collection.impl.queue.QueueService;
 import com.hazelcast.collection.impl.set.SetService;
 import com.hazelcast.config.Config;
+import com.hazelcast.core.Command;
 import com.hazelcast.core.DistributedObject;
 import com.hazelcast.core.DistributedObjectListener;
 import com.hazelcast.core.HazelcastInstance;
@@ -45,6 +46,10 @@ import com.hazelcast.durableexecutor.impl.DistributedDurableExecutorService;
 import com.hazelcast.executor.impl.DistributedExecutorService;
 import com.hazelcast.flakeidgen.FlakeIdGenerator;
 import com.hazelcast.flakeidgen.impl.FlakeIdGeneratorService;
+import com.hazelcast.htable.HGet;
+import com.hazelcast.htable.HSet;
+import com.hazelcast.htable.HTable;
+import com.hazelcast.htable.impl.HTableService;
 import com.hazelcast.internal.crdt.pncounter.PNCounterService;
 import com.hazelcast.internal.jmx.ManagementService;
 import com.hazelcast.internal.memory.MemoryStats;
@@ -57,6 +62,7 @@ import com.hazelcast.map.impl.MapService;
 import com.hazelcast.multimap.MultiMap;
 import com.hazelcast.multimap.impl.MultiMapService;
 import com.hazelcast.noop.Noop;
+import com.hazelcast.noop.Nop;
 import com.hazelcast.noop.impl.NoopService;
 import com.hazelcast.partition.PartitionService;
 import com.hazelcast.pubsub.Publisher;
@@ -71,8 +77,6 @@ import com.hazelcast.spi.impl.SerializationServiceSupport;
 import com.hazelcast.spi.impl.proxyservice.ProxyService;
 import com.hazelcast.splitbrainprotection.SplitBrainProtectionService;
 import com.hazelcast.sql.SqlService;
-import com.hazelcast.htable.HTable;
-import com.hazelcast.htable.impl.HTableService;
 import com.hazelcast.topic.ITopic;
 import com.hazelcast.topic.impl.TopicService;
 import com.hazelcast.topic.impl.reliable.ReliableTopicService;
@@ -148,6 +152,21 @@ public class HazelcastInstanceImpl implements HazelcastInstance, SerializationSe
                 ignore(ignored);
             }
             throw rethrow(e);
+        }
+    }
+
+    @Override
+    public <C extends Command> C newCommand(Class<C> type) {
+        checkNotNull(type, "type");
+
+        if (type.isAssignableFrom(HGet.class)) {
+            return (C) new HGet(node.nodeEngine.getNode().getTpcRuntime(), null);
+        } else if (type.isAssignableFrom(HSet.class)) {
+            return (C) new HSet(node.nodeEngine.getNode().getTpcRuntime(), null);
+        } else if (type.isAssignableFrom(Noop.class)) {
+            return (C) new Nop(node.nodeEngine.getNode().getTpcRuntime());
+        } else {
+            throw new RuntimeException("Unhandled type " + name);
         }
     }
 

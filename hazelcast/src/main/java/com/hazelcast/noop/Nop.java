@@ -1,5 +1,6 @@
 package com.hazelcast.noop;
 
+import com.hazelcast.core.Command;
 import com.hazelcast.htable.Pipeline;
 import com.hazelcast.htable.impl.PipelineImpl;
 import com.hazelcast.internal.tpc.FrameCodec;
@@ -9,24 +10,23 @@ import com.hazelcast.internal.tpc.TpcRuntime;
 import com.hazelcast.internal.tpcengine.iobuffer.ConcurrentIOBufferAllocator;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBufferAllocator;
-import com.hazelcast.spi.impl.NodeEngineImpl;
 
 import java.util.concurrent.CompletableFuture;
 
 import static com.hazelcast.internal.tpc.OpCodes.NOOP;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
-public class Nop {
+public class Nop implements Command {
     private final TpcRuntime tpcRuntime;
     private final int partitionCount;
     private final IOBufferAllocator requestAllocator;
     private final int requestTimeoutMs;
     private final PartitionActorRef[] partitionActorRefs;
 
-    public Nop(NodeEngineImpl nodeEngine) {
-        this.partitionCount = nodeEngine.getPartitionService().getPartitionCount();
+    public Nop(TpcRuntime tpcRuntime) {
+        this.tpcRuntime = tpcRuntime;
+        this.partitionCount = tpcRuntime.getPartitionCount();
         this.requestAllocator = new ConcurrentIOBufferAllocator(128, true);
-        this.tpcRuntime = nodeEngine.getNode().getTpcRuntime();
         this.requestTimeoutMs = tpcRuntime.getRequestTimeoutMs();
         this.partitionActorRefs = tpcRuntime.partitionActorRefs();
     }

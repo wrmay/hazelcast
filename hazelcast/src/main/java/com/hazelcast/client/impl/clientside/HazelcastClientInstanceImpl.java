@@ -68,6 +68,7 @@ import com.hazelcast.collection.impl.list.ListService;
 import com.hazelcast.collection.impl.queue.QueueService;
 import com.hazelcast.collection.impl.set.SetService;
 import com.hazelcast.config.Config;
+import com.hazelcast.core.Command;
 import com.hazelcast.core.TpcProxy;
 import com.hazelcast.core.DistributedObject;
 import com.hazelcast.core.DistributedObjectListener;
@@ -275,6 +276,11 @@ public class HazelcastClientInstanceImpl implements HazelcastInstance, Serializa
         proxySessionManager = new ClientProxySessionManager(this);
         cpSubsystem = new CPSubsystemImpl(this);
         sqlService = new SqlClientService(this);
+    }
+
+    @Override
+    public <C extends Command> C newCommand(Class<C> type) {
+        throw new RuntimeException();
     }
 
     @Override

@@ -18,6 +18,8 @@ package com.hazelcast.internal.tpc.apps;
 
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.htable.HGet;
+import com.hazelcast.htable.HSet;
 import com.hazelcast.htable.HTable;
 
 public class HTableGetBenchmark {
@@ -28,10 +30,9 @@ public class HTableGetBenchmark {
         HazelcastInstance node1 = Hazelcast.newHazelcastInstance();
         HazelcastInstance node2 = Hazelcast.newHazelcastInstance();
 
-        HTable table = node1.getProxy(HTable.class, "sometable");
-
         int items = 1_000_000;
 
+        HSet set = node1.newCommand(HSet.class);
         for (int k = 0; k < items; k++) {
             if (k % 100000 == 0) {
                 System.out.println("Inserting at: " + k);
@@ -39,19 +40,18 @@ public class HTableGetBenchmark {
 
             byte[] key = ("" + k).getBytes();
             byte[] value = ("value-" + k).getBytes();
-            //byte[] value = new byte[1024];
-            table.set(key, value);
+            set.sync(key, value);
         }
-//
         long start = System.currentTimeMillis();
         int queryCount = 2000;
+        HGet get = node1.newCommand(HGet.class);
         for (int k = 0; k < queryCount; k++) {
             if (k % 1000 == 0) {
                 System.out.println("Getting at: " + k);
             }
 
             String key = "" + k;
-            byte[] value = table.get(key.getBytes());
+            byte[] value = get.sync(key.getBytes());
             String actual = new String(value);
             String expected = "value-" + k;
             if (!expected.equals(actual)) {

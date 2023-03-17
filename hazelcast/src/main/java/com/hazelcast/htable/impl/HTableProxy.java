@@ -19,8 +19,8 @@ package com.hazelcast.htable.impl;
 import com.hazelcast.htable.HTable;
 import com.hazelcast.htable.Pipeline;
 import com.hazelcast.internal.tpc.FrameCodec;
+import com.hazelcast.internal.tpc.MemberTpcRuntime;
 import com.hazelcast.internal.tpc.PartitionActorRef;
-import com.hazelcast.internal.tpc.TpcRuntime;
 import com.hazelcast.internal.tpcengine.iobuffer.ConcurrentIOBufferAllocator;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBufferAllocator;
@@ -38,7 +38,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class HTableProxy extends AbstractDistributedObject implements HTable {
 
-    private final TpcRuntime tpcRuntime;
+    private final MemberTpcRuntime tpcRuntime;
     private final String name;
     private final int partitionCount;
     private final IOBufferAllocator requestAllocator;

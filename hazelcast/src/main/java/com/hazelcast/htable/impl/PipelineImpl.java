@@ -5,6 +5,7 @@ package com.hazelcast.htable.impl;
 import com.hazelcast.cluster.Address;
 import com.hazelcast.internal.partition.impl.InternalPartitionServiceImpl;
 import com.hazelcast.internal.tpc.FrameCodec;
+import com.hazelcast.internal.tpc.MemberTpcRuntime;
 import com.hazelcast.internal.tpc.OpCodes;
 import com.hazelcast.internal.tpc.PartitionActorRef;
 import com.hazelcast.internal.tpc.RequestFuture;
@@ -37,7 +38,7 @@ public final class PipelineImpl implements Pipeline {
     private int countPos;
     public int count;
 
-    public PipelineImpl(TpcRuntime tpcRuntime, IOBufferAllocator requestAllocator) {
+    public PipelineImpl(MemberTpcRuntime tpcRuntime, IOBufferAllocator requestAllocator) {
         this.tpcRuntime = tpcRuntime;
         this.requestAllocator = requestAllocator;
         this.partitionService = tpcRuntime.node.partitionService;

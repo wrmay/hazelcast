@@ -24,6 +24,7 @@ import com.hazelcast.collection.IList;
 import com.hazelcast.collection.IQueue;
 import com.hazelcast.collection.ISet;
 import com.hazelcast.config.Config;
+import com.hazelcast.core.Command;
 import com.hazelcast.core.TpcProxy;
 import com.hazelcast.core.DistributedObject;
 import com.hazelcast.core.DistributedObjectListener;
@@ -83,6 +84,11 @@ public final class HazelcastInstanceProxy implements HazelcastInstance, Serializ
     protected HazelcastInstanceProxy(HazelcastInstanceImpl original) {
         this.original = original;
         name = original.getName();
+    }
+
+    @Override
+    public <C extends Command> C newCommand(Class<C> type) {
+        return getOriginal().newCommand(type);
     }
 
     @Override

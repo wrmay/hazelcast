@@ -1,5 +1,6 @@
 package com.hazelcast.htable;
 
+import com.hazelcast.core.Command;
 import com.hazelcast.htable.impl.PipelineImpl;
 import com.hazelcast.internal.tpc.FrameCodec;
 import com.hazelcast.internal.tpc.OpCodes;
@@ -8,7 +9,6 @@ import com.hazelcast.internal.tpc.TpcRuntime;
 import com.hazelcast.internal.tpcengine.iobuffer.ConcurrentIOBufferAllocator;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBufferAllocator;
-import com.hazelcast.spi.impl.NodeEngineImpl;
 
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
@@ -17,7 +17,7 @@ import static com.hazelcast.internal.tpc.OpCodes.GET;
 import static com.hazelcast.internal.util.HashUtil.hashToIndex;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
-public class HGetCommand {
+public class HGet implements Command {
     private final TpcRuntime tpcRuntime;
     private final String name;
     private final int partitionCount;
@@ -25,16 +25,16 @@ public class HGetCommand {
     private final int requestTimeoutMs;
     private final PartitionActorRef[] partitionActorRefs;
 
-    public HGetCommand(NodeEngineImpl nodeEngine, String name) {
+    public HGet(TpcRuntime tpcRuntime, String name) {
         this.name = name;
-        this.partitionCount = nodeEngine.getPartitionService().getPartitionCount();
+        this.tpcRuntime = tpcRuntime;
+        this.partitionCount = tpcRuntime.getPartitionCount();
         this.requestAllocator = new ConcurrentIOBufferAllocator(128, true);
-        this.tpcRuntime = nodeEngine.getNode().getTpcRuntime();
         this.requestTimeoutMs = tpcRuntime.getRequestTimeoutMs();
         this.partitionActorRefs = tpcRuntime.partitionActorRefs();
     }
 
-    public byte[] execute(byte[] key) {
+    public byte[] sync(byte[] key) {
         int partitionId = hashToIndex(Arrays.hashCode(key), partitionCount);
         IOBuffer request = requestAllocator.allocate(60);
         FrameCodec.writeRequestHeader(request, partitionId, GET);
