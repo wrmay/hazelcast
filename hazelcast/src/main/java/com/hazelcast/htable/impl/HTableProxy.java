@@ -30,9 +30,9 @@ import com.hazelcast.spi.impl.NodeEngineImpl;
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 
-import static com.hazelcast.internal.tpc.member.OpCodes.GET;
-import static com.hazelcast.internal.tpc.member.OpCodes.QUERY;
-import static com.hazelcast.internal.tpc.member.OpCodes.SET;
+import static com.hazelcast.internal.tpc.OpCodes.GET;
+import static com.hazelcast.internal.tpc.OpCodes.QUERY;
+import static com.hazelcast.internal.tpc.OpCodes.SET;
 import static com.hazelcast.internal.util.HashUtil.hashToIndex;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 

@@ -10,7 +10,7 @@ import com.hazelcast.spi.impl.NodeEngineImpl;
 
 import java.util.concurrent.CompletableFuture;
 
-import static com.hazelcast.internal.tpc.member.OpCodes.TOPIC_PUBLISH;
+import static com.hazelcast.internal.tpc.OpCodes.TOPIC_PUBLISH;
 
 public class PublisherProxy extends AbstractDistributedObject implements Publisher  {
 

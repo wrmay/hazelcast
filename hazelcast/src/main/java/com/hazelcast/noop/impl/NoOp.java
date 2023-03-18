@@ -18,7 +18,7 @@ package com.hazelcast.noop.impl;
 
 
 import com.hazelcast.internal.tpc.member.Op;
-import com.hazelcast.internal.tpc.member.OpCodes;
+import com.hazelcast.internal.tpc.OpCodes;
 
 import java.util.concurrent.atomic.AtomicLong;
 

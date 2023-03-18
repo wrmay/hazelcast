@@ -10,7 +10,7 @@ import com.hazelcast.spi.impl.NodeEngineImpl;
 
 import java.util.concurrent.CompletableFuture;
 
-import static com.hazelcast.internal.tpc.member.OpCodes.NOOP;
+import static com.hazelcast.internal.tpc.OpCodes.NOOP;
 import static com.hazelcast.internal.util.Preconditions.checkPositive;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;

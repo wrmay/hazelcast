@@ -22,7 +22,6 @@ import com.hazelcast.cluster.Address;
 import com.hazelcast.htable.Pipeline;
 import com.hazelcast.internal.partition.impl.InternalPartitionServiceImpl;
 import com.hazelcast.internal.tpc.member.MemberTpcRuntime;
-import com.hazelcast.internal.tpc.member.OpCodes;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBufferAllocator;
 
@@ -31,6 +30,9 @@ import java.util.Arrays;
 import static com.hazelcast.internal.util.HashUtil.hashToIndex;
 
 /**
+ * TODO: There should not be a dependency on InternalPartitionService
+ * TODO: There should not be a dependency on MemberTpcRuntime
+ *
  * todo:
  * can we collect the requests into a single IOBuffer and then flush that buffer in 1 go
  * <p>

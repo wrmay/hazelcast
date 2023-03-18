@@ -26,7 +26,7 @@ import com.hazelcast.internal.tpcengine.iobuffer.IOBufferAllocator;
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 
-import static com.hazelcast.internal.tpc.member.OpCodes.SET;
+import static com.hazelcast.internal.tpc.OpCodes.SET;
 import static com.hazelcast.internal.util.HashUtil.hashToIndex;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 

@@ -16,8 +16,7 @@
 
 package com.hazelcast.internal.tpc.member;
 
-import com.hazelcast.internal.tpc.member.Op;
-import com.hazelcast.internal.tpc.member.OpCodes;
+import com.hazelcast.internal.tpc.OpCodes;
 
 public class PipelineOp extends Op {
 

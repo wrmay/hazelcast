@@ -19,7 +19,7 @@ package com.hazelcast.htable.impl;
 import com.hazelcast.internal.tpc.offheapmap.ExampleQuery;
 import com.hazelcast.internal.tpc.offheapmap.OffheapMap;
 import com.hazelcast.internal.tpc.member.Op;
-import com.hazelcast.internal.tpc.member.OpCodes;
+import com.hazelcast.internal.tpc.OpCodes;
 
 public class QueryOp extends Op {
 

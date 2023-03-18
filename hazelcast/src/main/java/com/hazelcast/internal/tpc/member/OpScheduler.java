@@ -36,7 +36,7 @@ import static com.hazelcast.internal.tpc.FrameCodec.RESPONSE_TYPE_OVERLOAD;
 import static com.hazelcast.internal.tpc.member.Op.BLOCKED;
 import static com.hazelcast.internal.tpc.member.Op.COMPLETED;
 import static com.hazelcast.internal.tpc.member.Op.EXCEPTION;
-import static com.hazelcast.internal.tpc.member.OpCodes.PIPELINE;
+import static com.hazelcast.internal.tpc.OpCodes.PIPELINE;
 import static com.hazelcast.internal.tpcengine.util.BitUtil.SIZEOF_INT;
 import static com.hazelcast.internal.util.counters.SwCounter.newSwCounter;
 

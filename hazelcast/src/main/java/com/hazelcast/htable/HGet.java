@@ -19,7 +19,7 @@ package com.hazelcast.htable;
 import com.hazelcast.core.Command;
 import com.hazelcast.internal.tpc.PipelineImpl;
 import com.hazelcast.internal.tpc.FrameCodec;
-import com.hazelcast.internal.tpc.member.OpCodes;
+import com.hazelcast.internal.tpc.OpCodes;
 import com.hazelcast.internal.tpc.TpcRuntime;
 import com.hazelcast.internal.tpcengine.iobuffer.ConcurrentIOBufferAllocator;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
@@ -28,7 +28,7 @@ import com.hazelcast.internal.tpcengine.iobuffer.IOBufferAllocator;
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 
-import static com.hazelcast.internal.tpc.member.OpCodes.GET;
+import static com.hazelcast.internal.tpc.OpCodes.GET;
 import static com.hazelcast.internal.util.HashUtil.hashToIndex;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 

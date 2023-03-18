@@ -3,7 +3,7 @@ package com.hazelcast.noop;
 import com.hazelcast.core.Command;
 import com.hazelcast.htable.Pipeline;
 import com.hazelcast.internal.tpc.FrameCodec;
-import com.hazelcast.internal.tpc.member.OpCodes;
+import com.hazelcast.internal.tpc.OpCodes;
 import com.hazelcast.internal.tpc.PipelineImpl;
 import com.hazelcast.internal.tpc.TpcRuntime;
 import com.hazelcast.internal.tpcengine.iobuffer.ConcurrentIOBufferAllocator;
@@ -12,7 +12,7 @@ import com.hazelcast.internal.tpcengine.iobuffer.IOBufferAllocator;
 
 import java.util.concurrent.CompletableFuture;
 
-import static com.hazelcast.internal.tpc.member.OpCodes.NOOP;
+import static com.hazelcast.internal.tpc.OpCodes.NOOP;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class Nop implements Command {

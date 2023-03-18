@@ -20,7 +20,7 @@ import com.hazelcast.internal.tpc.offheapmap.Bin;
 import com.hazelcast.internal.tpc.offheapmap.Bout;
 import com.hazelcast.internal.tpc.offheapmap.OffheapMap;
 import com.hazelcast.internal.tpc.member.Op;
-import com.hazelcast.internal.tpc.member.OpCodes;
+import com.hazelcast.internal.tpc.OpCodes;
 
 public final class GetOp extends Op {
 

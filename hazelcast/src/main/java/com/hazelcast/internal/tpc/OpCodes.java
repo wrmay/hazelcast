@@ -14,20 +14,18 @@
  * limitations under the License.
  */
 
-package com.hazelcast.internal.tpc.member;
+package com.hazelcast.internal.tpc;
 
 public class OpCodes {
 
-    public final static byte TABLE_UPSERT = 0;
-    public final static byte TABLE_SELECT_BY_KEY = 1;
-    public final static byte NOOP = 2;
-    public final static byte GET = 3;
-    public final static byte SET = 4;
-    public final static byte QUERY = 5;
-    public final static byte INIT_BULK_TRANSPORT = 6;
-    public final static byte BULK_TRANSPORT = 7;
-    public final static byte TOPIC_PUBLISH = 8;
-    public final static byte PIPELINE = 9;
+    public final static byte NOOP = 1;
+    public final static byte GET = 2;
+    public final static byte SET = 3;
+    public final static byte QUERY = 4;
+    public final static byte INIT_BULK_TRANSPORT = 5;
+    public final static byte BULK_TRANSPORT = 6;
+    public final static byte TOPIC_PUBLISH = 7;
+    public final static byte PIPELINE = 8;
 
     public final static byte MAX_OPCODE = PIPELINE;
 }
