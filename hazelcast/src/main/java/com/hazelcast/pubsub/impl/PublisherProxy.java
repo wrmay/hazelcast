@@ -1,7 +1,6 @@
 package com.hazelcast.pubsub.impl;
 
 import com.hazelcast.internal.tpc.FrameCodec;
-import com.hazelcast.internal.tpc.PartitionActorRef;
 import com.hazelcast.internal.tpc.TpcRuntime;
 import com.hazelcast.internal.tpcengine.iobuffer.ConcurrentIOBufferAllocator;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
@@ -11,11 +10,10 @@ import com.hazelcast.spi.impl.NodeEngineImpl;
 
 import java.util.concurrent.CompletableFuture;
 
-import static com.hazelcast.internal.tpc.OpCodes.TOPIC_PUBLISH;
+import static com.hazelcast.internal.tpc.member.OpCodes.TOPIC_PUBLISH;
 
 public class PublisherProxy extends AbstractDistributedObject implements Publisher  {
 
-    private final PartitionActorRef[] partitionActorRefs;
     private final ConcurrentIOBufferAllocator requestAllocator;
     private final byte[] topicIdBytes;
     private final TpcRuntime tpcRuntime;
@@ -27,7 +25,6 @@ public class PublisherProxy extends AbstractDistributedObject implements Publish
         this.name = name;
         this.tpcRuntime = nodeEngine.getNode().getTpcRuntime();
         this.requestTimeoutMs = tpcRuntime.getRequestTimeoutMs();
-        this.partitionActorRefs = tpcRuntime.partitionActorRefs();
         this.requestAllocator = new ConcurrentIOBufferAllocator(128, true);
         this.topicIdBytes = name.getBytes();
     }
@@ -50,7 +47,7 @@ public class PublisherProxy extends AbstractDistributedObject implements Publish
         //request.writeSizedBytes(topicIdBytes);
         request.writeSizedBytes(message);
         FrameCodec.setSize(request);
-        CompletableFuture<IOBuffer> future = partitionActorRefs[partitionId].submit(request);
+        CompletableFuture<IOBuffer> future = tpcRuntime.invoke(request, partitionId);
         try {
             IOBuffer response = future.get();
             long sequence = response.readLong();

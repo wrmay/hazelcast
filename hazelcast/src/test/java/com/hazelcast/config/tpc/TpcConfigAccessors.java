@@ -17,7 +17,7 @@
 package com.hazelcast.config.tpc;
 
 import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.internal.tpc.TpcServerBootstrap;
+import com.hazelcast.internal.tpc.member.TpcServerBootstrap;
 
 import java.util.List;
 

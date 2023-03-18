@@ -24,7 +24,7 @@ import com.hazelcast.instance.impl.Node;
 import com.hazelcast.internal.nio.Packet;
 import com.hazelcast.internal.serialization.InternalSerializationService;
 import com.hazelcast.internal.serialization.impl.DefaultSerializationServiceBuilder;
-import com.hazelcast.internal.tpc.TpcServerBootstrap;
+import com.hazelcast.internal.tpc.member.TpcServerBootstrap;
 import com.hazelcast.logging.impl.LoggingServiceImpl;
 import com.hazelcast.nio.ObjectDataInput;
 import com.hazelcast.nio.ObjectDataOutput;

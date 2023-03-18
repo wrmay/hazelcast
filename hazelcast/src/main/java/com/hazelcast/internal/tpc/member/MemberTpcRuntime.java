@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hazelcast.internal.tpc;
+package com.hazelcast.internal.tpc.member;
 
 import com.hazelcast.cluster.Address;
 import com.hazelcast.instance.EndpointQualifier;
@@ -24,6 +24,11 @@ import com.hazelcast.internal.serialization.InternalSerializationService;
 import com.hazelcast.internal.server.ServerConnectionManager;
 import com.hazelcast.internal.server.tcp.TcpServer;
 import com.hazelcast.internal.server.tcp.TcpServerConnection;
+import com.hazelcast.internal.tpc.PartitionActorRef;
+import com.hazelcast.internal.tpc.RequestFuture;
+import com.hazelcast.internal.tpc.RequestRegistry;
+import com.hazelcast.internal.tpc.ResponseHandler;
+import com.hazelcast.internal.tpc.TpcRuntime;
 import com.hazelcast.internal.tpcengine.AsyncServerSocket;
 import com.hazelcast.internal.tpcengine.AsyncSocket;
 import com.hazelcast.internal.tpcengine.AsyncSocketBuilder;
@@ -56,7 +61,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 
-import static com.hazelcast.internal.tpc.FrameCodec.OFFSET_REQ_CALL_ID;
 import static com.hazelcast.internal.tpcengine.AsyncSocketOptions.SO_KEEPALIVE;
 import static com.hazelcast.internal.tpcengine.AsyncSocketOptions.SO_RCVBUF;
 import static com.hazelcast.internal.tpcengine.AsyncSocketOptions.SO_REUSEADDR;
@@ -100,7 +104,6 @@ public class MemberTpcRuntime implements TpcRuntime {
     public final InternalSerializationService ss;
     public final ILogger logger;
     private final Address thisAddress;
-    private final SocketConfig socketConfig;
     private final boolean poolRequests;
     private final boolean poolRemoteResponses;
     private final boolean writeThrough;
@@ -129,7 +132,6 @@ public class MemberTpcRuntime implements TpcRuntime {
         this.concurrentRequestLimit = parseInt(getProperty("hazelcast.alto.concurrent-request-limit", "-1"));
         this.requestTimeoutMs = parseInt(getProperty("hazelcast.alto.request.timeoutMs", "23000"));
         this.thisAddress = node.getThisAddress();
-        this.socketConfig = new SocketConfig();
     }
 
     @Override
@@ -140,11 +142,6 @@ public class MemberTpcRuntime implements TpcRuntime {
     @Override
     public int getRequestTimeoutMs() {
         return requestTimeoutMs;
-    }
-
-    @Override
-    public PartitionActorRef[] partitionActorRefs() {
-        return partitionActorRefs;
     }
 
     public void start() {
@@ -232,13 +229,13 @@ public class MemberTpcRuntime implements TpcRuntime {
                 int port = toPort(thisAddress, k);
                 tpcPorts.add(port);
                 AsyncServerSocket serverSocket = reactor.newAsyncServerSocketBuilder()
-                        .set(SO_RCVBUF, socketConfig.receiveBufferSize)
+                        .set(SO_RCVBUF, 256 * 1024)
                         .set(SO_REUSEADDR, true)
                         .setAcceptConsumer(acceptRequest -> {
                             AsyncSocketBuilder socketBuilder = reactor.newAsyncSocketBuilder(acceptRequest)
-                                    .set(SO_RCVBUF, socketConfig.receiveBufferSize)
-                                    .set(SO_SNDBUF, socketConfig.sendBufferSize)
-                                    .set(TCP_NODELAY, socketConfig.tcpNoDelay)
+                                    .set(SO_RCVBUF, 256 * 1024)
+                                    .set(SO_SNDBUF, 256 * 1024)
+                                    .set(TCP_NODELAY, true)
                                     .set(SO_KEEPALIVE, true)
                                     .setReadHandler(readHandlerSuppliers.get(reactor).get());
                             if (socketBuilder instanceof NioAsyncSocketBuilder) {
@@ -314,18 +311,8 @@ public class MemberTpcRuntime implements TpcRuntime {
     }
 
     @Override
-    public RequestFuture invoke(IOBuffer request, AsyncSocket socket) {
-        ensureActive();
-
-        RequestFuture future = new RequestFuture(request);
-        // we need to acquire the frame because storage will release it once written
-        // and we need to keep the frame around for the response.
-        request.acquire();
-        Requests requests = requestRegistry.getRequestsOrCreate(socket.getRemoteAddress());
-        long callId = requests.nextCallId();
-        request.putLong(OFFSET_REQ_CALL_ID, callId);
-        socket.writeAndFlush(request);
-        return future;
+    public RequestFuture<IOBuffer> invoke(IOBuffer request, int partitionId) {
+        return partitionActorRefs[partitionId].submit(request);
     }
 
     public TcpServerConnection getConnection(Address address) {
@@ -368,9 +355,9 @@ public class MemberTpcRuntime implements TpcRuntime {
 
                         AsyncSocketBuilder socketBuilder = reactor.newAsyncSocketBuilder()
                                 .setReadHandler(readHandlerSuppliers.get(reactor).get())
-                                .set(SO_SNDBUF, socketConfig.sendBufferSize)
-                                .set(SO_RCVBUF, socketConfig.receiveBufferSize)
-                                .set(TCP_NODELAY, socketConfig.tcpNoDelay);
+                                .set(SO_SNDBUF, 256 * 1024)
+                                .set(SO_RCVBUF, 256 * 1024)
+                                .set(TCP_NODELAY, true);
 
                         if (socketBuilder instanceof NioAsyncSocketBuilder) {
                             NioAsyncSocketBuilder nioSocketBuilder = (NioAsyncSocketBuilder) socketBuilder;

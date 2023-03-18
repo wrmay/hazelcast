@@ -31,8 +31,8 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 
-import static com.hazelcast.internal.tpc.TpcServerBootstrap.TPC_ENABLED;
-import static com.hazelcast.internal.tpc.TpcServerBootstrap.TPC_EVENTLOOP_COUNT;
+import static com.hazelcast.internal.tpc.member.TpcServerBootstrap.TPC_ENABLED;
+import static com.hazelcast.internal.tpc.member.TpcServerBootstrap.TPC_EVENTLOOP_COUNT;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(HazelcastSerialClassRunner.class)

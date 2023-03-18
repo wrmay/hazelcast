@@ -46,7 +46,7 @@ import com.hazelcast.instance.BuildInfo;
 import com.hazelcast.instance.BuildInfoProvider;
 import com.hazelcast.instance.EndpointQualifier;
 import com.hazelcast.instance.ProtocolType;
-import com.hazelcast.internal.tpc.MemberTpcRuntime;
+import com.hazelcast.internal.tpc.member.MemberTpcRuntime;
 import com.hazelcast.internal.ascii.TextCommandService;
 import com.hazelcast.internal.cluster.Joiner;
 import com.hazelcast.internal.cluster.impl.ClusterJoinManager;

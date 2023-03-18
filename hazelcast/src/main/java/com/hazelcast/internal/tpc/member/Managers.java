@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hazelcast.internal.tpc;
+package com.hazelcast.internal.tpc.member;
 
 import com.hazelcast.bulktransport.impl.BulkTransportService;
 import com.hazelcast.htable.impl.HTableManager;

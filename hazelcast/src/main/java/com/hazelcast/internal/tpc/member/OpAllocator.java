@@ -14,28 +14,27 @@
  * limitations under the License.
  */
 
-package com.hazelcast.internal.tpc;
+package com.hazelcast.internal.tpc.member;
 
 import com.hazelcast.bulktransport.impl.BulkTransportOp;
 import com.hazelcast.bulktransport.impl.InitBulkTransportOp;
 import com.hazelcast.pubsub.impl.TopicPublishOp;
 import com.hazelcast.htable.impl.GetOp;
 import com.hazelcast.noop.impl.NoOp;
-import com.hazelcast.htable.impl.PipelineOp;
 import com.hazelcast.htable.impl.QueryOp;
 import com.hazelcast.htable.impl.SetOp;
 
 import java.util.function.Supplier;
 
-import static com.hazelcast.internal.tpc.OpCodes.BULK_TRANSPORT;
-import static com.hazelcast.internal.tpc.OpCodes.GET;
-import static com.hazelcast.internal.tpc.OpCodes.INIT_BULK_TRANSPORT;
-import static com.hazelcast.internal.tpc.OpCodes.MAX_OPCODE;
-import static com.hazelcast.internal.tpc.OpCodes.NOOP;
-import static com.hazelcast.internal.tpc.OpCodes.PIPELINE;
-import static com.hazelcast.internal.tpc.OpCodes.QUERY;
-import static com.hazelcast.internal.tpc.OpCodes.SET;
-import static com.hazelcast.internal.tpc.OpCodes.TOPIC_PUBLISH;
+import static com.hazelcast.internal.tpc.member.OpCodes.BULK_TRANSPORT;
+import static com.hazelcast.internal.tpc.member.OpCodes.GET;
+import static com.hazelcast.internal.tpc.member.OpCodes.INIT_BULK_TRANSPORT;
+import static com.hazelcast.internal.tpc.member.OpCodes.MAX_OPCODE;
+import static com.hazelcast.internal.tpc.member.OpCodes.NOOP;
+import static com.hazelcast.internal.tpc.member.OpCodes.PIPELINE;
+import static com.hazelcast.internal.tpc.member.OpCodes.QUERY;
+import static com.hazelcast.internal.tpc.member.OpCodes.SET;
+import static com.hazelcast.internal.tpc.member.OpCodes.TOPIC_PUBLISH;
 
 public final class OpAllocator {
 

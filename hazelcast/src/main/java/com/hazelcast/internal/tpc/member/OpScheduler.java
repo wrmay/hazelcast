@@ -15,8 +15,10 @@
  * limitations under the License.
  */
 
-package com.hazelcast.internal.tpc;
+package com.hazelcast.internal.tpc.member;
 
+import com.hazelcast.internal.tpc.FrameCodec;
+import com.hazelcast.internal.tpc.ResponseHandler;
 import com.hazelcast.internal.tpcengine.Eventloop;
 import com.hazelcast.internal.tpcengine.Scheduler;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
@@ -31,10 +33,10 @@ import static com.hazelcast.internal.tpc.FrameCodec.OFFSET_REQ_PAYLOAD;
 import static com.hazelcast.internal.tpc.FrameCodec.OFFSET_RES_PAYLOAD;
 import static com.hazelcast.internal.tpc.FrameCodec.RESPONSE_TYPE_EXCEPTION;
 import static com.hazelcast.internal.tpc.FrameCodec.RESPONSE_TYPE_OVERLOAD;
-import static com.hazelcast.internal.tpc.Op.BLOCKED;
-import static com.hazelcast.internal.tpc.Op.COMPLETED;
-import static com.hazelcast.internal.tpc.Op.EXCEPTION;
-import static com.hazelcast.internal.tpc.OpCodes.PIPELINE;
+import static com.hazelcast.internal.tpc.member.Op.BLOCKED;
+import static com.hazelcast.internal.tpc.member.Op.COMPLETED;
+import static com.hazelcast.internal.tpc.member.Op.EXCEPTION;
+import static com.hazelcast.internal.tpc.member.OpCodes.PIPELINE;
 import static com.hazelcast.internal.tpcengine.util.BitUtil.SIZEOF_INT;
 import static com.hazelcast.internal.util.counters.SwCounter.newSwCounter;
 

@@ -55,7 +55,7 @@ public class RequestRegistry {
         }
     }
 
-    void shutdown() {
+    public void shutdown() {
         for (Requests requests : requestsPerSocket.values()) {
             requests.shutdown();
         }

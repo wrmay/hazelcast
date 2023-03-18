@@ -20,7 +20,6 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReferenceArray;
 
 import static com.hazelcast.internal.util.QuickMath.nextPowerOfTwo;
-import static com.hazelcast.internal.tpc.FrameCodec.OFFSET_REQ_CALL_ID;
 
 /**
  * Slots for RequestFutures. Instead of using a ConcurrentHashMap and causing litter, there is an array with

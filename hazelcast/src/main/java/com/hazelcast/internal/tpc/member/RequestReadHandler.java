@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-package com.hazelcast.internal.tpc;
+package com.hazelcast.internal.tpc.member;
 
+import com.hazelcast.internal.tpc.FrameCodec;
+import com.hazelcast.internal.tpc.member.OpScheduler;
 import com.hazelcast.internal.tpcengine.ReadHandler;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBufferAllocator;
@@ -24,7 +26,6 @@ import java.nio.ByteBuffer;
 import java.util.function.Consumer;
 
 import static com.hazelcast.internal.nio.Bits.INT_SIZE_IN_BYTES;
-import static com.hazelcast.internal.tpc.FrameCodec.FLAG_OP_RESPONSE;
 
 public class RequestReadHandler extends ReadHandler {
 

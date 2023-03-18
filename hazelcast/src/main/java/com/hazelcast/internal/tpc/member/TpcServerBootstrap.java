@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hazelcast.internal.tpc;
+package com.hazelcast.internal.tpc.member;
 
 import com.hazelcast.cluster.Address;
 import com.hazelcast.config.AdvancedNetworkConfig;

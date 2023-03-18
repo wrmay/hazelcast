@@ -19,8 +19,8 @@ package com.hazelcast.htable.impl;
 import com.hazelcast.htable.HTable;
 import com.hazelcast.htable.Pipeline;
 import com.hazelcast.internal.tpc.FrameCodec;
-import com.hazelcast.internal.tpc.MemberTpcRuntime;
-import com.hazelcast.internal.tpc.PartitionActorRef;
+import com.hazelcast.internal.tpc.member.MemberTpcRuntime;
+import com.hazelcast.internal.tpc.PipelineImpl;
 import com.hazelcast.internal.tpcengine.iobuffer.ConcurrentIOBufferAllocator;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBufferAllocator;
@@ -30,9 +30,9 @@ import com.hazelcast.spi.impl.NodeEngineImpl;
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 
-import static com.hazelcast.internal.tpc.OpCodes.GET;
-import static com.hazelcast.internal.tpc.OpCodes.QUERY;
-import static com.hazelcast.internal.tpc.OpCodes.SET;
+import static com.hazelcast.internal.tpc.member.OpCodes.GET;
+import static com.hazelcast.internal.tpc.member.OpCodes.QUERY;
+import static com.hazelcast.internal.tpc.member.OpCodes.SET;
 import static com.hazelcast.internal.util.HashUtil.hashToIndex;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
@@ -43,7 +43,6 @@ public class HTableProxy extends AbstractDistributedObject implements HTable {
     private final int partitionCount;
     private final IOBufferAllocator requestAllocator;
     private final int requestTimeoutMs;
-    private final PartitionActorRef[] partitionActorRefs;
 
     public HTableProxy(NodeEngineImpl nodeEngine, HTableService tableService, String name) {
         super(nodeEngine, tableService);
@@ -52,7 +51,6 @@ public class HTableProxy extends AbstractDistributedObject implements HTable {
         this.requestAllocator = new ConcurrentIOBufferAllocator(128, true);
         this.tpcRuntime = nodeEngine.getNode().getTpcRuntime();
         this.requestTimeoutMs = tpcRuntime.getRequestTimeoutMs();
-        this.partitionActorRefs = tpcRuntime.partitionActorRefs();
     }
 
     @Override
@@ -69,7 +67,7 @@ public class HTableProxy extends AbstractDistributedObject implements HTable {
         request.writeSizedBytes(key);
         request.writeSizedBytes(value);
         FrameCodec.setSize(request);
-        CompletableFuture<IOBuffer> f = partitionActorRefs[partitionId].submit(request);
+        CompletableFuture<IOBuffer> f = tpcRuntime.invoke(request, partitionId);
         try {
             IOBuffer response = f.get(requestTimeoutMs, MILLISECONDS);
             response.release();
@@ -85,7 +83,7 @@ public class HTableProxy extends AbstractDistributedObject implements HTable {
             IOBuffer request = requestAllocator.allocate(60);
             FrameCodec.writeRequestHeader(request, partitionId, QUERY);
             FrameCodec.setSize(request);
-            futures[partitionId] = partitionActorRefs[partitionId].submit(request);
+            futures[partitionId] = tpcRuntime.invoke(request, partitionId);
         }
 
         for (CompletableFuture future : futures) {
@@ -104,7 +102,7 @@ public class HTableProxy extends AbstractDistributedObject implements HTable {
         FrameCodec.writeRequestHeader(request, partitionId, GET);
         request.writeSizedBytes(key);
         FrameCodec.setSize(request);
-        CompletableFuture<IOBuffer> f = partitionActorRefs[partitionId].submit(request);
+        CompletableFuture<IOBuffer> f = tpcRuntime.invoke(request, partitionId);
         IOBuffer response = null;
         try {
             response = f.get(requestTimeoutMs, MILLISECONDS);

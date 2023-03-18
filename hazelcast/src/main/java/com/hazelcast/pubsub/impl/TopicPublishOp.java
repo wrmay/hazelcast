@@ -1,13 +1,13 @@
 package com.hazelcast.pubsub.impl;
 
-import com.hazelcast.internal.tpc.Op;
+import com.hazelcast.internal.tpc.member.Op;
 import com.hazelcast.internal.tpcengine.AsyncFile;
 import com.hazelcast.internal.tpcengine.Promise;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
 
 import java.io.File;
 
-import static com.hazelcast.internal.tpc.OpCodes.TOPIC_PUBLISH;
+import static com.hazelcast.internal.tpc.member.OpCodes.TOPIC_PUBLISH;
 import static com.hazelcast.internal.nio.Bits.INT_SIZE_IN_BYTES;
 import static com.hazelcast.internal.tpcengine.AsyncFile.O_CREAT;
 import static com.hazelcast.internal.tpcengine.AsyncFile.O_DIRECT;

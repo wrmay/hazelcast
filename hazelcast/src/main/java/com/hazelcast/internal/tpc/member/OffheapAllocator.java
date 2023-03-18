@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hazelcast.internal.tpc;
+package com.hazelcast.internal.tpc.member;
 
 import com.hazelcast.internal.tpc.util.Allocator;
 import com.hazelcast.internal.memory.impl.UnsafeUtil;

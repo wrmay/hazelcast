@@ -1,18 +1,30 @@
-package com.hazelcast.htable.impl;
+/*
+ * Copyright (c) 2008-2023, Hazelcast, Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.hazelcast.internal.tpc;
 // todo: we don't need a IOBuffer for all the requests. We should just add to an existing IOBuffer.
 
 
 import com.hazelcast.cluster.Address;
+import com.hazelcast.htable.Pipeline;
 import com.hazelcast.internal.partition.impl.InternalPartitionServiceImpl;
-import com.hazelcast.internal.tpc.FrameCodec;
-import com.hazelcast.internal.tpc.MemberTpcRuntime;
-import com.hazelcast.internal.tpc.OpCodes;
-import com.hazelcast.internal.tpc.PartitionActorRef;
-import com.hazelcast.internal.tpc.RequestFuture;
-import com.hazelcast.internal.tpc.TpcRuntime;
+import com.hazelcast.internal.tpc.member.MemberTpcRuntime;
+import com.hazelcast.internal.tpc.member.OpCodes;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBufferAllocator;
-import com.hazelcast.htable.Pipeline;
 
 import java.util.Arrays;
 
@@ -31,18 +43,18 @@ public final class PipelineImpl implements Pipeline {
     private final TpcRuntime tpcRuntime;
     private final IOBufferAllocator requestAllocator;
     private final int partitionCount;
-    private PartitionActorRef actorRef;
     private final InternalPartitionServiceImpl partitionService;
     private int partitionId = -1;
     public IOBuffer request;
     private int countPos;
     public int count;
 
+    // todo: should not depend on MemberTpcRuntime.
     public PipelineImpl(MemberTpcRuntime tpcRuntime, IOBufferAllocator requestAllocator) {
         this.tpcRuntime = tpcRuntime;
         this.requestAllocator = requestAllocator;
         this.partitionService = tpcRuntime.node.partitionService;
-        this.partitionCount = tpcRuntime.node.nodeEngine.getPartitionService().getPartitionCount();
+        this.partitionCount = tpcRuntime.getPartitionCount();
         this.request = new IOBuffer(64 * 1024);//requestAllocator.allocate();
     }
 
@@ -112,7 +124,6 @@ public final class PipelineImpl implements Pipeline {
             }
 
             this.partitionId = partitionId;
-            this.actorRef = tpcRuntime.partitionActorRefs()[partitionId];
             FrameCodec.writeRequestHeader(request, partitionId, OpCodes.PIPELINE);
             countPos = request.position();
             request.writeInt(0);
@@ -127,7 +138,7 @@ public final class PipelineImpl implements Pipeline {
         request.putInt(countPos, count);
         FrameCodec.setSize(request);
 
-        RequestFuture<IOBuffer> requestFuture = actorRef.submit(request);
+        RequestFuture<IOBuffer> requestFuture = tpcRuntime.invoke(request, partitionId);
         IOBuffer response = requestFuture.join();
         response.release();
     }

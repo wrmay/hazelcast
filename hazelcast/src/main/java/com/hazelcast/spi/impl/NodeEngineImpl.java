@@ -48,7 +48,7 @@ import com.hazelcast.internal.serialization.SerializationService;
 import com.hazelcast.internal.serialization.impl.compact.schema.MemberSchemaService;
 import com.hazelcast.internal.services.PostJoinAwareService;
 import com.hazelcast.internal.services.PreJoinAwareService;
-import com.hazelcast.internal.tpc.TpcServerBootstrap;
+import com.hazelcast.internal.tpc.member.TpcServerBootstrap;
 import com.hazelcast.internal.usercodedeployment.UserCodeDeploymentClassLoader;
 import com.hazelcast.internal.usercodedeployment.UserCodeDeploymentService;
 import com.hazelcast.internal.util.ConcurrencyDetection;

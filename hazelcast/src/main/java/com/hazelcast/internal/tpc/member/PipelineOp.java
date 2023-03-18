@@ -14,20 +14,19 @@
  * limitations under the License.
  */
 
-package com.hazelcast.internal.tpc;
+package com.hazelcast.internal.tpc.member;
 
-public class OpCodes {
+import com.hazelcast.internal.tpc.member.Op;
+import com.hazelcast.internal.tpc.member.OpCodes;
 
-    public final static byte TABLE_UPSERT = 0;
-    public final static byte TABLE_SELECT_BY_KEY = 1;
-    public final static byte NOOP = 2;
-    public final static byte GET = 3;
-    public final static byte SET = 4;
-    public final static byte QUERY = 5;
-    public final static byte INIT_BULK_TRANSPORT = 6;
-    public final static byte BULK_TRANSPORT = 7;
-    public final static byte TOPIC_PUBLISH = 8;
-    public final static byte PIPELINE = 9;
+public class PipelineOp extends Op {
 
-    public final static byte MAX_OPCODE = PIPELINE;
+    public PipelineOp() {
+        super(OpCodes.PIPELINE);
+    }
+
+    @Override
+    public int run() throws Exception {
+        throw new UnsupportedOperationException();
+    }
 }

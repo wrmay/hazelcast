@@ -1,18 +1,32 @@
+/*
+ * Copyright (c) 2008-2023, Hazelcast, Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.hazelcast.htable;
 
 import com.hazelcast.core.Command;
 import com.hazelcast.internal.tpc.FrameCodec;
-import com.hazelcast.internal.tpc.PartitionActorRef;
 import com.hazelcast.internal.tpc.TpcRuntime;
 import com.hazelcast.internal.tpcengine.iobuffer.ConcurrentIOBufferAllocator;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBufferAllocator;
-import com.hazelcast.spi.impl.NodeEngineImpl;
 
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 
-import static com.hazelcast.internal.tpc.OpCodes.SET;
+import static com.hazelcast.internal.tpc.member.OpCodes.SET;
 import static com.hazelcast.internal.util.HashUtil.hashToIndex;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
@@ -23,7 +37,6 @@ public class HSet implements Command {
     private final int partitionCount;
     private final IOBufferAllocator requestAllocator;
     private final int requestTimeoutMs;
-    private final PartitionActorRef[] partitionActorRefs;
 
     public HSet(TpcRuntime tpcRuntime, String name) {
         this.name = name;
@@ -31,10 +44,9 @@ public class HSet implements Command {
         this.partitionCount = tpcRuntime.getPartitionCount();
         this.requestAllocator = new ConcurrentIOBufferAllocator(128, true);
         this.requestTimeoutMs = tpcRuntime.getRequestTimeoutMs();
-        this.partitionActorRefs = tpcRuntime.partitionActorRefs();
     }
 
-    public void sync(byte[] key, byte[] value){
+    public void sync(byte[] key, byte[] value) {
         int partitionId = hashToIndex(Arrays.hashCode(key), partitionCount);
 
         IOBuffer request = requestAllocator.allocate(60);
@@ -42,7 +54,7 @@ public class HSet implements Command {
         request.writeSizedBytes(key);
         request.writeSizedBytes(value);
         FrameCodec.setSize(request);
-        CompletableFuture<IOBuffer> f = partitionActorRefs[partitionId].submit(request);
+        CompletableFuture<IOBuffer> f = tpcRuntime.invoke(request, partitionId);
         try {
             IOBuffer response = f.get(requestTimeoutMs, MILLISECONDS);
             response.release();
@@ -51,7 +63,7 @@ public class HSet implements Command {
         }
     }
 
-    public void pipeline(Pipeline pipeline, byte key, byte[] value){
+    public void pipeline(Pipeline pipeline, byte key, byte[] value) {
 
     }
 }

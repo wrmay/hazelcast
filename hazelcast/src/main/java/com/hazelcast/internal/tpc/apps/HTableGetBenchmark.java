@@ -30,6 +30,8 @@ public class HTableGetBenchmark {
         HazelcastInstance node1 = Hazelcast.newHazelcastInstance();
         HazelcastInstance node2 = Hazelcast.newHazelcastInstance();
 
+        HTable table = node1.getProxy(HTable.class, "employees");
+
         int items = 1_000_000;
 
         HSet set = node1.newCommand(HSet.class);

@@ -1,7 +1,6 @@
 package com.hazelcast.noop.impl;
 
 import com.hazelcast.internal.tpc.FrameCodec;
-import com.hazelcast.internal.tpc.PartitionActorRef;
 import com.hazelcast.internal.tpc.TpcRuntime;
 import com.hazelcast.internal.tpcengine.iobuffer.ConcurrentIOBufferAllocator;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
@@ -11,14 +10,13 @@ import com.hazelcast.spi.impl.NodeEngineImpl;
 
 import java.util.concurrent.CompletableFuture;
 
-import static com.hazelcast.internal.tpc.OpCodes.NOOP;
+import static com.hazelcast.internal.tpc.member.OpCodes.NOOP;
 import static com.hazelcast.internal.util.Preconditions.checkPositive;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class NoopProxy extends AbstractDistributedObject implements Noop {
 
-    private final PartitionActorRef[] partitionActorRefs;
     private final ConcurrentIOBufferAllocator requestAllocator;
     private final TpcRuntime tpcRuntime;
     private final int requestTimeoutMs;
@@ -31,7 +29,6 @@ public class NoopProxy extends AbstractDistributedObject implements Noop {
         this.partitionCount = nodeEngine.getPartitionService().getPartitionCount();
         this.tpcRuntime = nodeEngine.getNode().getTpcRuntime();
         this.requestTimeoutMs = tpcRuntime.getRequestTimeoutMs();
-        this.partitionActorRefs = tpcRuntime.partitionActorRefs();
         this.requestAllocator = new ConcurrentIOBufferAllocator(128, true);
     }
 
@@ -90,7 +87,7 @@ public class NoopProxy extends AbstractDistributedObject implements Noop {
         //   request.trackRelease=true;
         FrameCodec.writeRequestHeader(request, partitionId, NOOP);
         FrameCodec.setSize(request);
-        return partitionActorRefs[partitionId].submit(request);
+        return tpcRuntime.invoke(request, partitionId);
     }
 
 }

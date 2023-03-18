@@ -19,6 +19,7 @@ package com.hazelcast.internal.tpc;
 import com.hazelcast.cluster.Address;
 import com.hazelcast.internal.partition.InternalPartitionService;
 import com.hazelcast.internal.server.tcp.TcpServerConnection;
+import com.hazelcast.internal.tpc.member.MemberTpcRuntime;
 import com.hazelcast.internal.tpcengine.AsyncSocket;
 import com.hazelcast.internal.tpcengine.Reactor;
 import com.hazelcast.internal.tpcengine.TpcEngine;

@@ -18,8 +18,8 @@ package com.hazelcast.htable.impl;
 
 import com.hazelcast.internal.tpc.offheapmap.ExampleQuery;
 import com.hazelcast.internal.tpc.offheapmap.OffheapMap;
-import com.hazelcast.internal.tpc.Op;
-import com.hazelcast.internal.tpc.OpCodes;
+import com.hazelcast.internal.tpc.member.Op;
+import com.hazelcast.internal.tpc.member.OpCodes;
 
 public class QueryOp extends Op {
 

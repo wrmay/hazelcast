@@ -15,21 +15,7 @@
  */
 
 package com.hazelcast.internal.tpc;
-/*
- * Copyright (c) 2008-2023, Hazelcast, Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+
 
 import com.hazelcast.internal.util.concurrent.MPSCQueue;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
@@ -37,22 +23,16 @@ import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
 import java.util.function.Consumer;
 
 import static com.hazelcast.internal.util.HashUtil.hashToIndex;
-import static com.hazelcast.internal.tpc.FrameCodec.FLAG_OP_RESPONSE_CONTROL;
-import static com.hazelcast.internal.tpc.FrameCodec.OFFSET_PARTITION_ID;
-import static com.hazelcast.internal.tpc.FrameCodec.OFFSET_RES_CALL_ID;
-import static com.hazelcast.internal.tpc.FrameCodec.OFFSET_RES_PAYLOAD;
-import static com.hazelcast.internal.tpc.FrameCodec.RESPONSE_TYPE_EXCEPTION;
-import static com.hazelcast.internal.tpc.FrameCodec.RESPONSE_TYPE_OVERLOAD;
 
 
-class ResponseHandler implements Consumer<IOBuffer> {
+public class ResponseHandler implements Consumer<IOBuffer> {
 
     private final ResponseThread[] threads;
     private final int threadCount;
     private final boolean spin;
     private final RequestRegistry requestRegistry;
 
-    ResponseHandler(int threadCount,
+    public ResponseHandler(int threadCount,
                     boolean spin,
                     RequestRegistry requestRegistry) {
         this.spin = spin;
@@ -64,13 +44,13 @@ class ResponseHandler implements Consumer<IOBuffer> {
         }
     }
 
-    void start() {
+    public void start() {
         for (ResponseThread t : threads) {
             t.start();
         }
     }
 
-    void shutdown() {
+    public void shutdown() {
         for (ResponseThread t : threads) {
             t.shutdown();
         }
