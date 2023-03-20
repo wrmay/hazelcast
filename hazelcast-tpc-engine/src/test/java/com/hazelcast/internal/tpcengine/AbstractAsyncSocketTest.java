@@ -31,11 +31,11 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class SocketTest {
+public class AbstractAsyncSocketTest {
 
     @Test
     public void test_construction() {
-        MockChannel channel = new MockChannel();
+        MockAbstractSyncSocket channel = new MockAbstractSyncSocket();
 
         assertNull(channel.getCloseCause());
         assertNull(channel.getCloseCause());
@@ -44,7 +44,7 @@ public class SocketTest {
 
     @Test
     public void test_setCloseListener_whenAlreadySet() {
-        MockChannel channel = new MockChannel();
+        MockAbstractSyncSocket channel = new MockAbstractSyncSocket();
         AbstractAsyncSocket.CloseListener oldCloseListener = mock(AbstractAsyncSocket.CloseListener.class);
         Executor oldExecutor = mock(Executor.class);
         channel.setCloseListener(oldCloseListener, oldExecutor);
@@ -54,21 +54,21 @@ public class SocketTest {
 
     @Test
     public void test_setCloseListener_whenListenerNull() {
-        MockChannel channel = new MockChannel();
+        MockAbstractSyncSocket channel = new MockAbstractSyncSocket();
 
         assertThrows(NullPointerException.class, () -> channel.setCloseListener(null, mock(Executor.class)));
     }
 
     @Test
     public void test_setCloseListener_whenExecutorNull() {
-        MockChannel channel = new MockChannel();
+        MockAbstractSyncSocket channel = new MockAbstractSyncSocket();
 
         assertThrows(NullPointerException.class, () -> channel.setCloseListener(mock(AbstractAsyncSocket.CloseListener.class), null));
     }
 
     @Test
     public void test_close_whenCloseListenerConfigured() {
-        MockChannel channel = new MockChannel();
+        MockAbstractSyncSocket channel = new MockAbstractSyncSocket();
         Executor executor = command -> {
             command.run();
         };
@@ -82,7 +82,7 @@ public class SocketTest {
 
     @Test
     public void test_close_whenCloseListenerConfiguredAndchannelAlreadyClosed() {
-        MockChannel channel = new MockChannel();
+        MockAbstractSyncSocket channel = new MockAbstractSyncSocket();
         channel.close();
 
         Executor executor = command -> {
@@ -96,7 +96,7 @@ public class SocketTest {
 
     @Test
     public void test_close_whenCloseListenerThrowsException_thenIgnore() {
-        MockChannel channel = new MockChannel();
+        MockAbstractSyncSocket channel = new MockAbstractSyncSocket();
         Executor executor = command -> {
             command.run();
         };
@@ -112,7 +112,7 @@ public class SocketTest {
 
     @Test
     public void test_close_whenClose0ThrowsException_thenIgnore() throws IOException {
-        MockChannel channel = new MockChannel();
+        MockAbstractSyncSocket channel = new MockAbstractSyncSocket();
         channel.exceptionToThrow = new IOException();
 
         channel.close();
@@ -122,7 +122,7 @@ public class SocketTest {
 
     @Test
     public void test_close() {
-        MockChannel channel = new MockChannel();
+        MockAbstractSyncSocket channel = new MockAbstractSyncSocket();
         channel.close();
 
         assertTrue(channel.isClosed());
@@ -133,7 +133,7 @@ public class SocketTest {
 
     @Test
     public void test_close_withReasonAndCause() {
-        MockChannel channel = new MockChannel();
+        MockAbstractSyncSocket channel = new MockAbstractSyncSocket();
         String reason = "foo";
         Throwable cause = new Exception();
         channel.close(reason, cause);
@@ -146,7 +146,7 @@ public class SocketTest {
 
     @Test
     public void test_close_withReasonOnly() {
-        MockChannel channel = new MockChannel();
+        MockAbstractSyncSocket channel = new MockAbstractSyncSocket();
         String reason = "foo";
         channel.close(reason, null);
 
@@ -158,7 +158,7 @@ public class SocketTest {
 
     @Test
     public void test_close_withCauseOnly() {
-        MockChannel channel = new MockChannel();
+        MockAbstractSyncSocket channel = new MockAbstractSyncSocket();
         Throwable cause = new Exception();
         channel.close(null, cause);
 
@@ -171,7 +171,7 @@ public class SocketTest {
 
     @Test
     public void test_close_whenAlreadyClosed() {
-        MockChannel channel = new MockChannel();
+        MockAbstractSyncSocket channel = new MockAbstractSyncSocket();
         String reason = "foo";
         Throwable cause = new Exception();
         channel.close(reason, cause);
@@ -185,7 +185,7 @@ public class SocketTest {
     }
 
 
-    public static class MockChannel extends AbstractAsyncSocket {
+    public static class MockAbstractSyncSocket extends AbstractAsyncSocket {
         int closeCalls;
         IOException exceptionToThrow;
 

@@ -17,6 +17,7 @@
 package com.hazelcast.internal.tpcengine;
 
 import org.junit.After;
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.net.InetSocketAddress;
@@ -30,6 +31,10 @@ import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 public abstract class AsyncServerSocketBuilderTest {
+
+    @Rule
+    public final PortFreeRule portFreeRule = new PortFreeRule(5000);
+
     private static final Option<String> UNKNOwN_OPTION = new Option<>("banana", String.class);
 
     private final List<Reactor> reactors = new ArrayList<>();

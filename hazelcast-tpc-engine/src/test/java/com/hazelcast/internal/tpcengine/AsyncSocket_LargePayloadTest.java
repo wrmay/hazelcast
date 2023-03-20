@@ -21,6 +21,7 @@ import com.hazelcast.internal.tpcengine.iobuffer.IOBufferAllocator;
 import com.hazelcast.internal.tpcengine.iobuffer.NonConcurrentIOBufferAllocator;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.net.InetSocketAddress;
@@ -40,6 +41,10 @@ import static com.hazelcast.internal.tpcengine.util.BufferUtil.put;
 import static com.hazelcast.internal.tpcengine.util.BufferUtil.upcast;
 
 public abstract class AsyncSocket_LargePayloadTest {
+
+    @Rule
+    public final PortFreeRule portFreeRule = new PortFreeRule(5000);
+
     // use small buffers to cause a lot of network scheduling overhead (and shake down problems)
     public static final int SOCKET_BUFFER_SIZE = 16 * 1024;
     public int iterations = 20;

@@ -9,4 +9,9 @@ public class IOUringAcceptRequest implements AcceptRequest {
     public IOUringAcceptRequest(NativeSocket nativeSocket) {
         this.nativeSocket = nativeSocket;
     }
+
+    @Override
+    public void close() throws Exception {
+        nativeSocket.close();
+    }
 }

@@ -17,17 +17,22 @@
 package com.hazelcast.internal.tpcengine;
 
 import org.junit.After;
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.hazelcast.internal.tpcengine.TpcTestSupport.terminateAll;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 public abstract class AsyncSocketBuilderTest {
     private static final Option<String> UNKNOwN_OPTION = new Option<>("banana", String.class);
+
+    @Rule
+    public final PortFreeRule portFreeRule = new PortFreeRule(5000);
 
     private final List<Reactor> reactors = new ArrayList<>();
 
@@ -42,7 +47,7 @@ public abstract class AsyncSocketBuilderTest {
 
     @After
     public void after() {
-        TpcTestSupport.terminateAll(reactors);
+        terminateAll(reactors);
     }
 
     @Test

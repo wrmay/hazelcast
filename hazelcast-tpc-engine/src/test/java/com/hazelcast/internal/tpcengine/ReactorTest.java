@@ -17,10 +17,11 @@
 package com.hazelcast.internal.tpcengine;
 
 import org.junit.After;
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.net.InetSocketAddress;
-import java.nio.ByteBuffer;
+import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -40,6 +41,14 @@ import static org.junit.Assert.assertTrue;
 
 public abstract class ReactorTest {
 
+    @Rule
+    public final PortFreeRule portFreeRule = new PortFreeRule(5000);
+
+    @After
+    public void after() throws InterruptedException {
+        terminateAll(reactors);
+    }
+
     private final List<Reactor> reactors = new ArrayList<>();
 
     public abstract ReactorBuilder newReactorBuilder();
@@ -53,11 +62,6 @@ public abstract class ReactorTest {
 
     public ReactorType getType() {
         return newReactorBuilder().type;
-    }
-
-    @After
-    public void after() throws InterruptedException {
-        terminateAll(reactors);
     }
 
     @Test

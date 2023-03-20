@@ -19,6 +19,7 @@ package com.hazelcast.internal.tpcengine;
 import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.net.InetSocketAddress;
@@ -37,6 +38,9 @@ import static org.junit.Assert.assertEquals;
  * that by turning it on and off multiple times and see if any data is received.
  */
 public abstract class AsyncSocket_ReadableTest {
+
+    @Rule
+    public final PortFreeRule portFreeRule = new PortFreeRule(5000);
 
     private Reactor clientReactor;
     private Reactor serverReactor;

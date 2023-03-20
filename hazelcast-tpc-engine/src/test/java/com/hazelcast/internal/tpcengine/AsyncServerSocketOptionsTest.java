@@ -17,6 +17,7 @@
 package com.hazelcast.internal.tpcengine;
 
 import org.junit.After;
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -35,6 +36,9 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public abstract class AsyncServerSocketOptionsTest {
+
+    @Rule
+    public final PortFreeRule portFreeRule = new PortFreeRule(5000);
 
     private final List<Reactor> reactors = new ArrayList<>();
 

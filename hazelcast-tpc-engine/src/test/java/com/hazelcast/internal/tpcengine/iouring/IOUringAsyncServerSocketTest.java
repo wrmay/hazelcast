@@ -20,7 +20,6 @@ import com.hazelcast.internal.tpcengine.AsyncServerSocketTest;
 import com.hazelcast.internal.tpcengine.ReactorBuilder;
 import org.junit.Ignore;
 
-@Ignore
 public class IOUringAsyncServerSocketTest extends AsyncServerSocketTest {
 
     @Override

@@ -19,6 +19,8 @@ package com.hazelcast.internal.tpcengine.iouring;
 import com.hazelcast.internal.tpcengine.AcceptRequest;
 import com.hazelcast.internal.tpcengine.AsyncServerSocket;
 import com.hazelcast.internal.tpcengine.AsyncSocketOptions;
+import com.hazelcast.internal.tpcengine.util.CloseUtil;
+import com.hazelcast.internal.tpcengine.util.ExceptionUtil;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -31,6 +33,7 @@ import static com.hazelcast.internal.tpcengine.iouring.Linux.SOCK_CLOEXEC;
 import static com.hazelcast.internal.tpcengine.iouring.Linux.SOCK_NONBLOCK;
 import static com.hazelcast.internal.tpcengine.iouring.Linux.strerror;
 import static com.hazelcast.internal.tpcengine.iouring.NativeSocket.AF_INET;
+import static com.hazelcast.internal.tpcengine.util.CloseUtil.closeQuietly;
 import static com.hazelcast.internal.tpcengine.util.ExceptionUtil.sneakyThrow;
 import static com.hazelcast.internal.tpcengine.util.Preconditions.checkNotNegative;
 import static com.hazelcast.internal.tpcengine.util.Preconditions.checkNotNull;
@@ -191,6 +194,8 @@ public final class IOUringAsyncServerSocket extends AsyncServerSocket {
                     throw new UncheckedIOException(new IOException(strerror(-res)));
                 }
 
+                metrics.incAccepted();
+
                 SocketAddress address = NativeSocket.toInetSocketAddress(acceptMemory.memoryAddress, acceptMemory.lengthMemoryAddress);
 
                 if (logger.isInfoEnabled()) {
@@ -201,15 +206,22 @@ public final class IOUringAsyncServerSocket extends AsyncServerSocket {
                 // We should use the address to determine the type
                 NativeSocket socket = new NativeSocket(res, AF_INET);
                 AcceptRequest acceptRequest = new IOUringAcceptRequest(socket);
-                acceptRequestConsumer.accept(acceptRequest);
+                try {
+                    acceptRequestConsumer.accept(acceptRequest);
+                } catch (Throwable t) {
+                    // If for whatever reason the socket isn't consumed, we need
+                    // to properly close the socket. Otherwise the socket remains
+                    // under a CLOSE_WAIT state and the port doesn't get released.
+                    closeQuietly(acceptRequest);
+                    throw sneakyThrow(t);
+                }
 
-                // we need to reregister for more accepts.
+                // we need to re-register for more accepts.
                 sq_offer_OP_ACCEPT();
                 //todo: return value
             } catch (Exception e) {
-                close("Closing IOUringAsyncServerSocket due to exception", e);
+                close(null, e);
             }
         }
     }
-
 }

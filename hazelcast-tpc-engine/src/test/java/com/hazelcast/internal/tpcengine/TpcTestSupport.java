@@ -18,6 +18,8 @@ package com.hazelcast.internal.tpcengine;
 
 import com.hazelcast.internal.tpcengine.iobuffer.IOBuffer;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.Collection;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
@@ -41,6 +43,32 @@ public class TpcTestSupport {
     public static void assertCompletesEventually(final Future future) {
         assertTrueEventually(() -> assertTrue("Future has not completed", future.isDone()));
     }
+
+//    // TODO: Can this be implemented as a RUle
+//    public static void assertPortFree(int port){
+//        try {
+//            Process process = new ProcessBuilder("lsof", "-i", ":" + port).start();
+//            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+//            int exitCode = process.waitFor();
+//            if(exitCode == 1){
+//                return;
+//            }
+//
+//
+//            StringBuilder builder = new StringBuilder();
+//            String line = null;
+//            while ( (line = reader.readLine()) != null) {
+//                builder.append(line);
+//                builder.append(System.getProperty("line.separator"));
+//            }
+//            String result = builder.toString();
+//
+//            fail("Port "+port+" is not properly closed: "+result);
+//
+//        }catch (Exception e){
+//            throw new RuntimeException(e);
+//        }
+//    }
 
     public static void terminateAll(Collection<? extends Reactor> reactors) {
         if (reactors == null) {
