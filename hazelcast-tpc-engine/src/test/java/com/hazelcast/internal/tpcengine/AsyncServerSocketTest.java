@@ -30,6 +30,8 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import static com.hazelcast.internal.tpcengine.TpcTestSupport.assertCompletesEventually;
+import static com.hazelcast.internal.tpcengine.TpcTestSupport.assertTrueEventually;
+import static com.hazelcast.internal.tpcengine.TpcTestSupport.terminate;
 import static com.hazelcast.internal.tpcengine.TpcTestSupport.terminateAll;
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertEquals;
