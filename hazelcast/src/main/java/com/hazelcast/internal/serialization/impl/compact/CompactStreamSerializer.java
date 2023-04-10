@@ -176,7 +176,7 @@ public class CompactStreamSerializer implements StreamSerializer<Object> {
 
     Object read(BufferObjectDataInput input, boolean schemaIncludedInBinary) throws IOException {
         Schema schema = getOrReadSchema(input, schemaIncludedInBinary);
-        CompactSerializableRegistration registration = getOrCreateRegistration(schema.getTypeName());
+        CompactSerializableRegistration registration = null;
 
         if (registration == null) {
             //we have tried to load class via class loader, it did not work. We are returning a GenericRecord.
